@@ -1,3 +1,3 @@
-###Dependencies:
+###Dependencies
 Jackaudio server
 Audiofile
