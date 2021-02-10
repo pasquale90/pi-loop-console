@@ -1,0 +1,3 @@
+###Dependencies:
+Jackaudio server
+Audiofile
