@@ -1,0 +1,57 @@
+# Define compiler
+CC = g++
+
+# Compiler flags
+CFLAGS  = -g -Wall
+
+COMPILE=$(COMPILER) $(NOPTIONS)
+
+# Build target executable
+SRC = src
+INCLUDES = include
+TARGET = main
+
+all: $(TARGET)
+
+$(TARGET): $(SRC)/$(TARGET).cpp
+    $(CC) $(CFLAGS) -I $(INCLUDES) -o $@ $^ 
+
+clean:
+    $(RM) $(TARGET)
+
+kalypso:main.o session.o handshake.o channel.o
+	$(COMPILER) $(NOPTIONS) main.o session.o handshake.o channel.o
+
+
+handshake.o:hancdshake.cpp jack/jack.h jack/types.h
+	$(COMPILER) $(NOPTIONS) -c handshake.cpp  -Ilibs -ljack
+
+main.o:main.cpp session.h handshake.h channel.h
+	$(COMPILE) -c main.cpp -I.
+
+route.o:route.cpp handshake.h
+	$(COMPILE) -c coute.cpp -I.
+
+channel:channel.cpp handshake.h route.h
+	$(COMPILE) -c channel.cpp -I.
+
+session:session.cpp channel.h
+	$(COMPILE) -c session.cpp -I.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

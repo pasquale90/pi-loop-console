@@ -1,0 +1,15 @@
+Hello Piloop
+DEBUG Segmentation fault:: channel_constructor:: creating a channel
+DEBUG Segmentation fault:: channel_constructor:: created a handshake
+DEBUG Segmentation fault:: channel_constructor:: creating a route
+DEBUG Segmentation fault:: route_constructor:: before adding input and stereo
+DEBUG Segmentation fault:: route_constructor:: added input and stereo
+DEBUG Segmentation fault:: channel_constructor:: callback
+DEBUG Segmentation fault:: channel_constructor::prevent_failure
+DEBUG Segmentation fault:: channel_constructor::activate
+DEBUG Segmentation fault:: handshake::activate:: before jack_activate
+jack _deactivated
+DEBUG Segmentation fault:: handshake::activate:: after jack_activate
+DEBUG Segmentation fault:: channel_constructor::connect_all
+DEBUG Segmentation fault:: route::connect_all:: connect_input_device
+DEBUG Segmentation fault:: route::connect_all:: connect_output_device(0,tp.output_port_left)

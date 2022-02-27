@@ -1,7 +1,0 @@
-LED:
-	- GROUND
-	- resistor - GPIO24(bcm)
-
-BUTTON:
-	- GROUND
-	- GPIO6(bcm)
