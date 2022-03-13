@@ -53,7 +53,7 @@ static jackctl_internal_t * jackctl_server_get_internal(jackctl_server_t *server
     return NULL;
 }
 
-#if 0
+#if 1
 static jackctl_parameter_t *
 jackctl_get_parameter(
     const JSList * parameters_list,
@@ -107,7 +107,7 @@ static void print_parameters(const JSList * node_ptr)
         printf("parameter id = %c\n", jackctl_parameter_get_id(parameter));
         printf("parameter short decs = %s\n", jackctl_parameter_get_short_description(parameter));
         printf("parameter long decs = %s\n", jackctl_parameter_get_long_description(parameter));
-        print_value(jackctl_parameter_get_default_value(parameter), jackctl_parameter_get_type(parameter));
+        print_value(jackctl_parameter_get_value(parameter), jackctl_parameter_get_type(parameter));
         node_ptr = jack_slist_next(node_ptr);
     }
 }
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
 	server = jackctl_server_create(NULL, NULL);
     parameters = jackctl_server_get_parameters(server);
 
-    /*
+    ///*
     jackctl_parameter_t* param;
     union jackctl_parameter_value value;
     param = jackctl_get_parameter(parameters, "verbose");
@@ -181,7 +181,13 @@ int main(int argc, char *argv[])
         value.b = true;
         jackctl_parameter_set_value(param, &value);
     }
-    */
+    ///*
+    param = jackctl_get_parameter(parameters, "rate");
+    if (param != NULL) {
+        value.i = 8000 ;
+        jackctl_parameter_set_value(param, &value);
+    }
+    //*/
 
     printf("\n========================== \n");
     printf("List of server parameters \n");
@@ -216,7 +222,10 @@ int main(int argc, char *argv[])
     jackctl_server_open(server, jackctl_server_get_driver(server, driver_name));
     jackctl_server_start(server);
 
+    // load one internal client.
     jackctl_server_load_internal(server, jackctl_server_get_internal(server, client_name));
+
+
 
     /*
     // Switch master test
@@ -234,6 +243,19 @@ int main(int argc, char *argv[])
     jackctl_server_switch_master(server, master);
 
     */
+
+
+
+printf("\n========================== \n");
+    printf("List of drivers -Updated (Test of driver values) \n");
+    printf("========================== \n");
+
+    drivers = jackctl_server_get_drivers_list(server);
+    node_ptr = drivers;
+    while (node_ptr != NULL) {
+        print_driver((jackctl_driver_t *)node_ptr->data);
+        node_ptr = jack_slist_next(node_ptr);
+    }
 
     sigmask = jackctl_setup_signals(0);
     jackctl_wait_signals(sigmask);
