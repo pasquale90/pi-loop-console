@@ -27,6 +27,12 @@ def get_session_path(foldpath):
 def get_csv_path():
   return os.path.join(datapath,'e-gmd-v1.0.0.csv')
 
+def get_csv(csvpath):
+  csv=pd.read_csv(csvpath)
+  print(f'rows \t {len(csv.index.values)}')
+  print(f'columns \t {len(csv.columns.values)}')
+  
+  return csv
 
 def get_data_subpaths(datapath):
   folders=[]
@@ -63,3 +69,34 @@ def read_csv(csv_path):
     sessions.append(csv.loc[idx,"session"])
   return midipaths,audiopaths,bpms,durations,splits,beat_types,sessions
 
+
+
+#def print_paths_demo():
+def get_fold_path(fold):
+  filepath=os.path.join(datapath,"drummer"+str(fold))
+  return filepath
+def set_session_path(foldpath,sessionpath):
+  return os.path.join(foldpath,sessionpath)
+def get_session_path(foldpath):
+  return os.listdir(foldpath)
+def pathscan(num_folds=10):
+  audiofiles,midifiles=[],[]
+  for f in range(1,num_folds+1):
+    if (f!=2):
+      #print("\n\nFOLD /#"+str(f))
+      #print(os.listdir(paths.get_fold_path(f)))
+      foldpath=get_fold_path(f)
+      #print(f'foldpath {foldpath}')
+      session_path=get_session_path(foldpath)
+      for sespath in session_path:
+        curr_path=set_session_path(foldpath,sespath)
+        #print(curr_audiopath)
+        for file in os.listdir(curr_path):
+          #print(f'audiofile:{file},\tcurr_audiopath:{curr_path},\tsespath:{sespath}')
+          #print(audiofile)
+          ext=file.split(".")[-1]
+          if (ext=="wav"):
+            audiofiles.append(curr_path+'/'+file)
+          if (ext=="midi"):
+            midifiles.append(curr_path+'/'+file)
+  return audiofiles, midifiles
