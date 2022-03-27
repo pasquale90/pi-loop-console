@@ -5,10 +5,13 @@ import librosa
 from tqdm import tqdm
 
 from paths import *
+'''
 from data.note import Note
 from data.midifile import Midifile
 from data.audio import Audio
-
+from data.utils import *
+'''
+from data import midifile,audio,utils
 
 #scan folders
 csv_path,folders=get_data_subpaths(datapath)
@@ -18,12 +21,12 @@ csv=get_csv(csv_path)
 #print(f'columns {csv.columns.values}')
 
 for i in tqdm(range (csv.shape[0])):
-  midifile=csv['midi_filename'].loc[csv.index[i]]
-  audiofile=csv['audio_filename'].loc[csv.index[i]]
+  midi_relpath=csv['midi_filename'].loc[csv.index[i]]
+  audio_relpath=csv['audio_filename'].loc[csv.index[i]]
   bpm=csv['bpm'].loc[i]
 
-  midi=Midifile(get_abs_datapath(midifile))
-  #audio=Audio(get_abs_datapath(audiofile),8000)
+  midi=midifile.Midifile(get_abs_datapath(midi_relpath))
+  #audio=audio.Audio(get_abs_datapath(audio_relpath),8000)
   
   correct,approx,errors=0,0,0
   bpm_diff=abs(midi.get_bpm()-bpm)
@@ -39,5 +42,5 @@ for i in tqdm(range (csv.shape[0])):
 print(f'from {csv.shape[0]} midifiles, there are {correct}({correct/csv.shape[0]*100}%) correct, {approx}({approx/csv.shape[0]*100}%) approx and {errors}({errors/csv.shape[0]*100}%) errors')
 
 
-audiofiles, midifiles=pathscan(len(folders))
+audiofiles, midifiles=utils.pathscan(len(folders))
 print(len(audiofiles), len(midifiles))
