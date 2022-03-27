@@ -31,7 +31,7 @@ class Midifile:
 
         if message_type=="set_tempo":
           self.tempo=message.tempo
-          self.bpm=int(mido.tempo2bpm(self.tempo))
+          self.bpm=round(mido.tempo2bpm(self.tempo))
 
         elif message_type=="time_signature":
           self.rythm_numerator=message.numerator
