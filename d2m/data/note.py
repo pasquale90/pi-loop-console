@@ -48,6 +48,8 @@ class Note:
       return 49#"Crash_Cymbal"
     elif pitch in (51,53,59):
       return 51#"Ride_Cymbal"
+    else:
+      return 0
       
   def set_class(self,id):
     classes={"Bass":36,
@@ -58,7 +60,8 @@ class Note:
         "Open_Hi_Hat":46,
         "Closed_Hi_Hat":42,
         "Crash_Cymbal":49,
-        "Ride_Cymbal":51}
+        "Ride_Cymbal":51,
+        "other":0}
     return [k for k,v in classes.items() if v == id][0]
   '''
   def tick2second(tick, ticks_per_beat, tempo):

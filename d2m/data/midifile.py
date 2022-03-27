@@ -23,10 +23,11 @@ class Midifile:
     elapsed_ticks=0
     for mdt in range(len(self.midifile.tracks)):
       for m,message in enumerate(self.midifile.tracks[mdt]):
+        
         message_type=message.type
         elapsed_ticks+=message.time
-        
-        print(f'message {m} , time= {message.time} elapsed_ticks={elapsed_ticks}')
+        #print(message, elapsed_ticks)
+        #print(f'message {m} , time= {message.time} elapsed_ticks={elapsed_ticks}')
 
         if message_type=="set_tempo":
           self.tempo=message.tempo
@@ -54,6 +55,7 @@ class Midifile:
           #print(f'duration={self.midifile.tracks[0][m+1].time}')
           timestamp=elapsed_ticks
           timestamp_sec=self.convert_tic2sec(timestamp)
+          #print(pitch, timestamp_sec)
           if velocity!=0:
 
             temp_counter=1
