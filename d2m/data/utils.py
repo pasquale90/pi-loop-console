@@ -1,4 +1,5 @@
 import os
+from paths import get_fold_path,set_session_path,get_session_path
 
 def pathscan(num_folds=10):
   audiofiles,midifiles=[],[]
