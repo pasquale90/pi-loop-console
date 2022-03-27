@@ -28,11 +28,7 @@ def get_csv_path():
   return os.path.join(datapath,'e-gmd-v1.0.0.csv')
 
 def get_csv(csvpath):
-  csv=pd.read_csv(csvpath)
-  print(f'rows \t {len(csv.index.values)}')
-  print(f'columns \t {len(csv.columns.values)}')
-  
-  return csv
+  return pd.read_csv(csvpath)
 
 def get_data_subpaths(datapath):
   folders=[]
@@ -100,3 +96,7 @@ def pathscan(num_folds=10):
           if (ext=="midi"):
             midifiles.append(curr_path+'/'+file)
   return audiofiles, midifiles
+
+#method for returning abs path for each path readed from the csv
+def get_abs_datapath(filepath):
+  return os.path.join(datapath,filepath)
