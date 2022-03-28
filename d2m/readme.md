@@ -1,12 +1,17 @@
 # instructions for running
 <br />
 $ cd d2m <br />
-$ {follow instructions on dependencies dir to install dependencies using conda} <br />
+$ mkdir dataset
+$ cd dataset
+$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.zip
+$ unzip e-gmd-v1.0.0.zip
+$ mv e-gmd-v1.0.0 e-gmd
+$ cd e-gmd
+$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.csv
+$ cd ../..
 $ python main.py <br />
 
 # next developing steps
-
-<br />
 
 ## implemenent dataloader
 - create segments (each file multiple individual segments)
