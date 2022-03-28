@@ -1,14 +1,14 @@
 # instructions for running
 <br />
 $ cd d2m <br />
-$ mkdir dataset
-$ cd dataset
-$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.zip
-$ unzip e-gmd-v1.0.0.zip
-$ mv e-gmd-v1.0.0 e-gmd
-$ cd e-gmd
-$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.csv
-$ cd ../..
+$ mkdir dataset <br />
+$ cd dataset <br />
+$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.zip <br />
+$ unzip e-gmd-v1.0.0.zip <br />
+$ mv e-gmd-v1.0.0 e-gmd <br />
+$ cd e-gmd <br />
+$ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.csv <br />
+$ cd ../.. <br />
 $ python main.py <br />
 
 # next developing steps
