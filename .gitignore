@@ -1,4 +1,4 @@
 .gitignore
-d2m/dataset
+d2m/datasets
 .ipynb_checkpoints/
 __pycache__/

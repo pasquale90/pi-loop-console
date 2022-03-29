@@ -1,8 +1,8 @@
 # instructions for running
 <br />
 $ cd d2m <br />
-$ mkdir dataset <br />
-$ cd dataset <br />
+$ mkdir datasets <br />
+$ cd datasets <br />
 $ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.zip <br />
 $ unzip e-gmd-v1.0.0.zip <br />
 $ mv e-gmd-v1.0.0 e-gmd <br />

@@ -3,11 +3,11 @@ import pandas as pd
 
 PWD=os.getcwd()
 
-datapath=os.path.join(PWD,"dataset/e-gmd")
+datapath=os.path.join(PWD,"datasets/e-gmd")
 csvpath=os.path.join(datapath,"e-gmd-v1.0.0.csv")
 
 def sample_files():
-  samplepath=os.path.join(PWD,"dataset/samples")
+  samplepath=os.path.join(PWD,"datasets/samples")
   sample="220_rock-halftime_140_fill_4-4_6"
   #sample='1_funk_80_beat_4-4_8'
   midisample=os.path.join(samplepath,sample+".midi")
