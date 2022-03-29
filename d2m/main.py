@@ -24,7 +24,7 @@ for i in tqdm(range (csv.shape[0])):
 
   midi=midifile.Midifile(get_abs_datapath(midi_relpath))
   aud=audio.Audio(get_abs_datapath(audio_relpath),8000)
-  aud=aud.get_sample()
+  aud=aud.get_raw()
   
 
   timelength_diff=abs(midi.get_total_seconds()-len(aud)/8000)
