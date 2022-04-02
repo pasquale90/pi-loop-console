@@ -6,3 +6,4 @@ tempfiles_/
 libs/*
 piloop
 build/*
+logs/*
