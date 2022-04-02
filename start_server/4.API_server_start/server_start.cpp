@@ -118,6 +118,19 @@ static void print_driver(jackctl_driver_t * driver)
     printf("driver = %s\n", jackctl_driver_get_name(driver));
     printf("-------------------------- \n");
     print_parameters(jackctl_driver_get_parameters(driver));
+    //print_ALSA_parameters(jackctl_driver_get_parameters(driver));
+}
+
+
+static void print_ALSA_driver(jackctl_driver_t * driver)
+{
+    
+    if (strcmp(jackctl_driver_get_name(driver),"alsa")==0) {
+        printf("\n--------------------------\n");
+        printf("driver = %s\n", jackctl_driver_get_name(driver));
+        printf("-------------------------- \n");
+        print_parameters(jackctl_driver_get_parameters(driver));
+    }
 }
 
 static void print_internal(jackctl_internal_t * internal)
@@ -188,24 +201,25 @@ int main(int argc, char *argv[])
         jackctl_parameter_set_value(param, &value);
     }
     //*/
-
+    
     printf("\n========================== \n");
     printf("List of server parameters \n");
     printf("========================== \n");
 
     print_parameters(parameters);
-
+    /*
     printf("\n========================== \n");
     printf("List of drivers \n");
     printf("========================== \n");
-
+    */
     drivers = jackctl_server_get_drivers_list(server);
     node_ptr = drivers;
     while (node_ptr != NULL) {
-        print_driver((jackctl_driver_t *)node_ptr->data);
+        //print_driver((jackctl_driver_t *)node_ptr->data);
+        print_ALSA_driver((jackctl_driver_t *)node_ptr->data);
         node_ptr = jack_slist_next(node_ptr);
     }
-
+    /*
     printf("\n========================== \n");
     printf("List of internal clients \n");
     printf("========================== \n");
@@ -216,7 +230,7 @@ int main(int argc, char *argv[])
         print_internal((jackctl_internal_t *)node_ptr->data);
         node_ptr = jack_slist_next(node_ptr);
     }
-
+    */
     // No error checking in this simple example...
 
     jackctl_server_open(server, jackctl_server_get_driver(server, driver_name));
@@ -253,7 +267,8 @@ printf("\n========================== \n");
     drivers = jackctl_server_get_drivers_list(server);
     node_ptr = drivers;
     while (node_ptr != NULL) {
-        print_driver((jackctl_driver_t *)node_ptr->data);
+        //print_driver((jackctl_driver_t *)node_ptr->data);
+        print_ALSA_driver((jackctl_driver_t *)node_ptr->data);
         node_ptr = jack_slist_next(node_ptr);
     }
 

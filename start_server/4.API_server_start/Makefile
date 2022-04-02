@@ -1,5 +1,5 @@
 COMPILER :=g++
-OPTIONS :=-g -pedantic -Wall -Wextra -Werror
+OPTIONS :=-g -pedantic -Wall -Wextra #-Werror
 INCLUDE :=-Iusr/include/jack
 LIBS :=-Lusr/lib/aarch64-linux-gnu -ljack -ljacknet -ljackserver
 
