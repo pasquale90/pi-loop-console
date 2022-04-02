@@ -4,3 +4,5 @@ d2m/datasets
 __pycache__/
 tempfiles_/
 libs/*
+piloop
+build/*
