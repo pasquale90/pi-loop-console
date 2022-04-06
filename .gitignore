@@ -3,3 +3,7 @@ d2m/datasets
 .ipynb_checkpoints/
 __pycache__/
 tempfiles_/
+libs/*
+piloop
+build/*
+logs/*
