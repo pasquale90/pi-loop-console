@@ -1,7 +1,9 @@
 
 class Segment:
-    def __init__(self,denominator):
+    def __init__(self,audiotrack,miditrack):
         self.musmeter=denominator
+        #self.audiotrack=audiotrack
+        #self.miditrack=miditrack
 
     def audio2frames(self):
         frames = []
