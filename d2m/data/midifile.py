@@ -7,7 +7,7 @@ class Midifile:
     self.PPQ=self.midifile.ticks_per_beat
     self.notes=[]
     
-    self.parse_midi_messages()
+    self._parse_midi_messages()
     
 
     #self.total_ticks=self.set_length_ticks()
@@ -18,7 +18,7 @@ class Midifile:
     #self.clocks_per_click=0
     #self.notated_32nd_notes_per_beat=0
   
-  def parse_midi_messages(self):
+  def _parse_midi_messages(self):
 
     elapsed_ticks=0
     for mdt in range(len(self.midifile.tracks)):
@@ -72,6 +72,8 @@ class Midifile:
 
   def get_midifile(self):
     return self.midifile
+  def get_ppq(self):
+    return self.PPQ
   def get_tempo(self):
     return self.tempo
   def get_bpm(self):
