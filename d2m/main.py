@@ -3,6 +3,7 @@ import mido #import MidiFile, tempo2bpm, tick2second
 import pandas as pd
 import librosa
 from tqdm import tqdm
+import math 
 
 from paths import *
 from data import midifile,audio,utils,waveform
@@ -26,7 +27,7 @@ for i in tqdm(range (csv.shape[0])):
 
   midi_tempo=midi.get_tempo()
   midi_bpm=midi.get_bpm()
-  midi_rythm=midi.get_rythm_numerator()
+  midi_numer=midi.get_rythm_numerator()
   midi_denom=midi.get_rythm_denominator()
   midi_note0=midi.get_note(0)
   midi_numnotes=midi.get_num_notes()
@@ -36,9 +37,10 @@ for i in tqdm(range (csv.shape[0])):
   midi_convert_tick_to_second=midi.convert_tic2sec(512)
   midi_ppq=midi.get_ppq()
   
+  print(f"#### midi_relpath #### \n{midi_relpath}")
   print(f"midi_tempo {midi_tempo}")
   print(f"midi_bpm {midi_bpm}")
-  print(f"midi_rythm {midi_rythm}")
+  print(f"midi_numer {midi_numer}")
   print(f"midi_denom {midi_denom}")
   print(f"midi_note0 {midi_note0}")
   print(f"midi_numnotes {midi_numnotes}")
@@ -47,6 +49,7 @@ for i in tqdm(range (csv.shape[0])):
   print(f"midi_mspertick {midi_mspertick}")
   print(f"midi_convert_tick_to_second {midi_convert_tick_to_second}")
   print(f"midi_ppq {midi_ppq}")
+  
   
   audio_sr=aud.get_sampling_rate()
   audio_ismono=aud.is_mono()
@@ -65,6 +68,32 @@ for i in tqdm(range (csv.shape[0])):
   wf = waveform.Waveform(get_abs_datapath(audio_relpath))
   #wf.save('/data/pl/pi-loop-console/d2m/tempfiles_/waveforms/',str(i)+'.png')
   """
+
+  #working on segments --> pass them on segment class
+  quarter_length_secs=midi_ppq*midi_mspertick*midi_numer/1000
+  print(f"quarter_length_secs {quarter_length_secs}")
+  #we need 4 segments
+  segment_length_secs=4*quarter_length_secs
+  print(f"segment_length_secs {segment_length_secs}")
+  # how many segments can be produced by each sample
+  avail_seconds=min(midi_totalseconds,audio_duration)
+  print(f"avail_seconds {avail_seconds}")
+  avail_segments=math.floor(avail_seconds/segment_length_secs)
+  print(f"avail_segments {avail_segments}")
+  #crop audio
+  ## calc audio samples
+  audiosamples_per_segment=int(segment_length_secs*audio_sr)
+  print(f"audiosamples_per_segment {audiosamples_per_segment}")
+  ## create audio segments
+  for seg_step in range(avail_segments):
+    ### audio samples
+    from_audiosample=seg_step*audiosamples_per_segment
+    upto_audiosample=(seg_step+1)*audiosamples_per_segment
+    print(f"from_audiosample {from_audiosample}")
+    print(f"upto_audiosample {upto_audiosample}")
+    segment=raw[from_audiosample:upto_audiosample]
+    ### midi samples (pending...)
+
 
 
   if i>2:
