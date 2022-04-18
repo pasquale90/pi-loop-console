@@ -15,4 +15,3 @@ class Audio:
         return self.raw
     def get_duration_sec(self):
         return len(self.raw)/self.sampling_rate
-

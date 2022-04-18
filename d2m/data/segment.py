@@ -1,10 +1,10 @@
 
 class Segment:
     def __init__(self,audiotrack,miditrack):
-        self.musmeter=denominator
+        #self.musmeter=denominator
         #self.audiotrack=audiotrack
         #self.miditrack=miditrack
-
+        
     def audio2frames(self):
         frames = []
         #get windows out of the raw waveform
