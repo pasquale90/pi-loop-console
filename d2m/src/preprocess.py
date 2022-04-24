@@ -10,7 +10,7 @@ import math
 def create_segments(csv,folders): 
   audiosegments=[]
   midilabels=[]
-  ml_notes,,ml_durations,ml_velocities=[],[],[]
+  ml_notes,ml_durations,ml_velocities=[],[],[]
   for i in tqdm(range (csv.shape[0])):
     midi_relpath=csv['midi_filename'].loc[csv.index[i]]
     audio_relpath=csv['audio_filename'].loc[csv.index[i]]
@@ -102,7 +102,7 @@ def create_segments(csv,folders):
         if segment_length_secs*seg_step<timestamp and segment_length_secs*(seg_step+1)>timestamp:
           print(f"midinote {j} has timestamp {timestamp}")
           midilabels.append(midi_note)
-          print(f'')
+          print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
           break
 
 
