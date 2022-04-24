@@ -8,7 +8,7 @@ $ unzip e-gmd-v1.0.0.zip <br />
 $ mv e-gmd-v1.0.0 e-gmd <br />
 $ cd e-gmd <br />
 $ wget https://storage.googleapis.com/magentadata/datasets/e-gmd/v1.0.0/e-gmd-v1.0.0.csv <br />
-$ cd ../.. <br />
+$ cd ../../src  OR  $ cd ../../ <br />
 $ python main.py <br />
 
 # next developing steps
