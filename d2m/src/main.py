@@ -7,7 +7,7 @@ import math
 
 from paths import get_data_subpaths,get_csv,datapath
 #from data import midifile,audio,utils,waveform,segment
-import segment
+import preprocess
   
 if __name__=="__main__":
 
@@ -18,4 +18,4 @@ if __name__=="__main__":
   print(f'rows {csv.index.values}')
   print(f'columns {csv.columns.values}')
   
-  segment.create_segments(csv,folders)
+  preprocess.create_segments(csv,folders)
