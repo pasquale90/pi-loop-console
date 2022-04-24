@@ -5,18 +5,12 @@ import mido #import MidiFile, tempo2bpm, tick2second
 import pandas as pd
 import librosa
 from tqdm import tqdm
-import math 
-
-def audio2frames(self):
-  frames = []
-  #get windows out of the raw waveform
-  for count_frames,(start,end) in enumerate(_windows(raw,window_size,hop_length)):
-    if(len(raw[start:end]) == window_size):
-      #print(start,end)
-      frame = raw[start:end]#rectangular window
+import math
 
 def create_segments(csv,folders): 
-
+  audiosegments=[]
+  midilabels=[]
+  ml_notes,,ml_durations,ml_velocities=[],[],[]
   for i in tqdm(range (csv.shape[0])):
     midi_relpath=csv['midi_filename'].loc[csv.index[i]]
     audio_relpath=csv['audio_filename'].loc[csv.index[i]]
@@ -72,10 +66,11 @@ def create_segments(csv,folders):
     #working on segments --> pass them on segment class
     quarter_length_secs=midi_ppq*midi_mspertick*midi_numer/1000
     print(f"quarter_length_secs {quarter_length_secs}")
-    #we need 4 segments
+    #we need 4 meters(which are 4 quarters) to create a segment
     segment_length_secs=4*quarter_length_secs
     print(f"segment_length_secs {segment_length_secs}")
-    # how many segments can be produced by each sample
+    
+    # how many segments can be produced by each file
     avail_seconds=min(midi_totalseconds,audio_duration)
     print(f"avail_seconds {avail_seconds}")
     avail_segments=math.floor(avail_seconds/segment_length_secs)
@@ -84,9 +79,12 @@ def create_segments(csv,folders):
     ## calc audio samples
     audiosamples_per_segment=int(segment_length_secs*audio_sr)
     print(f"audiosamples_per_segment {audiosamples_per_segment}")
-    ## create audio segments
+
+    ## create segments
     for seg_step in range(avail_segments):
-    
+      
+      print(f'Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)}')
+
       ### audio samples
       from_audiosample=seg_step*audiosamples_per_segment
       upto_audiosample=(seg_step+1)*audiosamples_per_segment
@@ -94,12 +92,21 @@ def create_segments(csv,folders):
       print(f"upto_audiosample {upto_audiosample}")
       segment=raw[from_audiosample:upto_audiosample]
       #break in windows -- for feeding the model
-    
+      audiosegments.append(segment)
+
       ### midi samples (pending...)
-    
+      print("MIDIFILEEEEEEEEEEEEEEEEEEEEEEEE")
+      for j in range(midi_numnotes):
+        midi_note=midi.get_note(j)
+        timestamp=midi_note.get_timestamp_sec()
+        if segment_length_secs*seg_step<timestamp and segment_length_secs*(seg_step+1)>timestamp:
+          print(f"midinote {j} has timestamp {timestamp}")
+          midilabels.append(midi_note)
+          print(f'')
+          break
 
 
-    if i>2:
+    if i>0:
       break
 
   audiofiles, midifiles=utils.pathscan(len(folders))
@@ -107,6 +114,16 @@ def create_segments(csv,folders):
   #return segments,labels
 
 '''
+
+def audio2frames(self):
+  frames = []
+  #get windows out of the raw waveform
+  for count_frames,(start,end) in enumerate(_windows(raw,window_size,hop_length)):
+    if(len(raw[start:end]) == window_size):
+      #print(start,end)
+      frame = raw[start:end]#rectangular window
+
+
 #define analysis parameters
 def analysis_parameters():
     sampling_rate=16000  #for instance: if mode 16, sr = 16kHz
