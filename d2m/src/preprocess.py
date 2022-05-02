@@ -10,6 +10,8 @@ import math
 def create_segments(csv,folders): 
   audiosegments=[]
   midilabels=[]
+  temp_timestamps=[]
+  
   ml_notes,ml_durations,ml_velocities=[],[],[]
   for i in tqdm(range (csv.shape[0])):
     midi_relpath=csv['midi_filename'].loc[csv.index[i]]
@@ -106,7 +108,8 @@ def create_segments(csv,folders):
           
           print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
           
-          midilabels.append([timestamp,midi_note.get_label(),midi_note.get_duration_sec(),midi_note.get_velocity()])
+          #midilabels.append([timestamp,midi_note.get_label(),midi_note.get_duration_sec(),midi_note.get_velocity()])
+          temp_timestamps.append(timestamp)
           break
 
 
@@ -115,8 +118,10 @@ def create_segments(csv,folders):
 
   #audiofiles, midifiles=utils.pathscan(len(folders))
   #print(len(audiofiles), len(midifiles))
-  return audiosegments, midilabels
-
+  
+  
+  #return audiosegments, midilabels
+  return audiosegments, temp_timestamps #temporary
 
 '''
 

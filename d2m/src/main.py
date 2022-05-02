@@ -7,6 +7,7 @@ import math
 
 from paths import get_data_subpaths,get_csv,datapath
 #from data import midifile,audio,utils,waveform,segment
+import preprocess
 import data #preprocess
   
 if __name__=="__main__":
@@ -18,9 +19,17 @@ if __name__=="__main__":
   print(f'rows {csv.index.values}')
   print(f'columns {csv.columns.values}')
   
+  
+  # create segments - timestamp , note-label , duration , velocity 
+  data, labels = preprocess.create_segments(csv,folders)
+    
   # split data
   # ...
+  train_data, train_labels = data,labels
+  valid_data = [],[]
   
-  #
-  train_data = data.Data(csv,folders)
-  valid_data = data.Data(csv,folders)
+  #data.Data(train_data,labels)
+  #valid_data = data.Data(csv,folders)
+  
+  
+  
