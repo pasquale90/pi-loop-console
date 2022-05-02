@@ -3,13 +3,23 @@ import numpy as np
 from torch.utils.data import Dataset
 #from tqdm import tqdm_notebook as tqdm
 
-import segment
-import augmentation
+import preprocess
+#import augmentation
 
 
 class Data(Dataset): 
-  def __init__(self, features,labels,folders,split,transforms):
+  def __init__(self, csv,folders): #features,labels,folders,split,transforms):
+    
+    # create segments - timestamp , note-label , duration , velocity 
+    data, labels = preprocess.create_segments(csv,folders)
+    
+    print(f'data[0] : {data[0]}')
+    print(f'labels[0]: {labels[0]}') 
+    # output --> labels[0]: [0.0036231916666666663, 'Crash_Cymbal', 0.10144936666666665, 60]
+    # make this as follows: labels[0]: [ {model quarters according to quantization}, 'Crash_Cymbal'-->Class_id-integer, 0.10144936666666665-->duration in what units?, 60]
 
+    
+    """
     print('Loading_features......')
 
     #features, labels, folders
@@ -22,7 +32,7 @@ class Data(Dataset):
  
     #image transforms
     self.data = augmentation.vision_augmentations(self.data,transforms)
-    
+    """
   def __len__(self):
     return len(self.data)
   def __getitem__(self, idx):#load data on demand

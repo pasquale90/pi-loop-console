@@ -101,17 +101,22 @@ def create_segments(csv,folders):
         timestamp=midi_note.get_timestamp_sec()
         if segment_length_secs*seg_step<timestamp and segment_length_secs*(seg_step+1)>timestamp:
           print(f"midinote {j} has timestamp {timestamp}")
-          midilabels.append(midi_note)
+          
+          
+          
           print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
+          
+          midilabels.append([timestamp,midi_note.get_label(),midi_note.get_duration_sec(),midi_note.get_velocity()])
           break
 
 
     if i>0:
       break
 
-  audiofiles, midifiles=utils.pathscan(len(folders))
-  print(len(audiofiles), len(midifiles))
-  #return segments,labels
+  #audiofiles, midifiles=utils.pathscan(len(folders))
+  #print(len(audiofiles), len(midifiles))
+  return audiosegments, midilabels
+
 
 '''
 
@@ -149,8 +154,6 @@ for count_frames,(start,end) in enumerate(_windows(raw,window_size,hop_length)):
 if(len(raw[start:end]) == window_size):
     print(start,end)
     frame = raw[start:end]#rectangular window
-            
-
 
 
 def preprocess_data(audio_path, folds, files, mode):
