@@ -14,18 +14,24 @@ class Data(Dataset):
 
     print('Loading_features......')    
     
+    self.data=np.array(data)
+    self.labels=np.array(labels)
+        
     
+    print(f'data.shape: {self.data.shape}') 
+    print(f'labels.shape: {self.labels.shape}') 
     
-    print(f'data.shape: {data.shape}') 
-    print(f'labels.shape: {labels.shape}') 
-    
-    
-    """
     #normalize
-    self.data = np.asarray(self.data, dtype=np.float32)/255.0
+    print(f'Before Normalization : min {np.min(self.data)}, max {np.max(self.data)}')
+    self.data = (2*(self.data-- np.min(self.data))/(np.max(self.data) - np.min(self.data)))-1
+    print(f'After Normalization : min {np.min(self.data)}, max {np.max(self.data)}')
+    
+    ARE THESE ALREADY NORMALIZED?
+    """
+    
 
-    #image transforms
-    self.data = augmentation.vision_augmentations(self.data,transforms)
+    #audio transforms
+    self.data = augmentation.audio_augmentations(self.data,transforms)
     """
     
     
