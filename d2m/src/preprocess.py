@@ -7,7 +7,7 @@ import librosa
 from tqdm import tqdm
 import math
 
-def create_segments(csv,folders): 
+def create_segments(csv,folders, temp_print=False): 
   audiosegments=[]
   midilabels=[]
   temp_timestamps=[]
@@ -32,27 +32,30 @@ def create_segments(csv,folders):
     midi_mspertick=midi.get_ms_per_tick()
     midi_convert_tick_to_second=midi.convert_tic2sec(512)
     midi_ppq=midi.get_ppq()
-  
-    print(f"#### midi_relpath #### \n{midi_relpath}")
-    print(f"midi_tempo {midi_tempo}")
-    print(f"midi_bpm {midi_bpm}")
-    print(f"midi_numer {midi_numer}")
-    print(f"midi_denom {midi_denom}")
-    print(f"midi_note0 {midi_note0}")
-    print(f"midi_numnotes {midi_numnotes}")
-    print(f"midi_totalticks {midi_totalticks}")
-    print(f"midi_totalseconds {midi_totalseconds}")
-    print(f"midi_mspertick {midi_mspertick}")
-    print(f"midi_convert_tick_to_second {midi_convert_tick_to_second}")
-    print(f"midi_ppq {midi_ppq}")
+    
+    if temp_print:
+      print(f"#### midi_relpath #### \n{midi_relpath}")
+      print(f"midi_tempo {midi_tempo}")
+      print(f"midi_bpm {midi_bpm}")
+      print(f"midi_numer {midi_numer}")
+      print(f"midi_denom {midi_denom}")
+      print(f"midi_note0 {midi_note0}")
+      print(f"midi_numnotes {midi_numnotes}")
+      print(f"midi_totalticks {midi_totalticks}")
+      print(f"midi_totalseconds {midi_totalseconds}")
+      print(f"midi_mspertick {midi_mspertick}")
+      print(f"midi_convert_tick_to_second {midi_convert_tick_to_second}")
+      print(f"midi_ppq {midi_ppq}")
   
   
     audio_sr=aud.get_sampling_rate()
     audio_ismono=aud.is_mono()
     audio_duration=aud.get_duration_sec()
-    print(f"audio_sr {audio_sr}")
-    print(f"audio_ismono {audio_ismono}")
-    print(f"audio_duration {audio_duration}")
+    
+    if temp_print:
+      print(f"audio_sr {audio_sr}")
+      print(f"audio_ismono {audio_ismono}")
+      print(f"audio_duration {audio_duration}")
 
 
     """ temp
@@ -67,53 +70,60 @@ def create_segments(csv,folders):
 
     #working on segments --> pass them on segment class
     quarter_length_secs=midi_ppq*midi_mspertick*midi_numer/1000
-    print(f"quarter_length_secs {quarter_length_secs}")
+    if temp_print:
+      print(f"quarter_length_secs {quarter_length_secs}")
     #we need 4 meters(which are 4 quarters) to create a segment
     segment_length_secs=4*quarter_length_secs
-    print(f"segment_length_secs {segment_length_secs}")
+    if temp_print:
+      print(f"segment_length_secs {segment_length_secs}")
     
     # how many segments can be produced by each file
     avail_seconds=min(midi_totalseconds,audio_duration)
-    print(f"avail_seconds {avail_seconds}")
+    if temp_print:
+      print(f"avail_seconds {avail_seconds}")
     avail_segments=math.floor(avail_seconds/segment_length_secs)
-    print(f"avail_segments {avail_segments}")
+    if temp_print:
+      print(f"avail_segments {avail_segments}")
     #crop audio
     ## calc audio samples
     audiosamples_per_segment=int(segment_length_secs*audio_sr)
-    print(f"audiosamples_per_segment {audiosamples_per_segment}")
+    if temp_print:
+      print(f"audiosamples_per_segment {audiosamples_per_segment}")
 
     ## create segments
     for seg_step in range(avail_segments):
       
-      print(f'Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)}')
+      if temp_print:
+        print(f'Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)}')
 
       ### audio samples
       from_audiosample=seg_step*audiosamples_per_segment
       upto_audiosample=(seg_step+1)*audiosamples_per_segment
-      print(f"from_audiosample {from_audiosample}")
-      print(f"upto_audiosample {upto_audiosample}")
+      if temp_print:
+        print(f"from_audiosample {from_audiosample}")
+        print(f"upto_audiosample {upto_audiosample}")
       segment=raw[from_audiosample:upto_audiosample]
       #break in windows -- for feeding the model
       audiosegments.append(segment)
 
       ### midi samples (pending...)
-      print("MIDIFILEEEEEEEEEEEEEEEEEEEEEEEE")
+      if temp_print:
+        print("MIDIFILEEEEEEEEEEEEEEEEEEEEEEEE")
       for j in range(midi_numnotes):
         midi_note=midi.get_note(j)
         timestamp=midi_note.get_timestamp_sec()
         if segment_length_secs*seg_step<timestamp and segment_length_secs*(seg_step+1)>timestamp:
-          print(f"midinote {j} has timestamp {timestamp}")
-          
-          
-          
-          print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
+          if temp_print:
+            print(f"midinote {j} has timestamp {timestamp}")
+      
+            print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
           
           #midilabels.append([timestamp,midi_note.get_label(),midi_note.get_duration_sec(),midi_note.get_velocity()])
           temp_timestamps.append(timestamp)
           break
 
 
-    if i>0:
+    if i>10:
       break
 
   #audiofiles, midifiles=utils.pathscan(len(folders))
