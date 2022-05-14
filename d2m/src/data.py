@@ -14,19 +14,20 @@ class Data(Dataset):
 
     print('Loading_features......')    
     
-    self.data=np.array(data)
-    self.labels=np.array(labels)
-        
-    
-    print(f'data.shape: {self.data.shape}') 
-    print(f'labels.shape: {self.labels.shape}') 
-    
+    #self.data=np.array(data)
+    #self.labels=np.array(labels)
+
+    #print(f'data.shape: {self.data.shape}') 
+    #print(f'labels.shape: {self.labels.shape}') 
+    print("##########################################################################################################################################")
     #normalize
-    print(f'Before Normalization : min {np.min(self.data)}, max {np.max(self.data)}')
-    self.data = (2*(self.data-- np.min(self.data))/(np.max(self.data) - np.min(self.data)))-1
-    print(f'After Normalization : min {np.min(self.data)}, max {np.max(self.data)}')
-    
-    ARE THESE ALREADY NORMALIZED?
+    for i in range(len(self.data)):
+      print(type(self.data[i]),len(self.data[i]))
+      #print(f'Before Normalization : min {np.min(np.array(self.data))}, max {np.max(self.data)}')
+      #self.data = (2*(self.data-- np.min(self.data[i]))/(np.max(self.data[i]) - np.min(self.data[i])))-1
+      #print(f'After Normalization : min {np.min(self.data[i])}, max {np.max(self.data[i])}')
+    print("##########################################################################################################################################")
+    #ARE THESE ALREADY NORMALIZED?
     """
     
 
@@ -41,8 +42,8 @@ class Data(Dataset):
     data = Variable(torch.Tensor(data))
     labels = Variable(torch.Tensor(labels))
     data =  torch.reshape(data,(data.shape[0], 1, data.shape[1]))
-    print(f'data[0] : {data[0]}')
-    print(f'labels[0]: {labels[0]}') 
+    print(f'data[1] : {data[1]}')
+    print(f'labels[1]: {labels[1]}') 
     
     # output --> labels[0]: [0.0036231916666666663, 'Crash_Cymbal', 0.10144936666666665, 60]
     # make this as follows: labels[0]: [ {model quarters according to quantization}, 'Crash_Cymbal'-->Class_id-integer, 0.10144936666666665-->duration in what units?, 60]

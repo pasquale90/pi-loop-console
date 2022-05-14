@@ -94,3 +94,7 @@ class Midifile:
     return (60000 / (self.bpm * self.PPQ))
   def convert_tic2sec(self,tick):
     return mido.tick2second(tick,self.PPQ,self.tempo)
+  
+  def convert_sec2tick(self,second):
+    return mido.second2tick(second, self.PPQ, self.tempo)
+  

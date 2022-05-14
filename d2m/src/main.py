@@ -21,8 +21,13 @@ if __name__=="__main__":
   
   
   # create segments - timestamp , note-label , duration , velocity 
-  audiolist, labels = preprocess.create_segments(csv,folders)
-    
+  audiolist, labels, velocities = preprocess.create_segments(csv,True)
+  
+  
+  print(len(audiolist), len(labels), len(velocities))
+  print(audiolist[0], labels[0], velocities[0])
+  
+  """ 
   # split data
   # ...
   train_data, train_labels = audiolist,labels
@@ -30,6 +35,6 @@ if __name__=="__main__":
   
   data.Data(train_data,labels)
   #valid_data = data.Data(csv,folders)
-  
+  """
   
   
