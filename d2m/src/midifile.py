@@ -5,6 +5,7 @@ class Midifile:
   def __init__(self,filepath):
     self.midifile=mido.MidiFile(filepath)
     self.PPQ=self.midifile.ticks_per_beat
+    
     self.notes=[]
     
     self._parse_midi_messages()
@@ -24,6 +25,12 @@ class Midifile:
     for mdt in range(len(self.midifile.tracks)):
       for m,message in enumerate(self.midifile.tracks[mdt]):
         
+        
+        print(message)
+        if m >5:
+          #get_quarter_length_secs
+          #get_quarter_length_ticks
+          break
         message_type=message.type
         elapsed_ticks+=message.time
         #print(message, elapsed_ticks)
@@ -38,7 +45,12 @@ class Midifile:
           self.rythm_denominator=message.denominator
           self.clocks_per_click=message.clocks_per_click
           self.notated_32nd_notes_per_beat=message.notated_32nd_notes_per_beat
-        
+          self._32nd_in_ticks=self.PPQ/(32/self.notated_32nd_notes_per_beat)
+          self.quarter_length_ticks=self._32nd_in_ticks*4 # 4 is a constant value. 4 1/16 equals to 1/4
+          #25==480/(32/8)
+          
+          #6.25==100/(32/8)
+
         elif message_type=="key_signature":
           self.key=message.key
       
@@ -65,18 +77,22 @@ class Midifile:
               if msg.type=="note_on" and msg.note==pitch and msg.velocity==0:
                 new_note=Note(channel,pitch,velocity,timestamp,timestamp_sec,duration,self.convert_tic2sec(duration))
                 self.notes.append(new_note)
-                break
+                #break
         else:
           #print(f"Unknown message {message}")
           pass
+    print(self.PPQ)
 
   def get_midifile(self):
     return self.midifile
   def get_ppq(self):
+    print("self.PPQ ",self.PPQ)
     return self.PPQ
   def get_tempo(self):
+    print("self.tempo ",self.tempo)
     return self.tempo
   def get_bpm(self):
+    print("self.bpm ",self.bpm)
     return self.bpm
   def get_rythm_numerator(self):
     return self.rythm_numerator
@@ -87,14 +103,21 @@ class Midifile:
   def get_num_notes(self):
     return len(self.notes)
   def get_total_ticks(self):
+    print("self.total_ticks ",self.total_ticks)
     return self.total_ticks
   def get_total_seconds(self):
     return mido.tick2second(self.total_ticks,self.PPQ,self.tempo)
+  def get_quarter_length_secs(self):
+    return self.convert_tic2sec(self.quarter_length_ticks)
+  def get_quarter_length_ticks(self):
+    return int(self.quarter_length_ticks)
+  def get_whole_measure_length_secs(self):
+    return self.quarter_length_ticks*self. get_ms_per_tick()*self.rythm_numerator/1000
+  def get_whole_measure_length_ticks(self):
+    return int(self.quarter_length_ticks*self.rythm_numerator)
   def get_ms_per_tick(self):
     return (60000 / (self.bpm * self.PPQ))
   def convert_tic2sec(self,tick):
     return mido.tick2second(tick,self.PPQ,self.tempo)
-  
   def convert_sec2tick(self,second):
     return mido.second2tick(second, self.PPQ, self.tempo)
-  

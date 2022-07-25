@@ -7,7 +7,6 @@ class Audio:
         self.mono=mono
         self.raw, self.sampling_rate =librosa.load(audiopath, sr=sampling_rate, mono=self.mono)#, dtype=np.float24
 
-
     def get_sampling_rate(self):
         return self.sampling_rate
     def is_mono(self):
