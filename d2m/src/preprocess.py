@@ -33,116 +33,6 @@ def create_segments(csvpath,audio_sr=2000,numMeasures=4):
     Segment(miditrack,audiotrack,numMeasures)
     
     break
-    """
-    ## SKILL POINT
-    midi=miditrack
-    
-    midi_tempo=midi.get_tempo()
-    midi_bpm=midi.get_bpm()
-    midi_numer=midi.get_rythm_numerator()
-    midi_denom=midi.get_rythm_denominator()
-    midi_note0=midi.get_note(0)
-    midi_numnotes=midi.get_num_notes()
-    midi_totalticks=midi.get_total_ticks()
-    midi_totalseconds=midi.get_total_seconds()
-    midi_mspertick=midi.get_ms_per_tick()
-    
-    print("quarter length seconds ",midi.get_quarter_length_secs())
-    print("quarter lenth ticks ",midi.get_quarter_length_ticks())
-    print("convert_tic2sec(480)*midi.get_rythm_numerator() ",midi.convert_tic2sec(480)*midi.get_rythm_numerator())
-
-    print("get_whole_measure_length_ticks ",midi.get_whole_measure_length_ticks())
-    print("get_whole_measure_length_secs ",midi.get_whole_measure_length_secs())
-    
-
-    midi_convert_tick_to_second=midi.convert_tic2sec(512)
-    midi_ppq=midi.get_ppq()
-    
-    # read audio
-    audio_sr=aud.get_sampling_rate()
-    audio_ismono=aud.is_mono()
-    audio_duration=aud.get_duration_sec()
-    
-    if temp_print:
-      print(f"audio_sr {audio_sr}")
-      print(f"audio_ismono {audio_ismono}")
-      print(f"audio_duration {audio_duration}")
- 
-  
-    #working on segments --> pass them on segment class
-    quarter_length_secs=midi_ppq*midi_mspertick*midi_numer/1000
-    if temp_print:
-      print(f"quarter_length_secs {quarter_length_secs}")
-    #we need 4 meters(which are 4 quarters) to create a segment
-    segment_length_secs=4*quarter_length_secs
-    if temp_print:
-      print(f"segment_length_secs {segment_length_secs}")
-    
-    # how many segments can be produced by each file
-    avail_seconds=min(midi_totalseconds,audio_duration)
-    if temp_print:
-      print(f"avail_seconds {avail_seconds}")
-    avail_segments=math.floor(avail_seconds/segment_length_secs)
-    if temp_print:
-      print(f"avail_segments {avail_segments}")
-    #crop audio
-    ## calc audio samples
-    audiosamples_per_segment=int(segment_length_secs*audio_sr)
-    if temp_print:
-      print(f"audiosamples_per_segment {audiosamples_per_segment}")
-
-    ## create segments
-    for seg_step in range(avail_segments):
-      midi_segment_length=midi.convert_sec2tick(segment_length_secs)
-      midisegment=np.zeros(int(midi_segment_length), dtype=int)
-      
-      if temp_print:
-        print(f'Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)}')
-
-      ### audio samples
-      from_audiosample=seg_step*audiosamples_per_segment
-      upto_audiosample=(seg_step+1)*audiosamples_per_segment
-      if temp_print:
-        print(f"from_audiosample {from_audiosample}")
-        print(f"upto_audiosample {upto_audiosample}")
-      segment=raw[from_audiosample:upto_audiosample]
-      #break in windows -- for feeding the model
-      audiosegments.append(segment)
-
-      ### midi samples (pending...)
-      if temp_print:
-        print("MIDIFILEEEEEEEEEEEEEEEEEEEEEEEE")
-        
-      temp_midivelocities=[]
-      for j in range(midi_numnotes):
-        midi_note=midi.get_note(j)
-        timestamp_secs=midi_note.get_timestamp_sec()
-        
-        
-        if segment_length_secs*seg_step<timestamp_secs and segment_length_secs*(seg_step+1)>timestamp_secs:
-          if temp_print:
-            print(f"midinote {j} has timestamp {timestamp_secs}")
-      
-            print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
-          
-          
-          note=midi.get_note(j)
-          pitch, timestamp, duration, velocity = note.get_pitch(), note.get_timestamp(), note.get_duration(), note.get_velocity()
-          #print(idx, pitch, timestamp, duration, velocity )
-          
-          #post process timestamps to align them to a new value according to the segment's timestamp
-          timestamp=timestamp-midi_segment_length*seg_step
-          
-          # create an encoded array of type : i.e. assuming duration 3 --> [0 0 0 0 0 pitch pitch pitch 0 0 0 0]
-          midisegment[timestamp:timestamp+duration]=pitch
-          temp_midivelocities.append(velocity)
-      #midilabels.append([timestamp,midi_note.get_label(),midi_note.get_duration_sec(),midi_note.get_velocity()])
-      midisegments.append(midisegment)
-      midi_velocities.append(temp_midivelocities)
-    
-    if i>10:
-      break
-    """
     
   audiosegments,midisegments,midi_velocities=[],[],[]
   return audiosegments,midisegments,midi_velocities
@@ -168,16 +58,20 @@ class Segment:
     avail_segments=math.floor(avail_seconds/segment_length_secs)
     print(f"avail_segments {avail_segments}")
     return avail_segments  
-
+  def get_PPQuantizationUnit(self,PPQ,quantization):
+    return int(PPQ/(quantization/4))
+  def quantize(self,value,PPQU):
+    return value//PPQU
   def temp_create_segment(self,miditrack,audiotrack,measures_per_segment,quantization): 
 
     # read audio
     audio_sr=audiotrack.get_sampling_rate()
     audio_duration=audiotrack.get_duration_sec()
     raw=audiotrack.get_raw()
-    print(f"audio_sr {audio_sr}")
-    print(f"audio_duration {audio_duration}")
+    # print(f"audio_sr {audio_sr}")
+    # print(f"audio_duration {audio_duration}")
     
+    """
     #read midi
     midi_tempo=miditrack.get_tempo()
     midi_bpm=miditrack.get_bpm()
@@ -197,6 +91,7 @@ class Segment:
     print("convert_tic2sec(480)*midi.get_rythm_numerator() ",miditrack.convert_tic2sec(480)*miditrack.get_rythm_numerator())
     print("get_whole_measure_length_ticks ",miditrack.get_whole_measure_length_ticks())
     print("get_whole_measure_length_secs ",miditrack.get_whole_measure_length_secs())
+    """
 
     # calculate how many seconds per segment
     segment_length_secs=self.get_segment_length_secs(measures_per_segment,miditrack)
@@ -214,8 +109,9 @@ class Segment:
       #midi_segment_length=midi.convert_sec2tick(segment_length_secs)
       #midisegment=np.zeros(int(midi_segment_length), dtype=int)
       
-      print(f'SegStep {seg_step}.Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)}')
-
+      # print(f'SegStep {seg_step}.Appending samples from {segment_length_secs*seg_step} : {segment_length_secs*(seg_step+1)} secs')
+      print(f'SegStep {seg_step}.Appending samples from {miditrack.convert_sec2tick(segment_length_secs*seg_step)} : {miditrack.convert_sec2tick(segment_length_secs*(seg_step+1))} ticks')
+      # print("\tppq = ",miditrack.get_ppq()," TOTAL ticks for 2 measures = ",miditrack.get_rythm_numerator()*miditrack.get_ppq()*measures_per_segment)
       ### audio samples
       from_audiosample=seg_step*audiosamples_per_segment
       upto_audiosample=(seg_step+1)*audiosamples_per_segment
@@ -230,23 +126,55 @@ class Segment:
       temp_midivelocities=[]
 
       midisegment=np.zeros(measures_per_segment*quantization)
-      for j in range(midi_numnotes):
+      for j in range(miditrack.get_num_notes()):
         midi_note=miditrack.get_note(j)
 
         timestamp_secs=midi_note.get_timestamp_sec()
-  """        
         
-        if segment_length_secs*seg_step<timestamp_secs and segment_length_secs*(seg_step+1)>timestamp_secs:
-          if temp_print:
-            print(f"midinote {j} has timestamp {timestamp_secs}")
-      
-            print(f'note-label {midi_note.get_label()}, duration  {midi_note.get_duration_sec()}, velocity {midi_note.get_velocity()}')
+        timestamp=midi_note.get_timestamp()
+        if timestamp>=miditrack.convert_sec2tick(segment_length_secs*seg_step) and \
+           timestamp<miditrack.convert_sec2tick(segment_length_secs*(seg_step+1)):
+
+        # if segment_length_secs*seg_step<timestamp_secs and segment_length_secs*(seg_step+1)>timestamp_secs:
+        #   print(f'sec to tick {miditrack.convert_sec2tick(segment_length_secs*seg_step)} to {miditrack.convert_sec2tick(segment_length_secs*(seg_step+1))}, timestamp_secs to ticks {miditrack.convert_sec2tick(timestamp_secs)}')
+        #   print(f'sec {segment_length_secs*seg_step} to {segment_length_secs*(seg_step+1)}, timestamp_secs {timestamp_secs}')
+          pitch, timestamp, duration, velocity = midi_note.get_pitch(), midi_note.get_timestamp(), midi_note.get_duration(), midi_note.get_velocity()
+          print(f'\tpitch {pitch},timestamp {timestamp},duration {duration},velocity {velocity}')
+          PPQuantizationUnit=self.get_PPQuantizationUnit(miditrack.get_ppq(),quantization)
+          print(PPQuantizationUnit)
+          Quantization_position=self.quantize(timestamp,PPQuantizationUnit)
+          print(f'\ttimestamp {timestamp} --> Quantization_position {Quantization_position}')
+          quantized_duration=self.quantize(duration,PPQuantizationUnit)
+          print(f'\tduration {duration} --> quantized_duration {quantized_duration}')
           
+
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          # ensure quantization is implemented correctly
+          if j>20:
+            break
           
-          note=midi.get_note(j)
-          pitch, timestamp, duration, velocity = note.get_pitch(), note.get_timestamp(), note.get_duration(), note.get_velocity()
-          #print(idx, pitch, timestamp, duration, velocity )
-          
+      # break
+  """        
           #post process timestamps to align them to a new value according to the segment's timestamp
           timestamp=timestamp-midi_segment_length*seg_step
           
