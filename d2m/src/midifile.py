@@ -75,18 +75,14 @@ class Midifile:
         else:
           #print(f"Unknown message {message}")
           pass
-    print(self.PPQ)
 
   def get_midifile(self):
     return self.midifile
   def get_ppq(self):
-    print("self.PPQ ",self.PPQ)
     return self.PPQ
   def get_tempo(self):
-    print("self.tempo ",self.tempo)
     return self.tempo
   def get_bpm(self):
-    print("self.bpm ",self.bpm)
     return self.bpm
   def get_rythm_numerator(self):
     return self.rythm_numerator
@@ -97,7 +93,6 @@ class Midifile:
   def get_num_notes(self):
     return len(self.notes)
   def get_total_ticks(self):
-    print("self.total_ticks ",self.total_ticks)
     return self.total_ticks
   def get_total_seconds(self):
     return mido.tick2second(self.total_ticks,self.PPQ,self.tempo)
@@ -114,4 +109,4 @@ class Midifile:
   def convert_tic2sec(self,tick):
     return mido.tick2second(tick,self.PPQ,self.tempo)
   def convert_sec2tick(self,second):
-    return mido.second2tick(second, self.PPQ, self.tempo)
+    return int(mido.second2tick(second, self.PPQ, self.tempo))
