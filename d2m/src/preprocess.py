@@ -4,13 +4,17 @@ import midifile,audio,utils,waveform
 import os
 import mido #import MidiFile, tempo2bpm, tick2second
 import numpy as np
-#import pandas as pd
+import pandas as pd
 #import librosa
 from tqdm import tqdm
 import math
 
-def create_segments(csv,audio_sr=2000,numQuarters=4,temp_print=False): 
-  
+def create_segments(csvpath,audio_sr=2000,numQuarters=4,temp_print=False): 
+  csv=pd.read_csv(csvpath)
+  print(f'csv of shape \t {len(csv.index.values)} x {len(csv.columns.values)}')
+  print(f'rows {csv.index.values}')
+  print(f'columns {csv.columns.values}')
+
   #keep
   audiosegments,midisegments=[],[]
   midi_velocities=[]

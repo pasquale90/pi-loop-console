@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 
 #Set the value of the CWD variable accordingly
 CWD=os.getcwd()
@@ -29,9 +28,6 @@ def get_session_path(foldpath):
 
 def get_csv_path():
   return os.path.join(datapath,'e-gmd-v1.0.0.csv')
-
-def get_csv(csvpath):
-  return pd.read_csv(csvpath)
 
 def get_data_subpaths(datapath):
   folders=[]
