@@ -25,12 +25,6 @@ class Midifile:
     for mdt in range(len(self.midifile.tracks)):
       for m,message in enumerate(self.midifile.tracks[mdt]):
         
-        
-        print(message)
-        if m >5:
-          #get_quarter_length_secs
-          #get_quarter_length_ticks
-          break
         message_type=message.type
         elapsed_ticks+=message.time
         #print(message, elapsed_ticks)
