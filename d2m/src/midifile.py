@@ -9,7 +9,6 @@ class Midifile:
     self.notes=[]
     
     self._parse_midi_messages()
-    
 
     #self.total_ticks=self.set_length_ticks()
     #self.ending_tick=0
@@ -22,9 +21,17 @@ class Midifile:
   def _parse_midi_messages(self):
 
     elapsed_ticks=0
+    print("self ppq: ",self.PPQ)
+    print("len(self.midifile.tracks) ",len(self.midifile.tracks))
     for mdt in range(len(self.midifile.tracks)):
+      print("len(self.midifile.tracks[mdt])", len(self.midifile.tracks[mdt]))
       for m,message in enumerate(self.midifile.tracks[mdt]):
         
+
+        # if m<10:
+        #   print("mdt: ",mdt, " ,m: ",m)
+        #   print ("message ",message)
+
         message_type=message.type
         elapsed_ticks+=message.time
         #print(message, elapsed_ticks)
@@ -62,16 +69,17 @@ class Midifile:
           timestamp=elapsed_ticks
           timestamp_sec=self.convert_tic2sec(timestamp)
           #print(pitch, timestamp_sec)
+          
           if velocity!=0:
 
-            temp_counter=1
             duration=0
             for msg in self.midifile.tracks[mdt][m+1:]:
               duration+=msg.time
+
               if msg.type=="note_on" and msg.note==pitch and msg.velocity==0:
                 new_note=Note(channel,pitch,velocity,timestamp,timestamp_sec,duration,self.convert_tic2sec(duration))
                 self.notes.append(new_note)
-                #break
+                break # DO NOT REMOVE : this break exits the loop when the note{particular note} with velocity==0 is found
         else:
           #print(f"Unknown message {message}")
           pass
@@ -110,3 +118,8 @@ class Midifile:
     return mido.tick2second(tick,self.PPQ,self.tempo)
   def convert_sec2tick(self,second):
     return int(mido.second2tick(second, self.PPQ, self.tempo))
+  
+  def shift_note_timestamp(self,idx,new_timestamp):
+    self.notes[idx].edit_timestamp(new_timestamp)
+    self.notes[idx].edit_timestamp_sec(new_timestamp)
+    return self.notes[idx].get_timestamp(),self.notes[idx].get_timestamp_sec() # return the new values

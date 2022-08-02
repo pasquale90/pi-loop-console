@@ -5,8 +5,8 @@ class Note:
 
   def __init__(self,channel,pitch,velocity,timestamp,timestamp_sec,duration,duration_sec):
     
-    self.channel=channel
     self.classes=self._init_classes()
+    self.channel=channel
     self.pitch=self.remap_pitch(pitch)
     self.label=self.set_class(self.pitch)
     self.velocity=velocity
@@ -80,3 +80,15 @@ class Note:
     scale = tempo * 1e-6 / ticks_per_beat
     return tick * scale
   '''
+
+  def get_label_id(self):
+    return [i for i,(k,v) in enumerate(self.classes.items()) if k == self.label][0]
+
+  def edit_timestamp(self,timestamp):
+    self.timestamp=timestamp
+    #return self.timestamp
+
+  def edit_timestamp_sec(self,timestamp_sec):
+    self.timestamp_sec=timestamp_sec
+    #return self.timestamp_sec
+  
