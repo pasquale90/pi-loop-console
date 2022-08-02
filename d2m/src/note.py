@@ -2,8 +2,11 @@ import mido
 
 #make a Note class
 class Note:
+
   def __init__(self,channel,pitch,velocity,timestamp,timestamp_sec,duration,duration_sec):
+    
     self.channel=channel
+    self.classes=self._init_classes()
     self.pitch=self.remap_pitch(pitch)
     self.label=self.set_class(self.pitch)
     self.velocity=velocity
@@ -14,10 +17,24 @@ class Note:
     
     self.relative_time=0 #in which part of the quarted is the note located
 
+  def _init_classes(self):
+    classes={"Bass":36,
+        "Snare":38,
+        "High_Tom":50,
+        "Low_Mid_Tom":47,
+        "High_Floor_Tom":43,
+        "Open_Hi_Hat":46,
+        "Closed_Hi_Hat":42,
+        "Crash_Cymbal":49,
+        "Ride_Cymbal":51,
+        "other":0}
+    return classes
   def get_label(self):
     return self.label
   def get_pitch(self):
     return self.pitch
+  def get_numclasses(self):
+    return len(self.classes)
   def get_duration(self):
     return self.duration
   def get_velocity(self):
@@ -52,17 +69,7 @@ class Note:
       return 0
       
   def set_class(self,id):
-    classes={"Bass":36,
-        "Snare":38,
-        "High_Tom":50,
-        "Low_Mid_Tom":47,
-        "High_Floor_Tom":43,
-        "Open_Hi_Hat":46,
-        "Closed_Hi_Hat":42,
-        "Crash_Cymbal":49,
-        "Ride_Cymbal":51,
-        "other":0}
-    return [k for k,v in classes.items() if v == id][0]
+    return [k for k,v in self.classes.items() if v == id][0]
   '''
   def tick2second(tick, ticks_per_beat, tempo):
     """Convert absolute time in ticks to seconds.
