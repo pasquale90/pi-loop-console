@@ -29,20 +29,28 @@ class Note:
         "Ride_Cymbal":51,
         "other":0}
     return classes
+  
   def get_label(self):
     return self.label
+  
   def get_pitch(self):
     return self.pitch
+  
   def get_numclasses(self):
     return len(self.classes)
+  
   def get_duration(self):
     return self.duration
+  
   def get_velocity(self):
     return self.velocity
+  
   def get_timestamp(self):
     return self.timestamp
+  
   def get_timestamp_sec(self):
     return self.timestamp_sec
+  
   def get_duration_sec(self):
     return self.duration_sec
 
@@ -70,25 +78,17 @@ class Note:
       
   def set_class(self,id):
     return [k for k,v in self.classes.items() if v == id][0]
-  '''
-  def tick2second(tick, ticks_per_beat, tempo):
-    """Convert absolute time in ticks to seconds.
-    Returns absolute time in seconds for a chosen MIDI file time
-    resolution (ticks per beat, also called PPQN or pulses per quarter
-    note) and tempo (microseconds per beat).
-    """
-    scale = tempo * 1e-6 / ticks_per_beat
-    return tick * scale
-  '''
-
+  
   def get_label_id(self):
-    return [i for i,(k,v) in enumerate(self.classes.items()) if k == self.label][0]
+    self.label_id=[i for i,(k,v) in enumerate(self.classes.items()) if k == self.label][0]
+    return self.label_id
+    
+  def get_label_given_id(self,id):
+    return [(k,v) for k,v in self.classes.items() if id == self.label_id][0]
 
   def edit_timestamp(self,timestamp):
     self.timestamp=timestamp
-    #return self.timestamp
 
   def edit_timestamp_sec(self,timestamp_sec):
     self.timestamp_sec=timestamp_sec
-    #return self.timestamp_sec
   
