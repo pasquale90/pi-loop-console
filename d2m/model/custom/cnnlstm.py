@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 #from torchaudio import model
 
-
 class LSTMModel(nn.Module):
     """Container module with an encoder, a recurrent module, and a decoder."""
 
