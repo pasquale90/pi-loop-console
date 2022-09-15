@@ -14,10 +14,4 @@ hop_length=0
 
 #UTILS.PY
 # split : range from [0 to 1]
-train_percent=0.7 
-
-
-
- 
-input [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0] # (3478,)
-outp  [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
+train_percent=0.7
