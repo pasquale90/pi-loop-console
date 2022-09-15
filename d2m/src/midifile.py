@@ -2,7 +2,10 @@ import mido
 from note import Note
 
 class Midifile:
-  def __init__(self,filepath):
+  def __init__(self,filepath,triplets=False):
+    
+    self.triplets=triplets
+    
     self.midifile=mido.MidiFile(filepath)
     self.PPQ=self.midifile.ticks_per_beat
     
@@ -21,10 +24,10 @@ class Midifile:
   def _parse_midi_messages(self):
 
     elapsed_ticks=0
-    print("self ppq: ",self.PPQ)
-    print("len(self.midifile.tracks) ",len(self.midifile.tracks))
+    # print("self ppq: ",self.PPQ)
+    # print("len(self.midifile.tracks) ",len(self.midifile.tracks))
     for mdt in range(len(self.midifile.tracks)):
-      print("len(self.midifile.tracks[mdt])", len(self.midifile.tracks[mdt]))
+      # print("len(self.midifile.tracks[mdt])", len(self.midifile.tracks[mdt]))
       for m,message in enumerate(self.midifile.tracks[mdt]):
         
 
@@ -123,3 +126,30 @@ class Midifile:
     self.notes[idx].edit_timestamp(new_timestamp)
     self.notes[idx].edit_timestamp_sec(new_timestamp)
     return self.notes[idx].get_timestamp(),self.notes[idx].get_timestamp_sec() # return the new values
+  
+  # calc how many quantization units exist in a measure that has {numerator} units and is divided by {denominator} units
+  # i.e how many 16nth notes has a measure that has a 3/4.
+  def get_units_per_measure(self,quantization,triplets=False):
+      # print("numerator ",numerator,"denominator ",denominator)
+      units_per_measure=int(self.rythm_numerator*(quantization/self.rythm_denominator))
+      if self.triplets:
+        return int(3/2*units_per_measure)
+      else:
+        return TPQU
+    
+
+  # calc how many midi-ticks per qunatization unit 
+  # i.e. each 64nth note in a midifile with ppq=480 , has a resolution of 480/(64/4)=30 ticks
+  def get_TicksPerQuantizationUnit(self,quantization):
+    
+    units_per_quarter=quantization/4 # by 4 since, ppq defines pulses per quarter(=4)
+    TPQU=int(self.PPQ/(units_per_quarter))
+
+    if self.triplets:
+      return int(3/2*TPQU)
+    else:
+      return TPQU
+  
+  # decide in which of the quantization units, a note approximately exists
+  def quantize(self,value,TPQU):
+    return round(value/TPQU)
