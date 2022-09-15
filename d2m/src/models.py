@@ -72,3 +72,13 @@ class LSTM1(nn.Module):
         out = self.relu(out) #relu
         out = self.fc(out) #Final Output
         return out
+
+
+
+if __name__=="__main__":
+    num_classes=
+    input_size=
+    hidden_size=
+    num_layers=
+    seq_length=
+    model=LSTM1(num_classes, input_size, hidden_size, num_layers, seq_length)
