@@ -1,84 +1,98 @@
-#@title simple lstm
-class simplelstm(nn.Module):
-    def __init__(self, input_dim, hidden_dim, seq_len, num_layers=2, batch_size=16, output_dim=50 ):
-    #num_classes, input_size, hidden_size, num_layers, seq_length
-        super(simplelstm, self).__init__()
-        self.input_dim = input_dim
-        self.hidden_dim = hidden_dim
-        self.batch_size = batch_size
-        self.num_layers = num_layers
-        self.seq_len = seq_len
+import torch
+from torch import nn
+from torch.autograd import Variable
 
-        # setup LSTM layer
-        self.lstm = nn.LSTM(self.input_dim, self.hidden_dim, self.num_layers, batch_first=True)
+class MANY2MANY_LSTM(nn.Module):
+    def __init__(self, num_classes, hidden_size, seq_length):
+        super(MANY2MANY_LSTM, self).__init__()
+        self.hidden_size = hidden_size
+        self.seq_length=seq_length
 
-        # setup output layer
-        self.fc = nn.Linear(self.hidden_dim*2, output_dim)
+        # lstm1, lstm2, linear are all layers in the network
+        self.lstm1 = nn.LSTMCell(self.hidden_size, self.hidden_size)
+        self.lstm2 = nn.LSTMCell(self.hidden_size,1)
+        self.linear = nn.Linear(1, num_classes)
+        
+    def forward(self, x, batch_size,future_preds=0):
+        
+        outputs= []
+        h_t = torch.zeros(batch_size, self.hidden_size, dtype=torch.float32)
+        c_t = torch.zeros(batch_size, self.hidden_size, dtype=torch.float32)
+        h_t2 = torch.zeros(batch_size, 1, dtype=torch.float32)
+        c_t2 = torch.zeros(batch_size, 1, dtype=torch.float32)
+        
+        for time_step in range(0,self.seq_length,1):
+            # print(f'time_step {time_step}')
+            # print(f'DEBUG:: input {x.shape}, seq_length {self.seq_length} , self.hidden_size*time_step:self.seq_length*(time_step+1) {self.hidden_size*time_step}:{self.hidden_size*(time_step+1)}')
+            
+            window=x[self.hidden_size*time_step:self.hidden_size*(time_step+1)]
+            # print(f' input window {window.shape}')
+            window=window.unsqueeze(0)
+            # print(f' input window.unsqueeze(0) {window.shape}')
 
-    def init_hidden(self):
-        return (
-            torch.zeros(self.num_layers, self.batch_size, self.hidden_dim),
-            torch.zeros(self.num_layers, self.batch_size, self.hidden_dim),
-        )
-
-    def forward(self, x):
-        print('input',x.shape)
-        x = x.view(x.shape[0],431,80)
-        print('squeeze',x.shape)
-        h0 = Variable(torch.zeros(self.num_layers, x.size(0), self.hidden_dim).float())
-        #print('h0',h0.shape)
-        c0 = Variable(torch.zeros(self.num_layers, x.size(0), self.hidden_dim).float())
-        #print('c0',c0.shape)
-
-        x, _ = self.lstm(x,(h0,c0))
-        print('lstm_out',x.shape)
-        x = self.fc(x[:, -1, :])
-        print('fc',x.shape)
-        #logits = self.linear(x[:, -1, :])#lstm_out[-1]
-        #print('logits',logits.shape)        
-        #x = x.squeeze(1)
-
-        #genre_scores = F.log_softmax(x, dim=1)
-        #print('softmax',genre_scores.shape)
-        return genre_scores
+            h_t, c_t = self.lstm1(window, (h_t, c_t)) # initial hidden and cell states
+            # print(f'lstm1:: h_t.shape {h_t.shape}, c_t.shape {c_t.shape}')
+            
+            h_t2, c_t2 = self.lstm2(h_t, (h_t2, c_t2)) # new hidden and cell states
+            # print(f'lstm2:: h_t2.shape {h_t2.shape}, c_t2.shape {c_t2.shape}')
+            
+            output = self.linear(h_t2) # output from the last FC layer
+            # print(f'output.shape {output.shape}')
+            outputs.append(output)
+        
+        # print(f'outputs before cat :: len(outputs) {len(outputs)}, len(outputs[0]) {len(outputs[0])}')
+        outputs = torch.cat(outputs, dim=1)
+        # print(f'outputs = torch.cat(outputs, dim=1) {outputs.shape}')
+        return outputs
 
 
-# check tutorial :
-# https://cnvrg.io/pytorch-lstm/
-class LSTM1(nn.Module):
-    def __init__(self, num_classes, input_size, hidden_size, num_layers, seq_length):
-        super(LSTM1, self).__init__()
-        self.num_classes = num_classes #number of classes
-        self.num_layers = num_layers #number of layers
-        self.input_size = input_size #input size
-        self.hidden_size = hidden_size #hidden state
-        self.seq_length = seq_length #sequence length
+def main4MANY2MANYLSTM():
 
-        self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size,
-                          num_layers=num_layers, batch_first=True) #lstm
-        self.fc_1 =  nn.Linear(hidden_size, 128) #fully connected 1
-        self.fc = nn.Linear(128, num_classes) #fully connected last layer
-
-        self.relu = nn.ReLU()
+    from audio import Audio
+    import numpy as np
+    from midifile import Midifile
+    import pandas as pd
+    import os
+    import sys
     
-    def forward(self,x):
-        h_0 = Variable(torch.zeros(self.num_layers, x.size(0), self.hidden_size)) #hidden state
-        c_0 = Variable(torch.zeros(self.num_layers, x.size(0), self.hidden_size)) #internal state
-        # Propagate input through LSTM
-        output, (hn, cn) = self.lstm(x, (h_0, c_0)) #lstm with input, hidden, and internal state
-        hn = hn.view(-1, self.hidden_size) #reshaping the data for Dense layer next
-        out = self.relu(hn)
-        out = self.fc_1(out) #first Dense
-        out = self.relu(out) #relu
-        out = self.fc(out) #Final Output
-        return out
+# READ A SAMPLE
+    sr=2048
+    sample=Audio(audiopath="/data/pl/pi-loop-console/d2m/datasets/e-gmd_fixed_2000/eval/audio_inputs/1_funk-groove1_138_beat_4-4_1_1.wav",sampling_rate=sr,mono=True)
+    data=sample.get_raw()
+    print(len(data))
+    # convert to tensors 
+    data = Variable(torch.Tensor(data))
+# MODEL
+    #define device
+    if torch.cuda.is_available():
+        device=torch.device('cuda:0')
+    else:
+        device=torch.device('cpu')
+    print(device)
 
+    #introduce reproducibility
+    seed = 7
+    torch.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False    
 
+    num_classes=10
+    input_size=window_size=70
+    hidden_size=quantization=32
+    seq_length=window_size=int(2048/quantization) #=64 # VAR sr/quantization=2048/32(quantization)=64 samples window_size
+    num_layers=1 # EXP num_layers
+
+    model=MANY2MANY_LSTM( num_classes, hidden_size, seq_length)
+    print("####################################################################")
+    print(f"hidden_size {hidden_size} \nseq_length=quantization={seq_length} \ninput_size {input_size}")
+    print("####################################################################")
+
+    total_params = sum(p.numel() for p in model.parameters())
+    print(f'model initialized with total : {total_params} parameters.')
+
+# PASS THROUGH THE MODEL    
+    output = model(data,batch_size=1)
 
 if __name__=="__main__":
-    num_classes=
-    input_size=
-    hidden_size=
-    num_layers=
-    seq_length=
-    model=LSTM1(num_classes, input_size, hidden_size, num_layers, seq_length)
+
+    main4MANY2MANYLSTM()
