@@ -8,3 +8,7 @@ libs/*
 piloop
 build/*
 logs/*
+___old__repo
+___old__repo/*
+.vscode/
+_devel/

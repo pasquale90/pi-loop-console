@@ -1,0 +1,62 @@
+\hypertarget{classhandshake}{}\section{handshake Class Reference}
+\label{classhandshake}\index{handshake@{handshake}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhandshake_aec0b12c760a648e1b4fc40be11529a21}\label{classhandshake_aec0b12c760a648e1b4fc40be11529a21}} 
+{\bfseries handshake} (const char $\ast$clientname)
+\item 
+\mbox{\Hypertarget{classhandshake_a1229342aa52da4b1d480d4791311b9d2}\label{classhandshake_a1229342aa52da4b1d480d4791311b9d2}} 
+jack\+\_\+client\+\_\+t $\ast$ {\bfseries get\+\_\+client} ()
+\item 
+\mbox{\Hypertarget{classhandshake_af0ce8d96a76d8b157c73d40d4e5330de}\label{classhandshake_af0ce8d96a76d8b157c73d40d4e5330de}} 
+jack\+\_\+port\+\_\+t $\ast$ {\bfseries add\+\_\+input\+\_\+port} (jack\+\_\+port\+\_\+t $\ast$\+\_\+port, const char $\ast$inport\+\_\+name)
+\item 
+\mbox{\Hypertarget{classhandshake_aa227451908beaa17890b582eda2d59f5}\label{classhandshake_aa227451908beaa17890b582eda2d59f5}} 
+jack\+\_\+port\+\_\+t $\ast$ {\bfseries add\+\_\+output\+\_\+port} (jack\+\_\+port\+\_\+t $\ast$\+\_\+port, const char $\ast$outport\+\_\+name)
+\item 
+\mbox{\Hypertarget{classhandshake_a915e38ef7fe8687a3fc27b3a91986297}\label{classhandshake_a915e38ef7fe8687a3fc27b3a91986297}} 
+void {\bfseries disconnect\+\_\+port} (jack\+\_\+port\+\_\+t $\ast$\+\_\+port)
+\item 
+\mbox{\Hypertarget{classhandshake_a43d9fa50a21d39605ff67c1ab875ce2d}\label{classhandshake_a43d9fa50a21d39605ff67c1ab875ce2d}} 
+void {\bfseries name\+\_\+port} (jack\+\_\+port\+\_\+t $\ast$\+\_\+port, const char $\ast$name)
+\item 
+\mbox{\Hypertarget{classhandshake_abc2e38e9e6ab1cea8f2c12e258b4ccd0}\label{classhandshake_abc2e38e9e6ab1cea8f2c12e258b4ccd0}} 
+void {\bfseries connect\+\_\+input\+\_\+device} (int input\+\_\+device, jack\+\_\+port\+\_\+t $\ast$\+\_\+port)
+\item 
+\mbox{\Hypertarget{classhandshake_a143f68691807234a419bc8fc552aacf9}\label{classhandshake_a143f68691807234a419bc8fc552aacf9}} 
+void {\bfseries connect\+\_\+output\+\_\+device} (int output\+\_\+device, jack\+\_\+port\+\_\+t $\ast$\+\_\+port)
+\item 
+\mbox{\Hypertarget{classhandshake_a79dd7ace8ea6d51a2d6dcce12c54cdc3}\label{classhandshake_a79dd7ace8ea6d51a2d6dcce12c54cdc3}} 
+void {\bfseries activate} ()
+\item 
+\mbox{\Hypertarget{classhandshake_a744a673f21fc3dad9697b9ff1b8f0be4}\label{classhandshake_a744a673f21fc3dad9697b9ff1b8f0be4}} 
+void {\bfseries disconnect\+\_\+client} ()
+\item 
+\mbox{\Hypertarget{classhandshake_af853a97e0d275020538364f2df288a34}\label{classhandshake_af853a97e0d275020538364f2df288a34}} 
+void {\bfseries prevent\+\_\+failure} ()
+\item 
+\mbox{\Hypertarget{classhandshake_ad2bbd7255f00eeca40d1f4246ce06518}\label{classhandshake_ad2bbd7255f00eeca40d1f4246ce06518}} 
+void {\bfseries callback} (int($\ast$process)(jack\+\_\+nframes\+\_\+t nframes, void $\ast$arg), void $\ast$arg)
+\item 
+\mbox{\Hypertarget{classhandshake_a78657fe9c7c4f8e944554aac9330d8cf}\label{classhandshake_a78657fe9c7c4f8e944554aac9330d8cf}} 
+void {\bfseries info\+\_\+control} ()
+\item 
+\mbox{\Hypertarget{classhandshake_a22df15ebd88c3b81e0147e1125613ff1}\label{classhandshake_a22df15ebd88c3b81e0147e1125613ff1}} 
+uint32\+\_\+t {\bfseries get\+\_\+sample\+\_\+rate} ()
+\item 
+\mbox{\Hypertarget{classhandshake_ada0e5d1fd5e8e3e7a6376dc68f205338}\label{classhandshake_ada0e5d1fd5e8e3e7a6376dc68f205338}} 
+uint32\+\_\+t {\bfseries get\+\_\+buffer\+\_\+size} ()
+\item 
+\mbox{\Hypertarget{classhandshake_af9a8b934e5c4724f62b70abb2949231c}\label{classhandshake_af9a8b934e5c4724f62b70abb2949231c}} 
+float {\bfseries get\+\_\+cpu\+\_\+load} ()
+\item 
+\mbox{\Hypertarget{classhandshake_af408dd2b28c2ff088d0aafbd08f24506}\label{classhandshake_af408dd2b28c2ff088d0aafbd08f24506}} 
+const char $\ast$ {\bfseries get\+\_\+name} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/handshake.\+h\item 
+src/handshake.\+cpp\end{DoxyCompactItemize}

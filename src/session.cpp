@@ -2,7 +2,7 @@
 #include "channel.h"//Bump -eraseeee
 #include <iostream>
 
-session::session(){};
+session::session(){}
 
 session::session(const char* session_name){
     this->session_name=session_name;

@@ -4,13 +4,15 @@ NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
 COMPILE :=$(COMPILER) $(NOPTIONS)
 OBJECTS :=build/handshake.o build/route.o build/channel.o build/session.o build/main.o
 
+JACK :=-I/usr/include -L/usr/lib64/pipewire-0.3 -ljack -ljackserver
+
 # all:piloop
 
 piloop:$(OBJECTS)
-	$(COMPILE) $(OBJECTS) -Llib/jack -ljack -o piloop
+	$(COMPILE) $(OBJECTS) $(JACK) -o piloop
 
-build/handshake.o:src/handshake.cpp include/jack/jack.h include/jack/types.h
-	$(COMPILER) $(NOPTIONS) -c src/handshake.cpp  -Iinclude -Llib/jack -ljack -o build/handshake.o
+build/handshake.o:src/handshake.cpp
+	$(COMPILER) $(NOPTIONS) -c src/handshake.cpp -I/usr/include $(JACK) -o build/handshake.o
 
 build/route.o:src/route.cpp src/handshake.h
 	$(COMPILE) -c src/route.cpp -o build/route.o
