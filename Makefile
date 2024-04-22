@@ -27,21 +27,4 @@ build/main.o:src/main.cpp src/session.h src/handshake.h src/channel.h
 	$(COMPILE) -c src/main.cpp -o build/main.o
 
 clean:
-	rm -f build/*.o piloop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	rm -rf build/* logs/* piloop
