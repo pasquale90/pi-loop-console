@@ -21,17 +21,19 @@ class Config {
 		// public attributes. No need for getters/setters
 			std::string currSession_name;
 			Metronome metronome;
-			struct
-			{
+			struct{
 					int buffer_size;
 					int sample_rate;
 					int bit_quantization;
 			}audio_settings;
 			
+			
 			// expand latter
 			// struct controls{}; 
-			// struct looper {}; 
+			// struct looper {};
 
+			int max_sessions;
+			
 		private:
 			Config();
 
@@ -39,8 +41,8 @@ class Config {
 			void operator=(const Config&) = delete;
 
 			static Config* cfg_instance_ptr;
-			void _open();
-			void _parse_json(Json::Value);
+			void _open();// open only for the first time
+			void _parse_json(Json::Value); //parse_json values
 			int current_session;
 };
 

@@ -83,6 +83,8 @@ void Config::_open(){
     std::ifstream config_doc(cfg_json_path, std::ifstream::binary);
     config_doc >> root;
 
+    max_sessions = root["sessions"].size(); // initialize max_sessions
+
     int last_session = root["last_session"].asInt();   // retrieve last session
     current_session = last_session;
     std::cout<<"last session(==current_session) is "<<last_session<<"=="<<current_session<<std::endl;
