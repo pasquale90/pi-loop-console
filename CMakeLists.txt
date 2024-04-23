@@ -6,15 +6,19 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 
+set (INCLUDE_DIRECTORIES
+    ./include)
 set(SOURCE_FILES
     # src/audiotrack.cpp  
-    src/channel.cpp  
-    src/handshake.cpp  
+    # src/channel.cpp  
+    # src/handshake.cpp  
     src/main.cpp  
+    src/config.cpp
+    src/menu.cpp
     # src/miditrack.cpp  
-    src/route.cpp  
+    # src/route.cpp  
     # src/server.cpp  
-    src/session.cpp  
+    # src/session.cpp  
     # src/track.cpp
 )
 

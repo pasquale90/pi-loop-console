@@ -1,27 +1,20 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 
-
-class Menu{
+class Menu {
     public:
-        
-        static Menu& getInstance(){
-            static Menu instance; // Guaranteed to be destroyed.
-                                    // Instantiated on first use.
-            return instance;
-        }
+        static Menu& getInstance();
 
-        Menu(Menu const&) = delete;
-        void operator=(Menu const&) = delete;
+        // Add your public members and methods here
+        // ...
+        int eraseme;
 
-        void load_session(); // load a new config / clear and reset session menu etc..
-        
     private:
+        Menu();
+        Menu(const Menu&) = delete;
+        void operator=(const Menu&) = delete;
 
-        Menu() {}                    // Constructor? (the {} brackets) are needed here.
-        
+        static Menu* menu_instance_ptr;
 };
-
-
 
 #endif
