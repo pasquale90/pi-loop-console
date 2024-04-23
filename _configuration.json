@@ -1,0 +1,110 @@
+{
+	"last_session" : 1,
+	"sessions" : 
+	[
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 24,
+				"buffer_size" : 256,
+				"sample_rate" : 22050
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 0,
+			"looper" : 
+			{
+				"num_channels" : 3
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 4,
+				"rythm_numerator" : 4,
+				"tempo" : 120
+			},
+			"name" : "template"
+		},
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 24,
+				"buffer_size" : 256,
+				"sample_rate" : 22050
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 1,
+			"looper" : 
+			{
+				"num_channels" : 3
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 4,
+				"rythm_numerator" : 4,
+				"tempo" : 100.0
+			},
+			"name" : "session 1"
+		},
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 24,
+				"buffer_size" : 256,
+				"sample_rate" : 22050
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 2,
+			"looper" : 
+			{
+				"num_channels" : 3
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 4,
+				"rythm_numerator" : 4,
+				"tempo" : 120
+			},
+			"name" : "session 2"
+		},
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 24,
+				"buffer_size" : 256,
+				"sample_rate" : 22050
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 3,
+			"looper" : 
+			{
+				"num_channels" : 3
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 4,
+				"rythm_numerator" : 4,
+				"tempo" : 120
+			},
+			"name" : "session 3"
+		}
+	]
+}

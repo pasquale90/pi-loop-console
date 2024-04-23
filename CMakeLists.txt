@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 
 set (INCLUDE_DIRECTORIES
-    ./include)
+    ./include
+    )
+    
 set(SOURCE_FILES
     # src/audiotrack.cpp  
     # src/channel.cpp  
@@ -28,6 +30,7 @@ cmake_print_variables(INCLUDE_DIRECTORIES)
 set(LIBRARIES
     jack
     pthread
+    jsoncpp
 )
 
 add_executable(piloop ${SOURCE_FILES})

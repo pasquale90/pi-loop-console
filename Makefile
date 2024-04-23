@@ -5,12 +5,14 @@ COMPILE :=$(COMPILER) $(NOPTIONS)
 # OBJECTS :=build/handshake.o build/route.o build/channel.o build/session.o build/main.o
 OBJECTS :=build/config.o build/menu.o build/main.o
 
+JSONCPP :=-I/usr/include -ljsoncpp
+
 # JACK :=-I/usr/include -L/usr/lib64/pipewire-0.3 -ljack -ljackserver
 
 all:piloop
 
 piloop:$(OBJECTS)
-	$(COMPILE) $(OBJECTS) -o piloop
+	$(COMPILE) $(OBJECTS) -o piloop -ljsoncpp
 
 # all:piloop
 
@@ -30,7 +32,7 @@ piloop:$(OBJECTS)
 # 	$(COMPILE) -c src/session.cpp -o build/session.o
 
 build/config.o:src/config.cpp
-	$(COMPILE) -c src/config.cpp -I./include -o build/config.o
+	$(COMPILE) -c src/config.cpp -I./include $(JSONCPP) -o build/config.o
 
 build/menu.o:src/menu.cpp
 	$(COMPILE) -c src/menu.cpp -I./include -o build/menu.o

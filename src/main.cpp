@@ -9,15 +9,20 @@ int main(){
 
     std::cout<<"Hello Piloop"<<std::endl;
 
-    
-    Menu& menu = Menu::getInstance();
-    
-    Config& cfg = Config::getInstance();
+    // Menu& menu = Menu::getInstance();
 
+    Config& cfg = Config::getInstance();
+    cfg.display();
+    std::cout<<"############################################################\n\n"<<std::endl;
+    cfg.open(1);
+    cfg.display();
+
+    std::cout<<"public access "<<cfg.audio_settings.bit_quantization<<std::endl;
+    cfg.metronome.tempo = 100;
+    cfg.save();
     
-    std::cout<<"menu "<<menu.eraseme<<std::endl;
-    std::cout<<"config "<<cfg.eraseme<<std::endl;
-    //calls menu.load()
+    
+    //calls menu.load() 
 
     // handle session menu
     // initialize a session
