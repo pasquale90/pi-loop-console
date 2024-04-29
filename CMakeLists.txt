@@ -4,10 +4,15 @@ project(piloop)
 
 set(CMAKE_CXX_STANDARD 11)
 
+SET (CMAKE_CXX_FLAGS "-D DEV")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 
 set (INCLUDE_DIRECTORIES
     ./include
+    /usr/include
+    /usr/include/jsoncpp/
+    /usr/lib/x86_64-linux-gnu/
     )
     
 set(SOURCE_FILES
@@ -17,6 +22,8 @@ set(SOURCE_FILES
     src/main.cpp  
     src/config.cpp
     src/menu.cpp
+    src/interface.cpp
+    src/keyboard.cpp
     # src/miditrack.cpp  
     # src/route.cpp  
     # src/server.cpp  
@@ -26,11 +33,11 @@ set(SOURCE_FILES
 
 include(CMakePrintHelpers)
 cmake_print_variables(INCLUDE_DIRECTORIES)
-
 set(LIBRARIES
     jack
     pthread
     jsoncpp
+    evdev
 )
 
 add_executable(piloop ${SOURCE_FILES})

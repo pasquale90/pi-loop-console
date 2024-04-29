@@ -3,11 +3,19 @@
 // Initialize the static member to nullptr
 Menu* Menu::menu_instance_ptr = nullptr;
 
-
 Menu::Menu(){
 } 
 
+void Menu::load(){
+  interface.listen();
+
+  // if arrows --> change session
+  // if anything else, run session
+}
+
 void Menu::change_session(){
+    
+    // change session
     
     cfg.display();
 }

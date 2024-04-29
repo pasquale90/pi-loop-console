@@ -8,8 +8,6 @@
 
 const std::string cfg_json_path = "_configuration.json" ;
 
-
-
 class Config {
 		public:
 			static Config& getInstance();

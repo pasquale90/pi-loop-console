@@ -2,11 +2,13 @@
 #define MENU_H_INCLUDED
 
 #include "config.h"
+#include "interface.h"
 
 class Menu {
     public:
         static Menu& getInstance();
 
+        void load();
         void change_session();
     
     private:
@@ -16,8 +18,8 @@ class Menu {
 
         static Menu* menu_instance_ptr;
 
-        Config& cfg = Config::getInstance();;
-
+        Config& cfg = Config::getInstance();
+        hardwareInterface& interface=hardwareInterface::getInstance();
 };
 
 #endif
