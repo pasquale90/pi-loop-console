@@ -1,5 +1,5 @@
 #include <iostream>
-// #include <thread>
+#include <thread>
 #include "menu.h"
 
 
@@ -11,14 +11,16 @@ int main(){
     std::cout<<"Hello Piloop"<<std::endl;
 
     Menu& menu = Menu::getInstance();
-    menu.load();
-    menu.change_session();
+    
+//calls menu.load() 
+    // menu.load();
+    std::thread menuThread(&Menu::load, &menu);
+    menuThread.join();
+// handle session menu
+    // menu.change_session();
 
-    //calls menu.load() 
-
-    // handle session menu
-    // initialize a session
-    // start console
+// initialize a session
+// start console
 
     return 0;
 }

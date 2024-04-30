@@ -15,7 +15,7 @@ EVDEV :=-I/usr/include -levdev #-L/usr/lib/x86_64-linux-gnu/
 all:piloop
 
 piloop:$(OBJECTS)
-	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV) -o piloop -ljsoncpp
+	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV) -o piloop -ljsoncpp -lpthread
 
 # all:piloop
 
@@ -47,7 +47,7 @@ build/menu.o:src/menu.cpp include/menu.h src/config.cpp include/config.h
 	$(COMPILE) -c src/menu.cpp -I./include $(JSONCPP) -o build/menu.o
 	
 build/main.o:src/main.cpp
-	$(COMPILE) -c src/main.cpp -I./include/ $(JSONCPP) $(EVDEV) -o build/main.o 
+	$(COMPILE) -c src/main.cpp -I./include/ $(JSONCPP) $(EVDEV) -o build/main.o -lpthread
 
 clean:
 	rm -rf build/* logs/* piloop
