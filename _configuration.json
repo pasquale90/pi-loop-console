@@ -1,5 +1,5 @@
 {
-	"last_session" : 1,
+	"last_session" : 3,
 	"sessions" : 
 	[
 		{
@@ -50,7 +50,7 @@
 			{
 				"rythm_denominator" : 4,
 				"rythm_numerator" : 4,
-				"tempo" : 100.0
+				"tempo" : 100
 			},
 			"name" : "session 1"
 		},
@@ -105,6 +105,32 @@
 				"tempo" : 120
 			},
 			"name" : "session 3"
+		},
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 1,
+				"buffer_size" : 1,
+				"sample_rate" : 1
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 4,
+			"looper" : 
+			{
+				"num_channels" : 1
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 1,
+				"rythm_numerator" : 1,
+				"tempo" : 1
+			},
+			"name" : "session 4"
 		}
 	]
 }
