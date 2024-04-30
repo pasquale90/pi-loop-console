@@ -27,7 +27,7 @@ class Menu {
         void save_session();
 
         void _notify_menu(Control, bool);
-        static int session_id;
+        Session session;
 };
 
 #endif

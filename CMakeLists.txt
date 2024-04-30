@@ -24,6 +24,7 @@ set(SOURCE_FILES
     src/menu.cpp
     src/interface.cpp
     src/keyboard.cpp
+    src/session.cpp
     # src/miditrack.cpp  
     # src/route.cpp  
     # src/server.cpp  

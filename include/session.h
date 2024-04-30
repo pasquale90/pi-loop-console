@@ -4,9 +4,12 @@
 
 class Session{
     public:
+        Session();
         Session(const char*);
-        // ~Session();
+// Comply to the rule of 3/5
+        //~Session(); 
 
+        void set_name(const char*);
         const char* get_name();
     private:
 

@@ -8,6 +8,11 @@ Menu::Menu(){
 
 void Menu::load(){
 
+  Session temp(cfg.get_session_name().c_str());
+  session = temp;
+  std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
+
+
   interface.listen(&Menu::_notify_menu, *this);
 
 }
@@ -73,6 +78,12 @@ void Menu::change_session(Control trigger){
       next_session = current_session-1;
       if (next_session==0) next_session = max_sessions;
     } 
+
+// SKILLPOINT
+// handle session things --> implement session first
+//     Session temp(cfg.get_session_name().c_str());
+//     session = temp;
+//     std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
 
     cfg.open(next_session);
     cfg.display();

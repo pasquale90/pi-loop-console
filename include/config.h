@@ -32,6 +32,8 @@ class Config {
 
 			int get_max_sessions();
 			int get_curr_session();
+			std::string get_session_name();
+			// void set_sess ion_name(std::string); // later if needed
 			
 		private:
 			Config();
