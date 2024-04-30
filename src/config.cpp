@@ -78,6 +78,14 @@ void Config::save(){
     std::cout<<std::endl; //flush
 }
 
+int Config::get_max_sessions(){
+    return max_sessions;
+}
+
+int Config::get_curr_session(){
+    return current_session;
+}
+
 void Config::_open(){
     Json::Value root;   //   // open json file (doc : starts as "null"; will contain the root value after parsing)
     std::ifstream config_doc(cfg_json_path, std::ifstream::binary);

@@ -30,7 +30,8 @@ class Config {
 			// struct controls{}; 
 			// struct looper {};
 
-			int max_sessions;
+			int get_max_sessions();
+			int get_curr_session();
 			
 		private:
 			Config();
@@ -41,6 +42,8 @@ class Config {
 			static Config* cfg_instance_ptr;
 			void _open();// open only for the first time
 			void _parse_json(Json::Value); //parse_json values
+
+			int max_sessions;
 			int current_session;
 };
 
