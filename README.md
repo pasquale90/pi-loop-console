@@ -13,6 +13,7 @@
     - quick prototype
     - start_server internally
 - [ ] raspberry deployment
+- [ ] optimization step
 - [ ] update main branch
     - description
     - compilation/usage instructions
