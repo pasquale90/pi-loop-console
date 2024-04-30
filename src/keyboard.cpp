@@ -91,7 +91,9 @@ void UI::listen_user_keyboard(std::atomic<bool> &event_occured, std::atomic<int>
         //     printableEventType(ev.value),
         //     keycodes[ev.code]);
         // EV_SYN - EV_KEY - EV_REL
-        
+
+//@TODO EV_KEY === event_occured = true;
+
         if ( int(ev.value) == EV_SYN ) 
         {
             Control key = Control(atoi(keycodes[ev.code]));
