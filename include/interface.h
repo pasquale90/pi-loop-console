@@ -11,6 +11,7 @@
 #endif
 
 class Menu;
+class Session;
 
 //forward declare pointers to member functions
 // class Menu;
@@ -23,9 +24,8 @@ class hardwareInterface{
 
     public:
         static hardwareInterface& getInstance();
-        
-        // void listen(void (*notify_menu)(Control, bool)); // WORKS
-        void listen(void (Menu::*_notify_menu)(Control, bool), Menu& a); // ATTEMPT 2
+
+        void listen(void (Menu::*_notify_menu)(Control, bool), Menu& m, void (Session::*_notify_session)(Control, bool), Session& s); // ATTEMPT 2
         // void help();
 
     private:
@@ -35,9 +35,6 @@ class hardwareInterface{
         static hardwareInterface* interface_instance_ptr;
 
         UI& ui = UI::getInstance();
-
-        // int _notify_menu(Control,bool);
-        int _notify_session(Control,bool);
 
         std::atomic<int> msg;
         std::atomic<bool> event_occured;

@@ -13,7 +13,7 @@ void Menu::load(){
   std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
 
 
-  interface.listen(&Menu::_notify_menu, *this);
+  interface.listen(&Menu::_notify_menu, *this, &Session::notify_session,session);
 
 }
 

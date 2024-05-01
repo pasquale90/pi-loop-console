@@ -3,7 +3,7 @@
 
 //enumerator
 
-enum Control{
+enum Control: unsigned short{
     CH1_RECDUB=1,
     CH1_STOP,
     CH2_RECDUB,

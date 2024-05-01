@@ -1,6 +1,9 @@
 #ifndef SESSION_H_INCLUDED
 #define SESSION_H_INCLUDED
 
+#include <iostream>
+
+enum Control: unsigned short;
 
 class Session{
     public:
@@ -11,8 +14,9 @@ class Session{
 
         void set_name(const char*);
         const char* get_name();
-    private:
 
+        void notify_session(Control, bool);
+    private:
         const char* session_name;
 
 };
