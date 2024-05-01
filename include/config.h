@@ -15,6 +15,7 @@ class Config {
 			void open(int);
 			void save();
 			void display();
+			void reset();
 
 		// public attributes. No need for getters/setters
 			std::string currSession_name;
@@ -25,15 +26,12 @@ class Config {
 					int bit_quantization;
 			}audio_settings;
 			
-			
 			// expand latter
 			// struct controls{}; 
 			// struct looper {};
 
 			int get_max_sessions();
 			int get_curr_session();
-			std::string get_session_name();
-			// void set_sess ion_name(std::string); // later if needed
 			
 		private:
 			Config();

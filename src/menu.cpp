@@ -8,10 +8,9 @@ Menu::Menu(){
 
 void Menu::load(){
 
-  Session temp(cfg.get_session_name().c_str());
-  session = temp;
-  std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
-
+  // Session temp(cfg.currSession_name.c_str());
+  // session = temp;
+  // std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
 
   interface.listen(&Menu::_notify_menu, *this, &Session::notify_session,session);
 
@@ -25,18 +24,7 @@ Menu& Menu::getInstance() {
   return *menu_instance_ptr;  // Dereference the pointer to return the instance
 }
 
-// Config& cfg = Config::getInstance();
-// cfg.display();
-// std::cout<<"############################################################\n\n"<<std::endl;
-// cfg.open(1);
-// cfg.display();
-
-// std::cout<<"public access "<<cfg.audio_settings.bit_quantization<<std::endl;
-// cfg.metronome.tempo = 100;
-// cfg.save();
-
 void Menu::_notify_menu(Control msg, bool isHold){
-  // std::cout<<"~Menu~::_notify::Control,bool "<<msg<<","<<isHold<<std::endl;  
   // NO HOLD OPERATIONS DEFINED YET...
   _edit(msg);
 }
@@ -48,22 +36,23 @@ void Menu::_edit(Control trigger){
     else _change_session(trigger);
 }
 
-
 void Menu::_save_session(){
-// 2 things here
-// save config
-//save session (tracks in channels , saved jams ..)
-    cfg.save();
-    std::cout<<"Menu::save_session"<<std::endl;
-
+// 2 things here : 
+//    a) save config
+//    b) save session (tracks in channels , saved jams ..)
+// session.save is responsible for both
+    session.save();
 }
 
 void Menu::_change_session(Control trigger){
 // 2 things here:
-// change config 
-// reset/load session
+//    a)change config 
+//    b)reset/load new session
+// Menu::_change_session is responsible for a.
+// session::migrate(int next_session) is responsible for loading the session using the new_session_id
 
-// change session
+
+// change config
     int max_sessions = cfg.get_max_sessions();
     int current_session = cfg.get_curr_session();
     int next_session;
@@ -79,14 +68,6 @@ void Menu::_change_session(Control trigger){
       if (next_session==0) next_session = max_sessions;
     } 
 
-// SKILLPOINT
-// handle session things --> implement session first
-//     Session temp(cfg.get_session_name().c_str());
-//     session = temp;
-//     std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
-
-    cfg.open(next_session);
-    cfg.display();
-    std::cout<<"Menu::change_session : Session changed from "<<current_session<<" to "<<next_session<<std::endl;   
-
+// reset/load new session
+    session.migrate(next_session);
 }

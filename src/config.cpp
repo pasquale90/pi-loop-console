@@ -78,16 +78,32 @@ void Config::save(){
     std::cout<<std::endl; //flush
 }
 
+void Config::reset(){
+    // keep some values (i.e. current_session name)
+    std::string curr_name = currSession_name;
+    // ...
+
+    // open json file
+    Json::Value root;   // will be probably destroyed at the end of this scope
+    std::ifstream config_doc(cfg_json_path, std::ifstream::binary);
+    config_doc >> root;
+
+  // get the template session data
+    auto session_data = root["sessions"][0];
+  
+  // store data
+    _parse_json(session_data);
+    currSession_name = curr_name;
+    
+    save();
+}
+
 int Config::get_max_sessions(){
     return max_sessions;
 }
 
 int Config::get_curr_session(){
     return current_session;
-}
-
-std::string Config::get_session_name(){
-  return currSession_name;
 }
 
 void Config::_open(){
