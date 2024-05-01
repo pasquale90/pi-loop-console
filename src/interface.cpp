@@ -18,7 +18,7 @@ void hardwareInterface::listen(void (Menu::*_notify_menu)(Control, bool), Menu& 
     while(true){
         ui.listen_user(event_occured,msg);
         if (event_occured){            
-            parse_msg(trigger,isHold); // parse the message
+            _parse_msg(trigger,isHold); // parse the message
             // std::cout<<"Interface::listen::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;
             if(trigger==PREV_SESSION || trigger == NEXT_SESSION || trigger == SAVE_SESSION)
                 // _notify_menu(trigger,isHold);
@@ -31,7 +31,7 @@ void hardwareInterface::listen(void (Menu::*_notify_menu)(Control, bool), Menu& 
     }   
 }
 
-void hardwareInterface::parse_msg(Control& trigger, bool& isHold){
+void hardwareInterface::_parse_msg(Control& trigger, bool& isHold){
     trigger = Control(msg%100);
     isHold = msg/100;
     // std::cout<<"Interface::parse_msg::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;

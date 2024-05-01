@@ -38,18 +38,18 @@ Menu& Menu::getInstance() {
 void Menu::_notify_menu(Control msg, bool isHold){
   // std::cout<<"~Menu~::_notify::Control,bool "<<msg<<","<<isHold<<std::endl;  
   // NO HOLD OPERATIONS DEFINED YET...
-  edit(msg);
+  _edit(msg);
 }
 
-void Menu::edit(Control trigger){
+void Menu::_edit(Control trigger){
     //3 menu buttons defined : SAVE_SESSION - PREV_SESSION - NEXT_SESSION
     if (trigger == SAVE_SESSION)
-        save_session();
-    else change_session(trigger);
+        _save_session();
+    else _change_session(trigger);
 }
 
 
-void Menu::save_session(){
+void Menu::_save_session(){
 // 2 things here
 // save config
 //save session (tracks in channels , saved jams ..)
@@ -58,7 +58,7 @@ void Menu::save_session(){
 
 }
 
-void Menu::change_session(Control trigger){
+void Menu::_change_session(Control trigger){
 // 2 things here:
 // change config 
 // reset/load session

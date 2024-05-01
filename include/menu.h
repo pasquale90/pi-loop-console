@@ -11,7 +11,6 @@ class Menu {
         static Menu& getInstance(); //Singleton
 
         void load();
-        void edit(Control);
     
     private:
         //Singleton
@@ -23,8 +22,9 @@ class Menu {
         Config& cfg = Config::getInstance();
         hardwareInterface& interface=hardwareInterface::getInstance();
 
-        void change_session(Control);
-        void save_session();
+        void _edit(Control);
+        void _change_session(Control);
+        void _save_session();
 
         void _notify_menu(Control, bool);
         Session session;

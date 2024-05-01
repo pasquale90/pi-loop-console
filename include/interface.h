@@ -40,7 +40,7 @@ class hardwareInterface{
         std::atomic<bool> event_occured;
         // std::string event_list[2];
 
-        void parse_msg(Control&, bool&);
+        void _parse_msg(Control&, bool&);
 
 };
 
