@@ -18,7 +18,7 @@ set (INCLUDE_DIRECTORIES
 set(SOURCE_FILES
     # src/audiotrack.cpp  
     # src/channel.cpp  
-    # src/handshake.cpp  
+    src/handshake.cpp  
     src/main.cpp  
     src/config.cpp
     src/menu.cpp

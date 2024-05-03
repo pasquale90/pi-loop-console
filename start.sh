@@ -18,9 +18,9 @@ fi
 
 ################################################################ ARGUMENTS ################################################################
 #---------------------------------------------------------------- system -----------------------------------------------------------------#
-audio_device=Generic_1
+audio_device=PCH
 #----------------------------------------------------------------- audio -----------------------------------------------------------------#
-sample_rate=22050 #44100 #16000 #
+sample_rate=44100 #44100 #16000 #
 buffer_size=256 #512
 bit_quantization=24
 ###########################################################################################################################################
@@ -50,10 +50,11 @@ if [[ " $@ " =~ "s" ]]; then
     # fi
 
     # start_jackd
-    # start_server="jackd --realtime --verbose -t 10000 -d alsa -d hw:K6 -r 16000 -p 512"
+    # start_server="jackd --realtime --verbose -t 10000 -d alsa -d hw:PCH -r 44100 -p 512"
     # echo ${sudopass} | sudo -S -k nohup ${startJack_command} &> logs/audioServer.log & 
 
-    nohup ${startJack_command} &> logs/server.log &
+    # nohup ${startJack_command} &> logs/server.log &
+    sudo ${startJack_command}
 fi
 
 sleep 1
@@ -62,7 +63,7 @@ sleep 1
 # echo ${sudopass} | sudo -S -k ./demo ${sample_rate} ${buffer_size} &> logs/audio.log &
 # ./piloop ${args} &> logs/audio.log &
 if [[ " $@ " =~ "e" ]]; then
-    ./piloop 
+    ./piloop &> logs/piloop.log
     echo -e "Run manually with :\n./piloop ${args}"
 fi
 
