@@ -1,4 +1,18 @@
 {
+	"cards":{
+		"template_device":{
+			"num_inputs":2,
+			"num_outputs":2
+		},
+		"PCH":{
+			"num_inputs":1,
+			"num_outputs":2
+		},
+		"K6":{
+			"num_inputs":2,
+			"num_outputs":2
+		}
+	},
 	"last_session" : 2,
 	"sessions" : 
 	[
@@ -50,7 +64,7 @@
 			{
 				"rythm_denominator" : 4,
 				"rythm_numerator" : 4,
-				"tempo" : 120
+				"tempo" : 100
 			},
 			"name" : "session 1"
 		},
@@ -105,6 +119,32 @@
 				"tempo" : 120
 			},
 			"name" : "session 3"
+		},
+		{
+			"audio_settings" : 
+			{
+				"bit_quantization" : 1,
+				"buffer_size" : 1,
+				"sample_rate" : 1
+			},
+			"controls" : 
+			{
+				"dev" : "keyboard",
+				"rel" : "buttons"
+			},
+			"effects" : {},
+			"id" : 4,
+			"looper" : 
+			{
+				"num_channels" : 1
+			},
+			"metronome" : 
+			{
+				"rythm_denominator" : 1,
+				"rythm_numerator" : 1,
+				"tempo" : 1
+			},
+			"name" : "session 4"
 		}
 	]
 }
