@@ -4,7 +4,6 @@
 Session::Session(){
 }
 
-
 void Session::save(){
 // Session::save is responsible for 
 //    a) saving config

@@ -11,12 +11,6 @@ class Session{
     public:
         Session();
         
-        // Comply to the rule of 3/5 <-- ABORTED: No dynamic allocation will be needed. 
-
-        // ~Session();  
-
-        // Config& get_config();
-        
         void save();
         bool migrate(int);
         void reset2defaults();
