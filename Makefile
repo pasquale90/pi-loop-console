@@ -3,7 +3,6 @@ OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
 CFLAGS=-D DEV #DEV/REL
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
-# OBJECTS :=build/handshake.o build/route.o build/channel.o build/session.o build/main.o
 OBJECTS :=build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/main.o
 
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
@@ -17,11 +16,6 @@ all:piloop
 piloop:$(OBJECTS)
 	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV)  $(JACK) -o piloop -ljsoncpp -lpthread
 
-# all:piloop
-
-# piloop:$(OBJECTS)
-# 	$(COMPILE) $(OBJECTS) $(JACK) -o piloop
-
 build/handshake.o:src/handshake.cpp include/handshake.h
 	$(COMPILE) -c src/handshake.cpp -I./include $(JACK) -o build/handshake.o
 
@@ -30,9 +24,6 @@ build/handshake.o:src/handshake.cpp include/handshake.h
 
 # build/channel.o:src/channel.cpp src/handshake.h src/route.h
 # 	$(COMPILE) -c src/channel.cpp -o build/channel.o
-
-# build/session.o:src/session.cpp src/channel.h
-# 	$(COMPILE) -c src/session.cpp -o build/session.o
 
 build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp -I./include $(JSONCPP) -o build/session.o

@@ -25,11 +25,6 @@ int main(int argc, char *argv[]){
 
     AudioStream as;
     as.run_server(argc,argv);
-    // AudioStream as("TestClient",NULL);
-    // as.AudioRouting();
-    // as.streamBuffer(512);
-    // as.closeStream();
-
     
 // initialize a session
 // start console

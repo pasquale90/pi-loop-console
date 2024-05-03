@@ -34,38 +34,4 @@ private:
 
 };
 
-
-/*
-class AudioStream{
-public:
-
-    AudioStream(const char*,const char*); 
-    
-    // void start_server();
-    void connect_client();
-
-    void AudioRouting();
-
-    void closeStream();
-
-    int streamBuffer(jack_nframes_t nframes);
-    
-private:
-    jack_port_t *input_port1;
-    // jack_port_t *input_port2;
-    jack_port_t *output_port_left;
-    jack_port_t *output_port_right;
-    jack_client_t *client;
-
-    jack_default_audio_sample_t *in,*out;
-    const char *server_name;
-    const char *client_name ;
-    const char **fromdevice;
-    const char **todevice;
-
-    static void jack_shutdown (void *arg);
-    void mix();
-};
-
-*/
 #endif
