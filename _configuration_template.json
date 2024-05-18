@@ -1,14 +1,16 @@
 {
 	"cards":{
 		"template_device":{
-			"num_inputs":2,
-			"num_outputs":2
+			"inputs":["mic","inst"],
+			"outputs":["left_speaker_1","right_speaker_1","left_speaker_2","right_speaker_2","phones"]
 		},
 		"PCH":{
-			"num_inputs":1,
-			"num_outputs":2
+			"inputs":["mic"],
+			"outputs":["left_speaker","right_speaker"]
 		},
 		"K6":{
+			"inputs":["input_1","input_2","input_3","input_4","input_5_SPDIF"],
+			"outputs":["left_speaker_1","right_speaker_1","left_speaker_2","right_speaker_2","phones"],
 			"num_inputs":2,
 			"num_outputs":2
 		}
@@ -40,7 +42,13 @@
 				"rythm_numerator" : 4,
 				"tempo" : 120
 			},
-			"name" : "template"
+			"name" : "template",
+			"UI_button_state" : {
+				"button_1":true,
+				"button_2":false,
+				"button_3":true,
+				"button_...":true
+			}
 		},
 		{
 			"audio_settings" : 
