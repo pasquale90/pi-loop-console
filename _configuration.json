@@ -1,13 +1,40 @@
 {
+	"audio_settings" : 
+	{
+		"audio_device" : "PCH",
+		"audio_devices" : 
+		{
+			"K6" : 
+			{
+				"instIn" : true,
+				"micIn" : true,
+				"phones" : true,
+				"stereoOut" : true,
+				"subOut" : true
+			},
+			"PCH" : 
+			{
+				"instIn" : false,
+				"micIn" : true,
+				"phones" : false,
+				"stereoOut" : true,
+				"subOut" : false
+			}
+		},
+		"bit_quantization" : 24,
+		"buffer_size" : 256,
+		"sample_rate" : 44100
+	},
 	"last_session" : 2,
 	"sessions" : 
 	[
 		{
-			"audio_settings" : 
+			"UI_button_state" : 
 			{
-				"bit_quantization" : 24,
-				"buffer_size" : 256,
-				"sample_rate" : 22050
+				"button_..." : true,
+				"button_1" : true,
+				"button_2" : false,
+				"button_3" : true
 			},
 			"controls" : 
 			{
@@ -29,12 +56,6 @@
 			"name" : "template"
 		},
 		{
-			"audio_settings" : 
-			{
-				"bit_quantization" : 24,
-				"buffer_size" : 256,
-				"sample_rate" : 22050
-			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -55,12 +76,6 @@
 			"name" : "session 1"
 		},
 		{
-			"audio_settings" : 
-			{
-				"bit_quantization" : 24,
-				"buffer_size" : 256,
-				"sample_rate" : 22050
-			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -81,12 +96,6 @@
 			"name" : "session 2"
 		},
 		{
-			"audio_settings" : 
-			{
-				"bit_quantization" : 24,
-				"buffer_size" : 256,
-				"sample_rate" : 22050
-			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -107,12 +116,6 @@
 			"name" : "session 3"
 		},
 		{
-			"audio_settings" : 
-			{
-				"bit_quantization" : 1,
-				"buffer_size" : 1,
-				"sample_rate" : 1
-			},
 			"controls" : 
 			{
 				"dev" : "keyboard",

@@ -28,11 +28,12 @@ void Config::open(int curr_session){
 
   // get session data
     // int num_sessions = root["sessions"].size();
-    auto session_data = root["sessions"][curr_session];
-    std::cout<< session_data["name"] <<"  ---->  is of type"<<typeid(session_data).name()<<"\n\n\n\n"<<std::endl;
-  
+    // auto session_data = root["sessions"][curr_session];
+    // std::cout<< session_data["name"] <<"  ---->  is of type"<<typeid(session_data).name()<<"\n\n\n\n"<<std::endl;
+
   // store data
-    _parse_json(session_data);
+    _parse_session(root["sessions"][curr_session]);
+    // _parse_audio_settings(root["audio_settings"]);
 
   //save the current session as the lat session
     root["last_session"] = curr_session;
@@ -48,9 +49,15 @@ void Config::display(){
     std::cout<<"#################### Session "<<current_session<<" Config ####################\n";
     std::cout<<"---------------------- session name : "<<currSession_name<<" ----------------------------\n";
     std::cout<<"---------------------- audio ----------------------------\n";
+    std::cout<<"audio device             \t:\t"<<device_settings.audio_device<<std::endl;
     std::cout<<"sampling rate            \t:\t"<<audio_settings.sample_rate<<std::endl;
     std::cout<<"quantization             \t:\t"<<audio_settings.bit_quantization<<std::endl;
     std::cout<<"buffer size              \t:\t"<<audio_settings.buffer_size<<std::endl;
+    std::cout<<"is sterero               \t:\t"<<device_settings.stereoOut<<std::endl;
+    std::cout<<"has sub out              \t:\t"<<device_settings.subOut<<std::endl;
+    std::cout<<"phones                   \t:\t"<<device_settings.phones<<std::endl;
+    std::cout<<"has mic input            \t:\t"<<device_settings.micIn<<std::endl;
+    std::cout<<"has inst input           \t:\t"<<device_settings.instIn<<std::endl;
     std::cout<<"--------------------- metronome ----------------------------\n";
     std::cout<<"Tempo                    \t:\t"<<metronome.tempo<<std::endl;
     std::cout<<"rythm_numerator          \t:\t"<<metronome.rythm_numerator<<std::endl;
@@ -68,9 +75,13 @@ void Config::save(){
     root["sessions"][current_session]["metronome"]["tempo"] = metronome.tempo;
     root["sessions"][current_session]["metronome"]["rythm_denominator"] = metronome.rythm_denominator;
     root["sessions"][current_session]["metronome"]["rythm_numerator"] = metronome.rythm_numerator;
-    root["sessions"][current_session]["audio_settings"]["buffer_size"] = audio_settings.buffer_size;
-    root["sessions"][current_session]["audio_settings"]["sample_rate"] = audio_settings.sample_rate;
-    root["sessions"][current_session]["audio_settings"]["bit_quantization"] = audio_settings.bit_quantization;
+    // root["sessions"][current_session]["audio_settings"]["buffer_size"] = audio_settings.buffer_size;
+    // root["sessions"][current_session]["audio_settings"]["sample_rate"] = audio_settings.sample_rate;
+    // root["sessions"][current_session]["audio_settings"]["bit_quantization"] = audio_settings.bit_quantization;
+
+// @TODO
+// save current button state
+// save any type of information related to the storage of audio data
 
     std::ofstream os(cfg_json_path, std::ios::binary);
     os << root;
@@ -92,7 +103,7 @@ void Config::reset(){
     auto session_data = root["sessions"][0];
   
   // store data
-    _parse_json(session_data);
+    _parse_session(session_data);
     currSession_name = curr_name;
     
     save();
@@ -118,22 +129,42 @@ void Config::_open(){
     std::cout<<"last session(==current_session) is "<<last_session<<"=="<<current_session<<std::endl;
 
   // get data
-    auto session_data = root["sessions"][current_session];
-    std::cout<< session_data["name"] <<"  ---->  is of type"<<typeid(session_data).name()<<"\n\n\n\n"<<std::endl;
-    _parse_json(session_data);
+    // auto session_data = root["sessions"][current_session];
+    // std::cout<< session_data["name"] <<"  ---->  is of type"<<typeid(session_data).name()<<"\n\n\n\n"<<std::endl;
+
+    std::cout<< root["audio_settings"]<<"  ---->  is of type"<<typeid(root["audio_settings"]).name()<<"\n\n\n\n"<<std::endl;
+
+    _parse_session(root["sessions"][current_session]);
+    _parse_audio_settings(root["audio_settings"]);
 }
 
-void Config::_parse_json(Json::Value data){
+void Config::_parse_session(Json::Value data){
     // parse data
     currSession_name = data["name"].asString();
     metronome.tempo=data["metronome"]["tempo"].asFloat();
     metronome.rythm_denominator=data["metronome"]["rythm_denominator"].asInt();
     metronome.rythm_numerator=data["metronome"]["rythm_numerator"].asInt();
-    audio_settings.buffer_size=data["audio_settings"]["buffer_size"].asInt();
-    audio_settings.sample_rate=data["audio_settings"]["sample_rate"].asInt();
-    audio_settings.bit_quantization=data["audio_settings"]["bit_quantization"].asInt();
+    // audio_settings.buffer_size=data["audio_settings"]["buffer_size"].asInt();
+    // audio_settings.sample_rate=data["audio_settings"]["sample_rate"].asInt();
+    // audio_settings.bit_quantization=data["audio_settings"]["bit_quantization"].asInt();
 }
 
+void Config::_parse_audio_settings(Json::Value data){
+    device_settings.audio_device=data["audio_device"].asString();
+    audio_settings.buffer_size=data["buffer_size"].asInt();
+    audio_settings.sample_rate=data["sample_rate"].asInt();
+    audio_settings.bit_quantization=data["bit_quantization"].asInt();
+    _parse_audio_device(data["audio_devices"][device_settings.audio_device]);
+}
+
+void Config::_parse_audio_device(Json::Value data){
+    // parse data
+    device_settings.stereoOut=data["stereoOut"].asBool();
+		device_settings.subOut=data["subOut"].asBool();
+		device_settings.phones=data["phones"].asBool();
+		device_settings.micIn=data["micIn"].asBool();
+		device_settings.instIn=data["instIn"].asBool();
+}
 
 
 
