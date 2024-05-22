@@ -60,6 +60,14 @@ static void setupKeyCodes(void)
     keycodes[KEY_J] = "20";
     keycodes[KEY_L] = "21";
     keycodes[KEY_K] = "22";
+
+    keycodes[KEY_F1] = "23";
+    keycodes[KEY_F2] = "24";
+    keycodes[KEY_F5] = "25";
+    keycodes[KEY_F6] = "26";
+    keycodes[KEY_F9] = "27";
+    keycodes[KEY_F10] = "28";
+    keycodes[KEY_ESC] = "29";
 }
 
 static const char* printableEventType(int t)
