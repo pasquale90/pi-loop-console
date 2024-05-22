@@ -6,6 +6,7 @@
 #include <json/json.h>
 #include "metronome.h"
 
+// const std::string cfg_json_path = "_configuration.json" ;
 const std::string cfg_json_path = "_configuration.json" ;
 
 class Config {
@@ -26,6 +27,14 @@ class Config {
 					int bit_quantization;
 			}audio_settings;
 			
+			struct{
+				std::string audio_device;
+				bool stereoOut;
+				bool subOut;
+				bool phones;
+				bool micIn;
+				bool instIn;
+			}device_settings;
 			// expand latter
 			// struct controls{}; 
 			// struct looper {};
@@ -41,7 +50,9 @@ class Config {
 
 			static Config* cfg_instance_ptr;
 			void _open();// open only for the first time
-			void _parse_json(Json::Value); //parse_json values
+			void _parse_session(Json::Value); //parse_json values
+			void _parse_audio_settings(Json::Value); //parse_json values
+			void _parse_audio_device(Json::Value); //parse_json values
 
 			int max_sessions;
 			int current_session;

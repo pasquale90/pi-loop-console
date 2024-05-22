@@ -16,26 +16,23 @@ set (INCLUDE_DIRECTORIES
     )
     
 set(SOURCE_FILES
-    # src/audiotrack.cpp  
-    # src/channel.cpp  
+    src/audioserver.cpp  
     src/handshake.cpp  
     src/main.cpp  
     src/config.cpp
     src/menu.cpp
+    src/piloop.cpp
     src/interface.cpp
     src/keyboard.cpp
     src/session.cpp
-    # src/miditrack.cpp  
-    # src/route.cpp  
-    # src/server.cpp  
-    # src/session.cpp  
-    # src/track.cpp
 )
 
 include(CMakePrintHelpers)
 cmake_print_variables(INCLUDE_DIRECTORIES)
 set(LIBRARIES
     jack
+    jackserver
+    jacknet
     pthread
     jsoncpp
     evdev

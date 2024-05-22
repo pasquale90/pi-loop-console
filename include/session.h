@@ -2,26 +2,29 @@
 #define SESSION_H_INCLUDED
 
 #include <iostream>
-#include "config.h"
 #include "controls.h"
-// enum Control: unsigned short;
-
+#include "handshake.h" 
 
 class Session{
     public:
         Session();
         
+        void load();
         void save();
         bool migrate(int);
-        void reset2defaults();
+        void evacuate();
+        void notify_session(Control, bool);
+
         void set_name(const char*);
         const char* get_name();
 
-        void notify_session(Control, bool);
     private:
+        Handshake hs;
         
         Config& cfg = Config::getInstance();
 
+        void reset2defaults();
+        
 };
 
 #endif

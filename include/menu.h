@@ -1,15 +1,15 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 
-// #include "config.h"
-#include "interface.h"
 #include "session.h"
 
 class Menu {
     public:
         static Menu& getInstance(); //Singleton
 
-        void load();
+        void load_session();
+        void notify_menu(Control, bool);
+        void unload();
     
     private:
         //Singleton
@@ -19,13 +19,11 @@ class Menu {
         static Menu* menu_instance_ptr;
 
         Config& cfg = Config::getInstance();
-        hardwareInterface& interface=hardwareInterface::getInstance();
 
         void _edit(Control);
         void _change_session(Control);
         void _save_session();
 
-        void _notify_menu(Control, bool);
         Session session;
 };
 

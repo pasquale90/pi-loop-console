@@ -6,15 +6,15 @@ Menu* Menu::menu_instance_ptr = nullptr;
 Menu::Menu(){
 } 
 
-void Menu::load(){
-
+void Menu::load_session(){
+  session.load();
+}
+// void Menu::load(){
   // Session temp(cfg.currSession_name.c_str());
   // session = temp;
   // std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
-
-  interface.listen(&Menu::_notify_menu, *this, &Session::notify_session,session);
-
-}
+  // interface.listen(&Menu::_notify_menu, *this, &Session::notify_session,session);
+// }
 
 Menu& Menu::getInstance() {
   
@@ -24,15 +24,26 @@ Menu& Menu::getInstance() {
   return *menu_instance_ptr;  // Dereference the pointer to return the instance
 }
 
-void Menu::_notify_menu(Control msg, bool isHold){
+void Menu::unload(){
+  session.evacuate();
+  delete menu_instance_ptr;
+  std::cout<<"Unload menu"<<std::endl;
+}
+
+void Menu::notify_menu(Control msg, bool isHold){
   // NO HOLD OPERATIONS DEFINED YET...
-  _edit(msg);
+    if(msg!=PREV_SESSION && msg != NEXT_SESSION && msg != SAVE_SESSION)
+      session.notify_session(msg,isHold);
+    else
+      _edit(msg);
 }
 
 void Menu::_edit(Control trigger){
-    //3 menu buttons defined : SAVE_SESSION - PREV_SESSION - NEXT_SESSION
+    //3 menu buttons defined : SAVE_SESSION - PREV_SESSION - NEXT_SESSION + QUIT
     if (trigger == SAVE_SESSION)
         _save_session();
+    // else if (trigger == SHUTDOWN_PILOOP)
+        // terminate 
     else _change_session(trigger);
 }
 

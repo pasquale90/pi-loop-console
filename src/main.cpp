@@ -1,33 +1,12 @@
-#include <iostream>
-#include <thread>
-#include "menu.h"
-
+#include "piloop.h"
 
 // callback_process()
 
-
-#include "handshake.h"
-
 int main(int argc, char *argv[]){
 
-    std::cout<<"Hello Piloop"<<std::endl;
+    PiLoop piloop;
+    piloop.start_console();
 
-/*
-    Menu& menu = Menu::getInstance();
-    
-//calls menu.load() 
-    // menu.load();
-    std::thread menuThread(&Menu::load, &menu);
-    menuThread.join();
-// handle session menu
-    // menu.change_session();
-*/
-
-    AudioStream as;
-    as.run_server(argc,argv);
-    
-// initialize a session
-// start console
-
+    std::cout<<"end of main"<<std::endl;
     return 0;
 }

@@ -3,6 +3,7 @@
 hardwareInterface* hardwareInterface::interface_instance_ptr = nullptr;
 
 hardwareInterface::hardwareInterface(){
+    keep_running.store(true);
 }
 
 hardwareInterface& hardwareInterface::getInstance() {
@@ -12,24 +13,43 @@ hardwareInterface& hardwareInterface::getInstance() {
   return *interface_instance_ptr;  // Dereference the pointer to return the instance
 }
 
-void hardwareInterface::listen(void (Menu::*_notify_menu)(Control, bool), Menu& m,    void (Session::*_notify_session)(Control, bool), Session& s){
+// void hardwareInterface::listen(void (Menu::*_notify_menu)(Control, bool), Menu& m,    void (Session::*_notify_session)(Control, bool), Session& s){
+//     Control trigger;
+//     bool isHold;
+//     while(true){
+//         ui.listen_user(event_occured,msg);
+//         if (event_occured){            
+//             _parse_msg(trigger,isHold); // parse the message
+//             // std::cout<<"Interface::listen::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;
+//             if(trigger==PREV_SESSION || trigger == NEXT_SESSION || trigger == SAVE_SESSION || trigger == SHUTDOWN_PILOOP)
+//                 // _notify_menu(trigger,isHold);
+//                 // (*notify_menu)(trigger,isHold);
+//                 (m.*_notify_menu)(trigger,isHold);
+//             else
+//                 (s.*_notify_session)(trigger,isHold);
+//                 // _notify_session(trigger,isHold);
+//         }
+//     }   
+// }
+
+
+void hardwareInterface::listen(void (PiLoop::*_notify)(Control, bool), PiLoop& pl){
     Control trigger;
     bool isHold;
-    while(true){
+    while(keep_running.load()){
         ui.listen_user(event_occured,msg);
         if (event_occured){            
             _parse_msg(trigger,isHold); // parse the message
-            // std::cout<<"Interface::listen::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;
-            if(trigger==PREV_SESSION || trigger == NEXT_SESSION || trigger == SAVE_SESSION)
-                // _notify_menu(trigger,isHold);
-                // (*notify_menu)(trigger,isHold);
-                (m.*_notify_menu)(trigger,isHold);
-            else
-                (s.*_notify_session)(trigger,isHold);
-                // _notify_session(trigger,isHold);
+            (pl.*_notify)(trigger,isHold);
         }
     }   
 }
+
+void hardwareInterface::deafen(){
+    keep_running.store(false);
+    std::cout<<"interface::deafening"<<std::endl;
+}
+
 
 void hardwareInterface::_parse_msg(Control& trigger, bool& isHold){
     trigger = Control(msg%100);
