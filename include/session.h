@@ -11,7 +11,7 @@ class Session{
         
         void load();
         void save();
-        bool migrate(int);
+        void migrate(int);
         void evacuate();
         void notify_session(Control, bool);
 

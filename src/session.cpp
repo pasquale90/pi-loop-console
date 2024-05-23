@@ -28,7 +28,7 @@ void Session::load(){
     hs.setup();
 }
 
-bool Session::migrate(int next_session){
+void Session::migrate(int next_session){
 // Session::migrate is responsible for loading all session data
 
 // 
