@@ -15,30 +15,34 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <thread>
+// #include <thread>
 #include <atomic>
 
                     #include <chrono>
 #include <jack/jack.h>
 #include "config.h"
 
+static const float cpuLoad_thress = 0.8;
+
 // @TODO create status control for client -> use it within connect() member function.
-struct Status{
+struct {
     bool samplingRate;
     bool bufferSize;
     bool isRealTime;
     float cpuload;
     float latency_ms;
+    int link_client;
+    int set_process_callback;
+    int jack_set_buffer_size;
+    bool activate;
+    bool register_devices;
     bool client_connected;
-    // bool client_activated;
-    // bool devices_registered;
-    // bool ports_registered;
-    // bool ports_connected;
-};
+}client_status;  
 
 class Handshake{
   public:
         Handshake();
+        
 // rule of 5
     // Destructor 
         // ~Handshake(); 
@@ -70,7 +74,7 @@ class Handshake{
         void unmute_instrument();
 
         int process(jack_nframes_t);
-    
+  
   private:
       
         char *client_name;
@@ -84,8 +88,8 @@ class Handshake{
         jack_port_t* register_output_port(const char*);
         
         char* _reset_client_name();
-        void link_client();
-        void set_process_callback();
+        int link_client();
+        int set_process_callback();
         void prevent_failure();
         bool activate();
 
@@ -94,7 +98,7 @@ class Handshake{
 
         std::atomic<bool> is_running,is_firsTime,reinitialization;
         
-        void connect();
+        void connect(bool verbose = false);
         void disconnect();
         
         void connect_input_device(int, const char*);
@@ -107,10 +111,9 @@ class Handshake{
         bool realTime_enabled ();
 
         // other 
-        // void info_control ();
+        bool verbose;
+        void info_control();
         void check_status();
-        Status status;
-
 };
 
 #endif

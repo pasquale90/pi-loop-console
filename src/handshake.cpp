@@ -38,6 +38,8 @@ Handshake::Handshake(){
     is_firsTime.store(true);
     reinitialization.store(true);
 
+    // ClientStatus client_status();
+
     std::cout<<"\n\n######### HS Constructor###############"<<std::endl;
     std::cout<<"is_running :"<<is_running.load()<<"\nreinitialization :"<<reinitialization.load()<<"\nis_firsTime :"<<is_firsTime.load()<<std::endl;
     std::cout<<"\n\n######### (end)HS Constructor###############"<<std::endl;
@@ -57,12 +59,12 @@ Handshake::Handshake(){
 //     serverThread.join();
 // }
 
-void Handshake::connect(){
-    
+void Handshake::connect(bool verbose){
 
-    link_client();
-    set_process_callback();
-    prevent_failure(); 
+    client_status.link_client = link_client();
+    client_status.set_process_callback = set_process_callback();
+
+    prevent_failure();
     
 // @TODO conditions require further work
     //initialize ports
@@ -75,21 +77,14 @@ void Handshake::connect(){
         output_port_right = register_output_port("right_speaker");
     
 // change server operations
-    bool success = jack_set_buffer_size (client,cfg.audio_settings.buffer_size);
-    // if (success) printf("Buffer size changed!");
-    // else printf("Buffer size NOT changed :(");
+    client_status.jack_set_buffer_size = jack_set_buffer_size (client,cfg.audio_settings.buffer_size);
 
-// latency_ms
+// @TODO latency_ms
 
-    success = activate();
-if (success) printf("Client activated");
-else printf("Client NOT activated :(");
+    client_status.activate = activate();
+    client_status.register_devices = register_devices();
 
-    success = register_devices();
-if (success) printf("Devices registered!");
-else printf("Devices NOT registered :(");
-
-// check from and to device length of data structures
+// @TODO check from and to device length of data structures
     // int i=0;
     // std::cout<<"FROM DEVICE "<<std::endl;
     // while(from_device[i]){
@@ -102,16 +97,16 @@ else printf("Devices NOT registered :(");
     //     std::cout<<to_device[i]<<" ";
     //     ++i;
     // }std::cout<<std::endl;
-
-
+// @TODO check from and to device length of data structures <-same as above
     connect_input_device(0,"microphone");
     // connect_input_device(1,"instrunment");
     connect_output_device(0,"left_speaker");
     connect_output_device(1,"right_speaker");
 
-    status.client_connected=true;
-
-    // check_status();
+    client_status.client_connected=true;
+    
+    this->verbose=verbose;
+    check_status(); // default value : verbose = false;
 }
 
 void Handshake::disconnect(){
@@ -188,15 +183,15 @@ char* Handshake::_reset_client_name(){
 }
 
 inline const char* _concat_chars(const char* ch1, const char* ch2){
-    int s1 = sizeof(ch1)/sizeof(ch1[0]);
-    int s2 = sizeof(ch2)/sizeof(ch2[0]);
-    char *s = new char[s1+s2+1];
+    // int s1 = sizeof(ch1)/sizeof(ch1[0]);
+    // int s2 = sizeof(ch2)/sizeof(ch2[0]);
+    char *s = new char[20];
     strcpy(s,ch1);
     strcat(s,ch2);
     return s;
 }
 
-void Handshake::link_client(){
+int Handshake::link_client(){
     jack_options_t options = JackNullOption;
     jack_status_t status;
     
@@ -210,7 +205,7 @@ void Handshake::link_client(){
         if (status & JackServerFailed) {
             fprintf (stderr, "Unable to connect to JACK server\n");
         }
-        exit (1);
+        return status;
     }
     if (status & JackServerStarted) {
         fprintf (stderr, "JACK server started\n");
@@ -219,12 +214,15 @@ void Handshake::link_client(){
         client_name = jack_get_client_name(client);
         fprintf (stderr, "unique name `%s' assigned\n", client_name);
     }
+    std::cout<<"Handshake::link_client::status ----> "<<status<<std::endl;
+    return status;
 }
 
-void Handshake::set_process_callback(){
+int Handshake::set_process_callback(){
      // tell the JACK server to call `process()' whenever
     // there is work to be done.
-   jack_set_process_callback (client, streamAudio, this);
+   return jack_set_process_callback (client, streamAudio, this);
+
 }
 
 bool Handshake::register_devices(){
@@ -248,8 +246,8 @@ bool Handshake::register_devices(){
 void Handshake::connect_input_device(int input_device,const char* name){
     
 // put in private member function -> get/form port name
-    int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
-    char ffname[sz];
+    // int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
+    char ffname[20];
     strcpy(ffname,client_name);
     strcat(ffname,":");
     strcat(ffname,name);
@@ -269,8 +267,8 @@ void Handshake::connect_input_device(int input_device,const char* name){
 void Handshake::connect_output_device(int output_device, const char* name){
 
 // put in private member function -> get/form port name
-    int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
-    char ffname[sz];
+    // int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
+    char ffname[20];
     strcpy(ffname,client_name);
     strcat(ffname,":");
     strcat(ffname,name);
@@ -308,34 +306,61 @@ void Handshake::unmute_instrument()
 }
 
 
-void Handshake::check_status (){
+void Handshake::info_control (){
     
     std::cout<<"------------------------- Check status of client "<<client_name<<" ------------------------- "<<std::endl;
     bool isOk = true;
-    status.samplingRate = cfg.audio_settings.sample_rate !=get_sample_rate();
-    if (!status.samplingRate){
+    
+    if (!client_status.samplingRate){
         isOk=false;
-        std::cout<<"Handshake::info_control : cfg mismatch -> Sampling rate is set to: {"<<get_sample_rate()<<"}"<<std::endl;
+        std::cout<<"Handshake::info_control : cfg mismatch -> Sampling rate is set to: {"<<get_sample_rate()<<"!="<<cfg.audio_settings.sample_rate<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : Sampling rate : OK "<<std::endl;
 
-    status.bufferSize = cfg.audio_settings.buffer_size !=get_buffer_size();
-    if (status.bufferSize){
+    if (!client_status.bufferSize){
         isOk=false;
-        std::cout<<"Handshake::info_control : cfg mismatch -> Buffer size is set to {"<<get_buffer_size()<<"}"<<std::endl;
+        std::cout<<"Handshake::info_control : cfg mismatch -> Buffer size is set to {"<<get_buffer_size()<<"!="<<client_status.bufferSize<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : Buffer size : OK "<<std::endl;
 
-    status.isRealTime = realTime_enabled();
-    if (!status.isRealTime){
+    if (!client_status.isRealTime){
         isOk=false;
-        std::cout<<"Handshake::info_control : WARNING -> Real time enabled: {"<<realTime_enabled()<<"}"<<std::endl;
+        std::cout<<"Handshake::info_control : WARNING -> Real time enabled: {"<<client_status.isRealTime<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : Real Time support : OK "<<std::endl;
 
-    status.cpuload = get_cpu_load();
-    if ( status.cpuload >= 0.8 ){
+    if ( client_status.cpuload >= cpuLoad_thress ){
         isOk=false;
-        std::cout<<"Handshake::info_control : WARNING -> Current CPU load : {"<<get_cpu_load()<<"}"<<std::endl;
-    }else std::cout<<"Handshake::info_control : CPU load : OK "<<std::endl;
+        std::cout<<"Handshake::info_control : WARNING -> Current CPU load : {"<<client_status.cpuload<<"}"<<std::endl;
+    }else std::cout<<"Handshake::info_control : CPU load : OK (CPU load = "<<client_status.cpuload<<")"<<std::endl;
 
+    if (client_status.link_client != 0){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR ->  : Handshake::link_client failed with error {"<<client_status.link_client<<"}"<<std::endl;
+    }else std::cout<<"Handshake::info_control : link_client : OK "<<std::endl;
+
+    if (client_status.set_process_callback != 0){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR -> Handshake::set_process_callback failed with error : {"<<client_status.set_process_callback<<"}"<<std::endl;
+    }else std::cout<<"Handshake::info_control : set_process_callback : OK "<<std::endl;
+
+    if (client_status.jack_set_buffer_size != 0){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR -> Handshake::jack_set_buffer_size failed with error: {"<<client_status.jack_set_buffer_size<<"}"<<std::endl;
+    }else std::cout<<"Handshake::info_control : jack_set_buffer_size : OK "<<std::endl;
+
+    if (!client_status.activate){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR -> client is not activated"<<std::endl;
+    }else std::cout<<"Handshake::info_control : activate : OK "<<std::endl;
+
+    if (!client_status.register_devices){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR -> devices are not registered"<<std::endl;
+    }else std::cout<<"Handshake::info_control : register_devices : OK "<<std::endl;
+
+    if (!client_status.client_connected){
+        isOk=false;
+        std::cout<<"Handshake::info_control : ERROR -> client NOT connected"<<std::endl;
+    }else std::cout<<"Handshake::info_control : client_connected : OK "<<std::endl;
+    
 // @TODO later
 
     // if (status.latency_ms > 15){
@@ -344,28 +369,28 @@ void Handshake::check_status (){
     // }else std::cout<<"Handshake::info_control : Latency : OK "<<std::endl;
 
     if ( isOk ){
-        std::cout<<"Handshake::check_status : isOk"<<std::endl;
-    }else std::cout<<"Handshake::check_status : check \'\'Handshake::info_control\'\' above.."<<std::endl;
+        std::cout<<"Handshake::info_control : OK"<<std::endl;
+    }else std::cout<<"Handshake::info_control : check \'\'Handshake::info_control\'\' above.."<<std::endl;
 
     std::cout<<"------------------------------------------------------------------------------------ "<<std::endl;
-    // return isOk;
 }
 
-// bool Handshake::check_status(){
-//     // do the comparison with the config values here
-//     if ( info_control() ){
-//         std::cout<<"Handshake::check_status : isOk"<<std::endl;
-//     }else std::cout<<"Handshake::check_status : check \'\'Handshake::info_control\'\' above.."<<std::endl;
-        
-    
-// }
+void Handshake::check_status(){
+    client_status.samplingRate = ((uint32_t)cfg.audio_settings.sample_rate) == get_sample_rate();
+    client_status.bufferSize = ((uint32_t)cfg.audio_settings.buffer_size) == get_buffer_size();
+    client_status.isRealTime = realTime_enabled();
+    client_status.cpuload = get_cpu_load();
+
+    if (verbose)
+        info_control();
+}
 
 uint32_t Handshake::get_sample_rate (){
-    return jack_get_sample_rate (client);
+    return (uint32_t)jack_get_sample_rate (client);
 }
 
 uint32_t Handshake::get_buffer_size (){
-    return jack_get_buffer_size (client);
+    return (uint32_t)jack_get_buffer_size (client);
 }
 
 float Handshake::get_cpu_load (){
