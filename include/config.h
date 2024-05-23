@@ -3,8 +3,12 @@
 
 #include <fstream>
 #include <string>
+#include <unordered_map>
 #include <json/json.h>
 #include "metronome.h"
+
+// struct Control;
+#include "controls.h"
 
 // const std::string cfg_json_path = "_configuration.json" ;
 const std::string cfg_json_path = "_configuration.json" ;
@@ -38,6 +42,10 @@ class Config {
 			// expand latter
 			// struct controls{}; 
 			// struct looper {};
+			std::unordered_map<Control,bool> button_states;
+			 
+			bool get_button_state(const Control&);
+			void toggle_button_state(const Control&);
 
 			int get_max_sessions();
 			int get_curr_session();

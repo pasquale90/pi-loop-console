@@ -25,16 +25,22 @@
 		"buffer_size" : 256,
 		"sample_rate" : 44100
 	},
-	"last_session" : 2,
+	"last_session" : 3,
 	"sessions" : 
 	[
 		{
-			"UI_button_state" : 
+			"UI_button_states" : 
 			{
-				"button_..." : true,
-				"button_1" : true,
-				"button_2" : false,
-				"button_3" : true
+				"IN1_ARM" : true,
+				"IN1_EFF1" : false,
+				"IN1_EFF2" : false,
+				"IN1_EFF3" : false,
+				"IN1_MNTR" : true,
+				"IN2_ARM" : true,
+				"IN2_EFF1" : false,
+				"IN2_EFF2" : false,
+				"IN2_EFF3" : false,
+				"IN2_MNTR" : true
 			},
 			"controls" : 
 			{
@@ -56,6 +62,19 @@
 			"name" : "template"
 		},
 		{
+			"UI_button_states" : 
+			{
+				"IN1_ARM" : true,
+				"IN1_EFF1" : false,
+				"IN1_EFF2" : false,
+				"IN1_EFF3" : false,
+				"IN1_MNTR" : true,
+				"IN2_ARM" : false,
+				"IN2_EFF1" : false,
+				"IN2_EFF2" : false,
+				"IN2_EFF3" : false,
+				"IN2_MNTR" : false
+			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -76,6 +95,19 @@
 			"name" : "session 1"
 		},
 		{
+			"UI_button_states" : 
+			{
+				"IN1_ARM" : true,
+				"IN1_EFF1" : true,
+				"IN1_EFF2" : false,
+				"IN1_EFF3" : false,
+				"IN1_MNTR" : true,
+				"IN2_ARM" : false,
+				"IN2_EFF1" : false,
+				"IN2_EFF2" : true,
+				"IN2_EFF3" : false,
+				"IN2_MNTR" : true
+			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -96,6 +128,19 @@
 			"name" : "session 2"
 		},
 		{
+			"UI_button_states" : 
+			{
+				"IN1_ARM" : true,
+				"IN1_EFF1" : true,
+				"IN1_EFF2" : true,
+				"IN1_EFF3" : true,
+				"IN1_MNTR" : true,
+				"IN2_ARM" : false,
+				"IN2_EFF1" : false,
+				"IN2_EFF2" : false,
+				"IN2_EFF3" : false,
+				"IN2_MNTR" : false
+			},
 			"controls" : 
 			{
 				"dev" : "keyboard",
@@ -116,6 +161,19 @@
 			"name" : "session 3"
 		},
 		{
+			"UI_button_states" : 
+			{
+				"IN1_ARM" : true,
+				"IN1_EFF1" : false,
+				"IN1_EFF2" : false,
+				"IN1_EFF3" : false,
+				"IN1_MNTR" : true,
+				"IN2_ARM" : true,
+				"IN2_EFF1" : false,
+				"IN2_EFF2" : false,
+				"IN2_EFF3" : false,
+				"IN2_MNTR" : true
+			},
 			"controls" : 
 			{
 				"dev" : "keyboard",

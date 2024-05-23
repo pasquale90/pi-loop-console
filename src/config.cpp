@@ -62,6 +62,17 @@ void Config::display(){
     std::cout<<"Tempo                    \t:\t"<<metronome.tempo<<std::endl;
     std::cout<<"rythm_numerator          \t:\t"<<metronome.rythm_numerator<<std::endl;
     std::cout<<"rythm_denominator        \t:\t"<<metronome.rythm_denominator<<std::endl;
+    std::cout<<"--------------------- button's state ----------------------------\n";
+    std::cout<<"IN1_ARM                  \t:\t"<<button_states[IN1_ARM]<<std::endl;
+    std::cout<<"IN1_MNTR                 \t:\t"<<button_states[IN1_MNTR]<<std::endl;
+    std::cout<<"IN2_ARM                  \t:\t"<<button_states[IN2_ARM]<<std::endl;
+    std::cout<<"IN2_MNTR                 \t:\t"<<button_states[IN2_MNTR]<<std::endl;
+    std::cout<<"IN1_EFF1                 \t:\t"<<button_states[IN1_EFF1]<<std::endl;
+    std::cout<<"IN1_EFF2                 \t:\t"<<button_states[IN1_EFF2]<<std::endl;
+    std::cout<<"IN1_EFF3                 \t:\t"<<button_states[IN1_EFF3]<<std::endl;
+    std::cout<<"IN2_EFF1                 \t:\t"<<button_states[IN2_EFF1]<<std::endl;
+    std::cout<<"IN2_EFF2                 \t:\t"<<button_states[IN2_EFF2]<<std::endl;
+    std::cout<<"IN2_EFF3                 \t:\t"<<button_states[IN2_EFF3]<<std::endl;
     std::cout<<"#########################################################\n\n";
 }
 
@@ -82,6 +93,16 @@ void Config::save(){
 // @TODO
 // save current button state
 // save any type of information related to the storage of audio data
+    root["sessions"][current_session]["UI_button_states"]["IN1_ARM"]=button_states[IN1_ARM];
+    root["sessions"][current_session]["UI_button_states"]["IN1_MNTR"]=button_states[IN1_MNTR];
+    root["sessions"][current_session]["UI_button_states"]["IN2_ARM"]=button_states[IN2_ARM];
+    root["sessions"][current_session]["UI_button_states"]["IN1_MNTR"]=button_states[IN2_MNTR];
+    root["sessions"][current_session]["UI_button_states"]["IN1_EFF1"]=button_states[IN1_EFF1];
+    root["sessions"][current_session]["UI_button_states"]["IN1_EFF2"]=button_states[IN1_EFF2];
+    root["sessions"][current_session]["UI_button_states"]["IN1_EFF3"]=button_states[IN1_EFF3];
+    root["sessions"][current_session]["UI_button_states"]["IN2_EFF1"]=button_states[IN2_EFF1];
+    root["sessions"][current_session]["UI_button_states"]["IN2_EFF2"]=button_states[IN2_EFF2];
+    root["sessions"][current_session]["UI_button_states"]["IN2_EFF3"]=button_states[IN2_EFF3];    
 
     std::ofstream os(cfg_json_path, std::ios::binary);
     os << root;
@@ -107,6 +128,13 @@ void Config::reset(){
     currSession_name = curr_name;
     
     save();
+}
+
+bool Config::get_button_state(const Control& ctl){
+  return button_states[ctl];
+}
+void Config::toggle_button_state(const Control& ctl){
+  button_states[ctl]=!button_states[ctl];
 }
 
 int Config::get_max_sessions(){
@@ -147,6 +175,17 @@ void Config::_parse_session(Json::Value data){
     // audio_settings.buffer_size=data["audio_settings"]["buffer_size"].asInt();
     // audio_settings.sample_rate=data["audio_settings"]["sample_rate"].asInt();
     // audio_settings.bit_quantization=data["audio_settings"]["bit_quantization"].asInt();
+
+    button_states[IN1_ARM] = data["UI_button_states"]["IN1_ARM"].asBool();
+    button_states[IN1_MNTR] = data["UI_button_states"]["IN1_MNTR"].asBool();
+    button_states[IN2_ARM] = data["UI_button_states"]["IN2_ARM"].asBool();
+    button_states[IN2_MNTR] = data["UI_button_states"]["IN2_MNTR"].asBool();
+    button_states[IN1_EFF1] = data["UI_button_states"]["IN1_EFF1"].asBool();
+    button_states[IN1_EFF2] = data["UI_button_states"]["IN1_EFF2"].asBool();
+    button_states[IN1_EFF3] = data["UI_button_states"]["IN1_ARM"].asBool();
+    button_states[IN2_EFF1] = data["UI_button_states"]["IN2_EFF1"].asBool();
+    button_states[IN2_EFF2] = data["UI_button_states"]["IN2_EFF2"].asBool();
+    button_states[IN2_EFF3] = data["UI_button_states"]["IN2_ARM"].asBool();
 }
 
 void Config::_parse_audio_settings(Json::Value data){
@@ -165,6 +204,3 @@ void Config::_parse_audio_device(Json::Value data){
 		device_settings.micIn=data["micIn"].asBool();
 		device_settings.instIn=data["instIn"].asBool();
 }
-
-
-
