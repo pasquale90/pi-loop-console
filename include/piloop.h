@@ -1,7 +1,7 @@
 #ifndef PILOOP_H
 #define PILOOP_H
 
-#include <iostream>
+#include <thread>
 #include "interface.h"
 #include "menu.h"
 #include "audioserver.h"
