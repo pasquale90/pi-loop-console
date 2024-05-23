@@ -1,11 +1,21 @@
 {
 	"audio_settings" : 
 	{
-		"audio_device" : "PCH",
+		"audio_device" : "CODEC",
 		"audio_devices" : 
 		{
+			"CODEC" : 
+			{
+				"device_name" : "UCA202",
+				"instIn" : false,
+				"micIn" : true,
+				"phones" : false,
+				"stereoOut" : true,
+				"subOut" : false
+			},
 			"K6" : 
 			{
+				"device_name" : "Komplete Audio 6",
 				"instIn" : true,
 				"micIn" : true,
 				"phones" : true,
@@ -14,6 +24,7 @@
 			},
 			"PCH" : 
 			{
+				"device_name" : "build-in speakers",
 				"instIn" : false,
 				"micIn" : true,
 				"phones" : false,
@@ -25,7 +36,7 @@
 		"buffer_size" : 256,
 		"sample_rate" : 44100
 	},
-	"last_session" : 3,
+	"last_session" : 2,
 	"sessions" : 
 	[
 		{
