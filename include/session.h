@@ -2,6 +2,7 @@
 #define SESSION_H_INCLUDED
 
 #include <iostream>
+#include "controls.h"
 #include "handshake.h" 
 
 class Session{

@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <json/json.h>
 #include "metronome.h"
+
+// struct Control;
 #include "controls.h"
 
 // const std::string cfg_json_path = "_configuration.json" ;

@@ -8,6 +8,7 @@
 #include <cstring>
 #include <jack/jack.h>
 #include <jack/control.h>
+#include <thread>
 #include "config.h"
 
 const char supported_driver[5] = "alsa";
