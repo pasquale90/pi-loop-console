@@ -4,16 +4,13 @@ int streamAudio (jack_nframes_t nframes, void *arg){ //, float *in,void (*thread
     return static_cast<Handshake*>(arg)->process(nframes);
 }
 
-/**
- * The process callback for this JACK application is called in a
- * special realtime thread once for each audio cycle.
- *
- * This client does nothing more than copy data from its input
- * port to its output port. It will exit when stopped by 
- * the user (e.g. using Ctrl-C on a unix-ish operating system)
- */
+
 int Handshake::process (jack_nframes_t nframes)
 {
+    /**
+     * The process callback for this JACK application is called in a
+     * special realtime thread once for each audio cycle.
+     */
 
 // input and output must be handled by Monitor and Mixer
 // After that, how to pass data to the Looper entity?
@@ -32,32 +29,12 @@ int Handshake::process (jack_nframes_t nframes)
 
 Handshake::Handshake(){
     server_name = NULL;
-    // clientThread = std::thread(&Handshake::setup,this);
-    // frameToggle.store(false);
+
     is_running.store(true);
     is_firsTime.store(true);
     reinitialization.store(true);
 
-    // ClientStatus client_status();
-
-    std::cout<<"\n\n######### HS Constructor###############"<<std::endl;
-    std::cout<<"is_running :"<<is_running.load()<<"\nreinitialization :"<<reinitialization.load()<<"\nis_firsTime :"<<is_firsTime.load()<<std::endl;
-    std::cout<<"\n\n######### (end)HS Constructor###############"<<std::endl;
-    // start_server();
 }
-
-// Handshake::~Handshake(){
-//     std::cout<<"--------------------------------> ~Handshake is called!!!!"<<std::endl;
-//     free (from_device);
-//     free (to_device);
-//     disconnect();
-//     // audio_server.stop();
-// }
-
-// void Handshake::start_server(){
-//     std::thread serverThread(&AudioServer::start, &audio_server);
-//     serverThread.join();
-// }
 
 void Handshake::connect(bool verbose){
 
@@ -126,36 +103,6 @@ void Handshake::stop_running(){
     is_running.store(false);
 }
 
-// void Handshake::setup(){
-//     // int i=0;
-//     while(is_running){
-//         // if (i%10)
-//             std::cout<<"tick tock"<<std::endl;
-//         // ++i;
-//         bool reinit = reinitialization.load();
-//         if (reinit == true){          
-//             reinitialization.store(false);
-//             std::cout<<"\n\nHandshake :: is_running :"<<is_running.load()<<"\nreinitialization :"<<reinitialization.load()<<"\nis_firsTime :"<<is_firsTime.load()<<std::endl;          
-//             bool ft =is_firsTime.load(); 
-//             if (ft == true){
-//                 is_firsTime.store(false);
-//             }else{
-//                 std::cout<<"\n\nHandshake ::Disconnecting handshake"<<std::endl;
-//                 disconnect();
-//                 // sleep(2);
-// // std::this_thread::sleep_for (std::chrono::seconds(2));
-//                 std::cout<<"\n\n\nHandshake ::Disconnection of client "<<client_name<<" is set!!!\n\n\n"<<std::endl;
-//             }
-//             std::cout<<"\n\nHandshake ::Connecting handshake"<<std::endl;
-//             connect();
-// // std::this_thread::sleep_for (std::chrono::seconds(3));
-//             // sleep(3);
-//             std::cout<<"\n\n\nHandshake :: Connection of client "<<client_name<<" is set!!!\n\n\n"<<std::endl;
-//         }   
-//     }
-//     std::cout<<"-----------------------------------------------------------------------------Handshake --------------------------------------------------------->Stopped running"<<std::endl;
-// }
-
 void Handshake::setup(){
     
     while(is_running){
@@ -175,17 +122,13 @@ void Handshake::setup(){
 }
 
 char* Handshake::_reset_client_name(){
-    // std::cout<<"cfg.currSession_name "<<cfg.currSession_name<<std::endl;
     std::string clientName = "client_"+ cfg.currSession_name;
-    // std::cout<<"clientName "<<clientName<<std::endl;
     return &clientName[0]; //.data();
     // return clientName.data();
 }
 
 inline const char* _concat_chars(const char* ch1, const char* ch2){
-    // int s1 = sizeof(ch1)/sizeof(ch1[0]);
-    // int s2 = sizeof(ch2)/sizeof(ch2[0]);
-    char *s = new char[20];
+    char s[20];
     strcpy(s,ch1);
     strcat(s,ch2);
     return s;
@@ -252,9 +195,6 @@ void Handshake::connect_input_device(int input_device,const char* name){
     strcat(ffname,":");
     strcat(ffname,name);
     const char *fname = ffname;
-
-    // char* fname = _concat_chars(client_name,":");
-    // fname = _concat_chars(fname,name);
 
     if (jack_connect (client, from_device[input_device],const_cast<char*>(fname))){//returns full name
         std::cerr<<"cannot connect input device {"<<from_device[input_device]<<

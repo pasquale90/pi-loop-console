@@ -24,7 +24,6 @@
 
 static const float cpuLoad_thress = 0.8;
 
-// @TODO create status control for client -> use it within connect() member function.
 struct {
     bool samplingRate;
     bool bufferSize;
@@ -61,13 +60,9 @@ class Handshake{
         
         void reInitialize();
         void stop_running();
-
-        // void start_server();
  
         void setup(); // conforms to the config file for current channel --> channel
-  
-        // void disconnect_input_device();
-        // void disconnect_output_device();
+
         void mute_microphone();
         void unmute_microphone();
         void mute_instrument();
@@ -94,7 +89,6 @@ class Handshake{
         bool activate();
 
         Config& cfg = Config::getInstance();
-        // std::thread clientThread;
 
         std::atomic<bool> is_running,is_firsTime,reinitialization;
         
