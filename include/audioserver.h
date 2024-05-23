@@ -11,7 +11,7 @@
 #include <thread>
 #include "config.h"
 
-static constexpr char* supported_driver = "alsa";
+const char supported_driver[5] = "alsa";
 
 class AudioServer{
 

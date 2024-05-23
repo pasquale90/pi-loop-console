@@ -26,7 +26,7 @@ void AudioServer::setup_server(){
 
 //config here??
     change_server_parameters();
-    print_driver_info();
+    // print_driver_info();
     change_ALSAdriver_parameters();
 
 }
