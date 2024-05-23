@@ -14,11 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
-// #include <thread>
 #include <atomic>
-
-                    #include <chrono>
 #include <jack/jack.h>
 #include "config.h"
 
