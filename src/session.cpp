@@ -67,7 +67,7 @@ void Session::set_name(const char* name){
 }
 
 void Session::notify_session(Control trigger, bool isHold){
-    std::cout<<"Session::_notify_session --> "<<int(trigger)<<", "<<isHold<<std::endl;
+    // std::cout<<"Session::_notify_session --> "<<int(trigger)<<", "<<isHold<<std::endl;
 
     switch (trigger)
     {
@@ -96,39 +96,44 @@ void Session::notify_session(Control trigger, bool isHold){
             std::cout<<"Session::_notify_session -->SAVE_JAM"<<std::endl;
             break;
         case IN1_ARM:
-            std::cout<<"Session::_notify_session -->IN1_ARM"<<std::endl;
+            cfg.toggle_button_state(IN1_ARM);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
             break;
         case IN1_MNTR:
-            std::cout<<"Session::_notify_session -->IN1_MNTR"<<std::endl;
-// JUST FOR TESTING 
-// @TODO save button states and pass them on the conditions defined
-            hs.mute_microphone();
-            sleep(3);
-            hs.unmute_microphone();
+            cfg.toggle_button_state(IN1_MNTR);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
             break;
         case IN2_ARM:
-            std::cout<<"Session::_notify_session -->IN2_ARM"<<std::endl;
+            cfg.toggle_button_state(IN2_ARM);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
             break;
         case IN2_MNTR:
-            std::cout<<"Session::_notify_session -->IN2_MNTR"<<std::endl;
+            cfg.toggle_button_state(IN2_MNTR);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
             break;
         case IN1_EFF1:
-            std::cout<<"Session::_notify_session -->IN1_EFF1"<<std::endl;
+            cfg.toggle_button_state(IN1_EFF1);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
             break;
         case IN1_EFF2:
-            std::cout<<"Session::_notify_session -->IN1_EFF2"<<std::endl;
+            cfg.toggle_button_state(IN1_EFF2);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
             break;
         case IN1_EFF3:
-            std::cout<<"Session::_notify_session -->IN1_EFF3"<<std::endl;
+            cfg.toggle_button_state(IN1_EFF3);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
             break;
         case IN2_EFF1:
-            std::cout<<"Session::_notify_session -->IN2_EFF1"<<std::endl;
+            cfg.toggle_button_state(IN2_EFF1);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
             break;
         case IN2_EFF2:
-            std::cout<<"Session::_notify_session -->IN2_EFF2"<<std::endl;
+            cfg.toggle_button_state(IN2_EFF2);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
             break;
         case IN2_EFF3:
-            std::cout<<"Session::_notify_session -->IN2_EFF3"<<std::endl;
+            cfg.toggle_button_state(IN2_EFF3);
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
             break;
         case TAP_TEMPO:
             std::cout<<"Session::_notify_session -->TAP_TEMPO"<<std::endl;
@@ -153,6 +158,9 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         
     }
+    
+    // cfg.display();
+
     // if (trigger==START_ALL && isHold == 1){
     //     reset2defaults();
     // }
