@@ -19,6 +19,7 @@
 #include "config.h"
 
 static const float cpuLoad_thress = 0.8;
+static const bool VERBOSE = true;
 
 struct {
     bool samplingRate;
@@ -28,7 +29,7 @@ struct {
     float latency_ms;
     int link_client;
     int set_process_callback;
-    int jack_set_buffer_size;
+    int set_buffer_size;
     bool activate;
     bool register_devices;
     bool client_connected;
@@ -74,36 +75,41 @@ class Handshake{
         jack_port_t *input_port_mic,*input_port_inst, *output_port_left, *output_port_right;
         jack_client_t *client;
 
-        static void jack_shutdown(void*);
-        jack_port_t* register_input_port(const char*);
-        jack_port_t* register_output_port(const char*);
+        static void _jack_shutdown(void*);
+        jack_port_t* _register_input_port(const char*);
+        jack_port_t* _register_output_port(const char*);
         
         char* _reset_client_name();
-        int link_client();
-        int set_process_callback();
-        void prevent_failure();
-        bool activate();
+        int _link_client();
+        int _set_process_callback();
+        void _prevent_failure();
+        bool _activate();
 
         Config& cfg = Config::getInstance();
 
         std::atomic<bool> is_running,is_firsTime,reinitialization;
         
-        void connect(bool verbose = false);
-        void disconnect();
+        void _connect(bool verbose = VERBOSE);
+        void _disconnect();
         
-        void connect_input_device(int, const char*);
-        void connect_output_device(int, const char*);
-        bool register_devices();
+        void _connect_input_device(int, const char*);
+        void _connect_output_device(int, const char*);
+        bool _register_devices();
 
-        uint32_t get_sample_rate ();
-        uint32_t get_buffer_size ();
-        float get_cpu_load ();
-        bool realTime_enabled ();
+        int _set_buffer_size();
+        uint32_t _get_sample_rate ();
+        uint32_t _get_buffer_size ();
+        float _get_cpu_load ();
+        bool _realTime_enabled ();
 
         // other 
         bool verbose;
-        void info_control();
-        void check_status();
+        void _info_control();
+        void _check_status();
+
+        float* _get_mic_buffer();
+        float* _get_left_buffer();
+        float* _get_right_buffer();
 };
 
 #endif

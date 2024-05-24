@@ -4,7 +4,6 @@ int streamAudio (jack_nframes_t nframes, void *arg){ //, float *in,void (*thread
     return static_cast<Handshake*>(arg)->process(nframes);
 }
 
-
 int Handshake::process (jack_nframes_t nframes)
 {
     /**
@@ -17,14 +16,26 @@ int Handshake::process (jack_nframes_t nframes)
 
 	jack_default_audio_sample_t *in, *leftout,*rightout;
 	
-	in = (float*)jack_port_get_buffer (input_port_mic, nframes);
-	leftout = (float*)jack_port_get_buffer (output_port_left, nframes);
-    rightout = (float*)jack_port_get_buffer (output_port_right, nframes);
+	in = _get_mic_buffer();
+	leftout = _get_right_buffer();
+    rightout = _get_right_buffer();
 
 	memcpy (leftout, in,sizeof (jack_default_audio_sample_t) * nframes);
     memcpy (rightout, in,sizeof (jack_default_audio_sample_t) * nframes);
 
 	return 0;      
+}
+
+float* Handshake::_get_mic_buffer(){
+    return (float*)jack_port_get_buffer (input_port_mic, cfg.audio_settings.buffer_size);
+}
+
+float* Handshake::_get_left_buffer(){
+    return (float*)jack_port_get_buffer (output_port_left, cfg.audio_settings.buffer_size);
+}
+
+float* Handshake::_get_right_buffer(){
+    return (float*)jack_port_get_buffer (output_port_right, cfg.audio_settings.buffer_size);
 }
 
 Handshake::Handshake(){
@@ -36,30 +47,30 @@ Handshake::Handshake(){
 
 }
 
-void Handshake::connect(bool verbose){
+void Handshake::_connect(bool verbose){
 
-    client_status.link_client = link_client();
-    client_status.set_process_callback = set_process_callback();
+    client_status.link_client = _link_client();
+    client_status.set_process_callback = _set_process_callback();
 
-    prevent_failure();
+    _prevent_failure();
     
 // @TODO conditions require further work
     //initialize ports
     // if (cfg.device_settings.micIn)
-        input_port_mic = register_input_port("microphone");
+        input_port_mic = _register_input_port("microphone");
     // if (cfg.device_settings.instIn)
         // input_port_inst = register_input_port("instrunment");
     // if (cfg.device_settings.stereoOut)
-        output_port_left = register_output_port("left_speaker");
-        output_port_right = register_output_port("right_speaker");
+        output_port_left = _register_output_port("left_speaker");
+        output_port_right = _register_output_port("right_speaker");
     
 // change server operations
-    client_status.jack_set_buffer_size = jack_set_buffer_size (client,cfg.audio_settings.buffer_size);
+    client_status.set_buffer_size = _set_buffer_size();
 
 // @TODO latency_ms
 
-    client_status.activate = activate();
-    client_status.register_devices = register_devices();
+    client_status.activate = _activate();
+    client_status.register_devices = _register_devices();
 
 // @TODO check from and to device length of data structures
     // int i=0;
@@ -75,18 +86,18 @@ void Handshake::connect(bool verbose){
     //     ++i;
     // }std::cout<<std::endl;
 // @TODO check from and to device length of data structures <-same as above
-    connect_input_device(0,"microphone");
+    _connect_input_device(0,"microphone");
     // connect_input_device(1,"instrunment");
-    connect_output_device(0,"left_speaker");
-    connect_output_device(1,"right_speaker");
+    _connect_output_device(0,"left_speaker");
+    _connect_output_device(1,"right_speaker");
 
     client_status.client_connected=true;
     
     this->verbose=verbose;
-    check_status(); // default value : verbose = false;
+    _check_status(); // default value : verbose = false;
 }
 
-void Handshake::disconnect(){
+void Handshake::_disconnect(){
     std::cout<<"Disconnecting client"<<std::endl;
 
     free (from_device);
@@ -114,9 +125,9 @@ void Handshake::setup(){
             if (ft == true){
                 is_firsTime.store(false);
             }else{
-                disconnect();
+                _disconnect();
             }
-            connect();
+            _connect();
         }   
     }
 }
@@ -134,7 +145,7 @@ inline const char* _concat_chars(const char* ch1, const char* ch2){
     return s;
 }
 
-int Handshake::link_client(){
+int Handshake::_link_client(){
     jack_options_t options = JackNullOption;
     jack_status_t status;
     
@@ -161,14 +172,14 @@ int Handshake::link_client(){
     return status;
 }
 
-int Handshake::set_process_callback(){
+int Handshake::_set_process_callback(){
      // tell the JACK server to call `process()' whenever
     // there is work to be done.
    return jack_set_process_callback (client, streamAudio, this);
 
 }
 
-bool Handshake::register_devices(){
+bool Handshake::_register_devices(){
     
     from_device = jack_get_ports (client, NULL, NULL,
                 JackPortIsPhysical|JackPortIsOutput);
@@ -186,7 +197,7 @@ bool Handshake::register_devices(){
     return true;
 }
 
-void Handshake::connect_input_device(int input_device,const char* name){
+void Handshake::_connect_input_device(int input_device,const char* name){
     
 // put in private member function -> get/form port name
     // int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
@@ -204,7 +215,7 @@ void Handshake::connect_input_device(int input_device,const char* name){
         "} with input port {"<<fname<<"} are now connected!"<<std::endl;
     }
 }
-void Handshake::connect_output_device(int output_device, const char* name){
+void Handshake::_connect_output_device(int output_device, const char* name){
 
 // put in private member function -> get/form port name
     // int sz = sizeof(client_name)/sizeof(client_name[0]) + sizeof(name)/sizeof(name[0]) + 2;
@@ -231,7 +242,7 @@ void Handshake::mute_microphone()
 
 void Handshake::unmute_microphone()
 {   
-    connect_input_device(0,"microphone");
+    _connect_input_device(0,"microphone");
 }
 
 void Handshake::mute_instrument()
@@ -242,23 +253,23 @@ void Handshake::mute_instrument()
 
 void Handshake::unmute_instrument()
 {   
-    connect_input_device(1,"instrunment");
+    _connect_input_device(1,"instrunment");
 }
 
 
-void Handshake::info_control (){
+void Handshake::_info_control (){
     
     std::cout<<"------------------------- Check status of client "<<client_name<<" ------------------------- "<<std::endl;
     bool isOk = true;
     
     if (!client_status.samplingRate){
         isOk=false;
-        std::cout<<"Handshake::info_control : cfg mismatch -> Sampling rate is set to: {"<<get_sample_rate()<<"!="<<cfg.audio_settings.sample_rate<<"}"<<std::endl;
+        std::cout<<"Handshake::info_control : cfg mismatch -> Sampling rate is set to: {"<<_get_sample_rate()<<"!="<<cfg.audio_settings.sample_rate<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : Sampling rate : OK "<<std::endl;
 
     if (!client_status.bufferSize){
         isOk=false;
-        std::cout<<"Handshake::info_control : cfg mismatch -> Buffer size is set to {"<<get_buffer_size()<<"!="<<client_status.bufferSize<<"}"<<std::endl;
+        std::cout<<"Handshake::info_control : cfg mismatch -> Buffer size is set to {"<<_get_buffer_size()<<"!="<<client_status.bufferSize<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : Buffer size : OK "<<std::endl;
 
     if (!client_status.isRealTime){
@@ -281,10 +292,10 @@ void Handshake::info_control (){
         std::cout<<"Handshake::info_control : ERROR -> Handshake::set_process_callback failed with error : {"<<client_status.set_process_callback<<"}"<<std::endl;
     }else std::cout<<"Handshake::info_control : set_process_callback : OK "<<std::endl;
 
-    if (client_status.jack_set_buffer_size != 0){
+    if (client_status.set_buffer_size != 0){
         isOk=false;
-        std::cout<<"Handshake::info_control : ERROR -> Handshake::jack_set_buffer_size failed with error: {"<<client_status.jack_set_buffer_size<<"}"<<std::endl;
-    }else std::cout<<"Handshake::info_control : jack_set_buffer_size : OK "<<std::endl;
+        std::cout<<"Handshake::info_control : ERROR -> Handshake::set_buffer_size failed with error: {"<<client_status.set_buffer_size<<"}"<<std::endl;
+    }else std::cout<<"Handshake::info_control : set_buffer_size : OK "<<std::endl;
 
     if (!client_status.activate){
         isOk=false;
@@ -315,47 +326,51 @@ void Handshake::info_control (){
     std::cout<<"------------------------------------------------------------------------------------ "<<std::endl;
 }
 
-void Handshake::check_status(){
-    client_status.samplingRate = ((uint32_t)cfg.audio_settings.sample_rate) == get_sample_rate();
-    client_status.bufferSize = ((uint32_t)cfg.audio_settings.buffer_size) == get_buffer_size();
-    client_status.isRealTime = realTime_enabled();
-    client_status.cpuload = get_cpu_load();
+void Handshake::_check_status(){
+    client_status.samplingRate = ((uint32_t)cfg.audio_settings.sample_rate) == _get_sample_rate();
+    client_status.bufferSize = ((uint32_t)cfg.audio_settings.buffer_size) == _get_buffer_size();
+    client_status.isRealTime = _realTime_enabled();
+    client_status.cpuload = _get_cpu_load();
 
     if (verbose)
-        info_control();
+        _info_control();
 }
 
-uint32_t Handshake::get_sample_rate (){
+int Handshake::_set_buffer_size(){
+    return jack_set_buffer_size (client,cfg.audio_settings.buffer_size);
+}
+
+uint32_t Handshake::_get_sample_rate (){
     return (uint32_t)jack_get_sample_rate (client);
 }
 
-uint32_t Handshake::get_buffer_size (){
+uint32_t Handshake::_get_buffer_size (){
     return (uint32_t)jack_get_buffer_size (client);
 }
 
-float Handshake::get_cpu_load (){
+float Handshake::_get_cpu_load (){
     return jack_cpu_load(client);
 }
 
-bool Handshake::realTime_enabled(){
+bool Handshake::_realTime_enabled(){
     return jack_is_realtime(client);
 }
 
-void Handshake::prevent_failure(){
+void Handshake::_prevent_failure(){
     std::cout<<"Preventing failure"<<std::endl;
     // tell the JACK server to call `jack_shutdown()' if
     // it ever shuts down, either entirely, or if it
     // just decides to stop calling us.
-    jack_on_shutdown (client, &jack_shutdown, this);
+    jack_on_shutdown (client, &_jack_shutdown, this);
 }
     
-void Handshake::jack_shutdown(void *arg){
+void Handshake::_jack_shutdown(void *arg){
     std::cout<<"on shutdown"<<std::endl;
 	exit (1);
     // this.disconnect();
 }
 
-jack_port_t* Handshake::register_input_port(const char* name){
+jack_port_t* Handshake::_register_input_port(const char* name){
     /* create two ports */
 
     jack_port_t* input_port = jack_port_register (client, name,
@@ -370,7 +385,7 @@ jack_port_t* Handshake::register_input_port(const char* name){
 
 }
 
-jack_port_t* Handshake::register_output_port(const char* name){
+jack_port_t* Handshake::_register_output_port(const char* name){
     jack_port_t *output_port = jack_port_register (client, name,
                     JACK_DEFAULT_AUDIO_TYPE,
                     JackPortIsOutput, 0);
@@ -382,7 +397,7 @@ jack_port_t* Handshake::register_output_port(const char* name){
     return output_port;
 }
 
-bool Handshake::activate(){
+bool Handshake::_activate(){
 
     /* Tell the JACK server that we are ready to roll.  Our
     * process() callback will start running now. */
