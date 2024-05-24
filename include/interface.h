@@ -3,11 +3,10 @@
 
 #include <iostream>
 
-#ifdef DEV
-    #include "keyboard.h"
-#endif
 #ifdef REL
     #include "buttons.h"
+#elif DEV
+    #include "keyboard.h"
 #endif
 
 // class Menu;
