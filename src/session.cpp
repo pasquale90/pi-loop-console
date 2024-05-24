@@ -66,105 +66,197 @@ void Session::set_name(const char* name){
     cfg.currSession_name = name;
 }
 
-void Session::notify_session(Control trigger, bool isHold){
-    // std::cout<<"Session::_notify_session --> "<<int(trigger)<<", "<<isHold<<std::endl;
+// BACK UP notify_session()
+// void Session::notify_session(Control trigger, bool isHold){
+//     switch (trigger)
+//     {
+//         case CH1_RECDUB:
+//             std::cout<<"Session::_notify_session -->CH1_RECDUB"<<std::endl;
+//             break;
+//         case CH1_STOP:
+//             std::cout<<"Session::_notify_session -->CH1_STOP"<<std::endl;
+//             break;
+//         case CH2_RECDUB:
+//             std::cout<<"Session::_notify_session -->CH2_RECDUB"<<std::endl;
+//             break;
+//         case CH2_STOP:
+//             std::cout<<"Session::_notify_session -->CH2_STOP"<<std::endl;
+//             break;
+//         case CH3_RECDUB:
+//             std::cout<<"Session::_notify_session -->CH3_RECDUB"<<std::endl;
+//             break;
+//         case CH3_STOP:
+//             std::cout<<"Session::_notify_session -->CH3_STOP"<<std::endl;
+//             break;
+//         case START_ALL:
+//             std::cout<<"Session::_notify_session -->START_ALL"<<std::endl;
+//             break;
+//         case SAVE_JAM:
+//             std::cout<<"Session::_notify_session -->SAVE_JAM"<<std::endl;
+//             break;
+//         case IN1_ARM:
+//             cfg.toggle_button_state(IN1_ARM);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
+//             break;
+//         case IN1_MNTR:
+//             cfg.toggle_button_state(IN1_MNTR);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
+//             break;
+//         case IN2_ARM:
+//             cfg.toggle_button_state(IN2_ARM);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
+//             break;
+//         case IN2_MNTR:
+//             cfg.toggle_button_state(IN2_MNTR);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
+//             break;
+//         case IN1_EFF1:
+//             cfg.toggle_button_state(IN1_EFF1);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
+//             break;
+//         case IN1_EFF2:
+//             cfg.toggle_button_state(IN1_EFF2);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
+//             break;
+//         case IN1_EFF3:
+//             cfg.toggle_button_state(IN1_EFF3);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
+//             break;
+//         case IN2_EFF1:
+//             cfg.toggle_button_state(IN2_EFF1);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
+//             break;
+//         case IN2_EFF2:
+//             cfg.toggle_button_state(IN2_EFF2);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
+//             break;
+//         case IN2_EFF3:
+//             cfg.toggle_button_state(IN2_EFF3);
+//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
+//             break;
+//         case TAP_TEMPO:
+//             std::cout<<"Session::_notify_session -->TAP_TEMPO"<<std::endl;
+//             break;
+//         case CH1_VOL_LOW:
+//             std::cout<<"Session::_notify_session -->CH1_VOL_LOW"<<std::endl;
+//             break;
+//         case CH1_VOL_HIGH:
+//             std::cout<<"Session::_notify_session -->CH1_VOL_HIGH"<<std::endl;
+//             break;
+//         case CH2_VOL_LOW:
+//             std::cout<<"Session::_notify_session -->CH2_VOL_LOW"<<std::endl;
+//             break;
+//         case CH2_VOL_HIGH:
+//             std::cout<<"Session::_notify_session -->CH2_VOL_HIGH"<<std::endl;
+//             break;
+//         case CH3_VOL_LOW:
+//             std::cout<<"Session::_notify_session -->CH3_VOL_LOW"<<std::endl;
+//             break;
+//         case CH3_VOL_HIGH:
+//             std::cout<<"Session::_notify_session -->CH3_VOL_HIGH"<<std::endl;
+//             break;   
+//     }
+// }
 
+void Session::notify_session(Control trigger, bool isHold){
     switch (trigger)
     {
         case CH1_RECDUB:
-            std::cout<<"Session::_notify_session -->CH1_RECDUB"<<std::endl;
+            std::cout<<"call Looper.recdub(1,isHold)"<<std::endl; // rec/dub/erase_previous
             break;
         case CH1_STOP:
-            std::cout<<"Session::_notify_session -->CH1_STOP"<<std::endl;
+            std::cout<<"call Looper.stoperase(1,isHold)"<<std::endl; // stop/erase_all
             break;
         case CH2_RECDUB:
-            std::cout<<"Session::_notify_session -->CH2_RECDUB"<<std::endl;
+            std::cout<<"call Looper.recdub(2,isHold)"<<std::endl; 
             break;
         case CH2_STOP:
-            std::cout<<"Session::_notify_session -->CH2_STOP"<<std::endl;
+            std::cout<<"call Looper.stoperase(2,isHold)"<<std::endl; 
             break;
         case CH3_RECDUB:
-            std::cout<<"Session::_notify_session -->CH3_RECDUB"<<std::endl;
+            std::cout<<"call Looper.recdub(3,isHold)"<<std::endl;
             break;
         case CH3_STOP:
-            std::cout<<"Session::_notify_session -->CH3_STOP"<<std::endl;
+            std::cout<<"call Looper.stoperase(3,isHold)"<<std::endl; 
             break;
         case START_ALL:
-            std::cout<<"Session::_notify_session -->START_ALL"<<std::endl;
+            std::cout<<"call Mixer.StartStop()"<<std::endl; // startALL/stopALL
             break;
         case SAVE_JAM:
-            std::cout<<"Session::_notify_session -->SAVE_JAM"<<std::endl;
+            std::cout<<"call ??? to save jam? Mixer?? --> Mixer.saveJam() "<<std::endl; 
             break;
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
+            std::cout<<"call Monitor.toggle_arm(1)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
             break;
         case IN1_MNTR:
             cfg.toggle_button_state(IN1_MNTR);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
+            std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
             break;
         case IN2_ARM:
             cfg.toggle_button_state(IN2_ARM);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
+            std::cout<<"call Monitor.toggle_arm(2)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
             break;
         case IN2_MNTR:
             cfg.toggle_button_state(IN2_MNTR);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
+            std::cout<<"call Monitor.toggle_inout(2)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
             break;
         case IN1_EFF1:
             cfg.toggle_button_state(IN1_EFF1);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
+            std::cout<<"call ???.toggle_effect(1,1)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
             break;
         case IN1_EFF2:
             cfg.toggle_button_state(IN1_EFF2);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
+            std::cout<<"call ???.toggle_effect(1,2)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
             break;
         case IN1_EFF3:
             cfg.toggle_button_state(IN1_EFF3);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
+            std::cout<<"call ???.toggle_effect(1,3)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
             break;
         case IN2_EFF1:
             cfg.toggle_button_state(IN2_EFF1);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
+            std::cout<<"call ???.toggle_effect(2,1)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
             break;
         case IN2_EFF2:
             cfg.toggle_button_state(IN2_EFF2);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
+            std::cout<<"call ???.toggle_effect(2,2)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
             break;
         case IN2_EFF3:
             cfg.toggle_button_state(IN2_EFF3);
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
+            std::cout<<"call ???.toggle_effect(2,3)"<<std::endl; 
+            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
             break;
         case TAP_TEMPO:
-            std::cout<<"Session::_notify_session -->TAP_TEMPO"<<std::endl;
+            std::cout<<"call Metronome.tap()"<<std::endl; 
             break;
         case CH1_VOL_LOW:
-            std::cout<<"Session::_notify_session -->CH1_VOL_LOW"<<std::endl;
+            std::cout<<"call Mixer.volume_down(1)"<<std::endl; 
             break;
         case CH1_VOL_HIGH:
-            std::cout<<"Session::_notify_session -->CH1_VOL_HIGH"<<std::endl;
+            std::cout<<"call Mixer.volume_up(1)"<<std::endl; 
             break;
         case CH2_VOL_LOW:
-            std::cout<<"Session::_notify_session -->CH2_VOL_LOW"<<std::endl;
+            std::cout<<"call Mixer.volume_down(2)"<<std::endl; 
             break;
         case CH2_VOL_HIGH:
-            std::cout<<"Session::_notify_session -->CH2_VOL_HIGH"<<std::endl;
+            std::cout<<"call Mixer.volume_up(2)"<<std::endl; 
             break;
         case CH3_VOL_LOW:
-            std::cout<<"Session::_notify_session -->CH3_VOL_LOW"<<std::endl;
+            std::cout<<"call Mixer.volume_down(3)"<<std::endl; 
             break;
         case CH3_VOL_HIGH:
-            std::cout<<"Session::_notify_session -->CH3_VOL_HIGH"<<std::endl;
-            break;
-        
+            std::cout<<"call Mixer.volume_up(3)"<<std::endl; 
+            break;   
     }
-    
-    // cfg.display();
-
-    // if (trigger==START_ALL && isHold == 1){
-    //     reset2defaults();
-    // }
-
 }
 
 
