@@ -161,6 +161,8 @@ void Session::set_name(const char* name){
 void Session::notify_session(Control trigger, bool isHold){
     switch (trigger)
     {
+//@TODO toggle states within object methods. 
+//Session only responsible for calling the right function.
         case CH1_RECDUB:
             std::cout<<"call Looper.recdub(1,isHold)"<<std::endl; // rec/dub/erase_previous
             break;
@@ -186,12 +188,17 @@ void Session::notify_session(Control trigger, bool isHold){
             std::cout<<"call ??? to save jam? Mixer?? --> Mixer.saveJam() "<<std::endl; 
             break;
         case IN1_ARM:
-            cfg.toggle_button_state(IN1_ARM);
+            cfg.toggle_button_state(IN1_ARM); 
             std::cout<<"call Monitor.toggle_arm(1)"<<std::endl; 
             // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
             break;
         case IN1_MNTR:
             cfg.toggle_button_state(IN1_MNTR);
+// just for testing mute operation
+            if (cfg.get_button_state(IN1_MNTR)){
+                hs.mute_microphone();
+            }else hs.unmute_microphone();
+
             std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
             // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
             break;
