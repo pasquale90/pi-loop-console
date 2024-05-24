@@ -4,7 +4,7 @@ project(piloop)
 
 set(CMAKE_CXX_STANDARD 11)
 
-SET (CMAKE_CXX_FLAGS "-D DEV")
+SET (CMAKE_CXX_FLAGS "-D DEV -D PCH")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 

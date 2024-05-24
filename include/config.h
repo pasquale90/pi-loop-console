@@ -8,6 +8,14 @@
 #include "metronome.h"
 #include "controls.h"
 
+#ifdef K6
+    static const std::string selected_audio_device = "K6";
+#elif CODEC
+    static const std::string selected_audio_device = "CODEC";
+#elif PCH
+	static const std::string selected_audio_device = "PCH";
+#endif
+
 // const std::string cfg_json_path = "_configuration.json" ;
 const std::string cfg_json_path = "_configuration.json" ;
 
@@ -30,12 +38,13 @@ class Config {
 			}audio_settings;
 			
 			struct{
-				std::string audio_device;
-				bool stereoOut;
-				bool subOut;
-				bool phones;
-				bool micIn;
-				bool instIn;
+				std::string audio_device {selected_audio_device};
+				std::string device_info {""};
+				bool stereoOut {};
+				bool subOut {};
+				bool phones {};
+				bool micIn {};
+				bool instIn {};
 			}device_settings;
 			// expand latter
 			// struct controls{}; 
@@ -59,7 +68,6 @@ class Config {
 			void _parse_session(Json::Value); //parse_json values
 			void _parse_audio_settings(Json::Value); //parse_json values
 			void _parse_audio_device(Json::Value); //parse_json values
-
 			int max_sessions;
 			int current_session;
 };

@@ -49,6 +49,7 @@ void Config::display(){
     std::cout<<"#################### Session "<<current_session<<" Config ####################\n";
     std::cout<<"---------------------- session name : "<<currSession_name<<" ----------------------------\n";
     std::cout<<"---------------------- audio ----------------------------\n";
+    std::cout<<"device info              \t:\t"<<device_settings.device_info<<std::endl;
     std::cout<<"audio device             \t:\t"<<device_settings.audio_device<<std::endl;
     std::cout<<"sampling rate            \t:\t"<<audio_settings.sample_rate<<std::endl;
     std::cout<<"quantization             \t:\t"<<audio_settings.bit_quantization<<std::endl;
@@ -186,10 +187,11 @@ void Config::_parse_session(Json::Value data){
     button_states[IN2_EFF1] = data["UI_button_states"]["IN2_EFF1"].asBool();
     button_states[IN2_EFF2] = data["UI_button_states"]["IN2_EFF2"].asBool();
     button_states[IN2_EFF3] = data["UI_button_states"]["IN2_ARM"].asBool();
+
 }
 
 void Config::_parse_audio_settings(Json::Value data){
-    device_settings.audio_device=data["audio_device"].asString();
+    // device_settings.audio_device=data["selected_audio_device"].asString();
     audio_settings.buffer_size=data["buffer_size"].asInt();
     audio_settings.sample_rate=data["sample_rate"].asInt();
     audio_settings.bit_quantization=data["bit_quantization"].asInt();
@@ -198,6 +200,7 @@ void Config::_parse_audio_settings(Json::Value data){
 
 void Config::_parse_audio_device(Json::Value data){
     // parse data
+    device_settings.device_info=data["device_info"].asString();
     device_settings.stereoOut=data["stereoOut"].asBool();
 		device_settings.subOut=data["subOut"].asBool();
 		device_settings.phones=data["phones"].asBool();
