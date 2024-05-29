@@ -11,7 +11,7 @@
         - [ ] Observer
     - [x] multi-threading
 - [x] code reconstruction
-    - [] quick prototype
+    - [ ] quick prototype
     - [x] start_server internally
 - [ ] raspberry deployment
 - [ ] optimization step
