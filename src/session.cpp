@@ -1,10 +1,44 @@
 #include "session.h"
 
 Session::Session(){
-    // server start
-    // load()
-    // sleep(3);
-    // hs.connect();
+    is_running.store(true);
+    is_firsTime.store(true);
+    re_initialize.store(true);
+    
+    monitor.set_stream_buffer(std::bind(&Session::_update_buffers,this, _1, _2) );
+}
+
+// no need for method, command is called directly in this.migrate()
+// void Session::change_audio_client(){
+//     reinitialization.store(true);
+// }
+// no need for method, command is called directly in this.evacuate()
+// void Session::stop_running(){
+//     is_running.store(false);
+// }
+
+void Session::load(){
+    while(is_running){
+        if (re_initialize.load()){          
+            re_initialize.store(false);
+            if (is_firsTime.load()){
+                is_firsTime.store(false);
+            }else{
+                monitor.disconnect();
+            }
+#if F_NUM_INPUTS == 1
+            bool mntr_current_state[F_NUM_INPUTS] = {cfg.get_button_state(IN1_MNTR)};
+#elif F_NUM_INPUTS == 2
+            bool mntr_current_state[F_NUM_INPUTS] = {cfg.get_button_state(IN1_MNTR),cfg.get_button_state(IN2_MNTR)};
+#endif
+            monitor.connect(const_cast<char*>(&cfg.currSession_name[0]),mntr_current_state);
+        }   
+    }
+}
+
+void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_buffers[F_NUM_OUTPUTS]){
+    float** looper_buff = looper.update_buffer(input_buffers);
+    mixer.update_buffer(input_buffers,output_buffers,looper_buff);
 }
 
 void Session::save(){
@@ -13,19 +47,13 @@ void Session::save(){
 //    b) saving session (tracks in channels , saved jams ..)
 
 // save config
-    // try{
-        cfg.save();
-        std::cout<<"Menu::save_session"<<std::endl;
-    // }
-    // catch {return false;};
+    cfg.save();
+    std::cout<<"Menu::save_session"<<std::endl;
 
 // save session
+    looper.save();
     // ...src/session.cpp:4:18
 
-}
-
-void Session::load(){
-    hs.setup();
 }
 
 void Session::migrate(int next_session){
@@ -41,21 +69,25 @@ void Session::migrate(int next_session){
 // load other session data
     // ...
 
-    hs.reInitialize();
+    // change_audio_client();
+    re_initialize.store(true);
 }
 
 void Session::evacuate(){
-    hs.stop_running();
-    // ...
+    is_running.store(false);
+    
+    // mixer.turnOff();
+    // looper.turnOff();
+    monitor.disconnect();
 }
 
-void Session::reset2defaults(){
-// clean config
-    cfg.reset();
+// void Session::reset2defaults(){
+// // clean config
+//     cfg.reset();
 
-// clean other session data 
-    // ...
-}
+// // clean other session data 
+//     // ...
+// }
 
 const char* Session::get_name(){
     // return session_name;
@@ -66,98 +98,6 @@ void Session::set_name(const char* name){
     cfg.currSession_name = name;
 }
 
-// BACK UP notify_session()
-// void Session::notify_session(Control trigger, bool isHold){
-//     switch (trigger)
-//     {
-//         case CH1_RECDUB:
-//             std::cout<<"Session::_notify_session -->CH1_RECDUB"<<std::endl;
-//             break;
-//         case CH1_STOP:
-//             std::cout<<"Session::_notify_session -->CH1_STOP"<<std::endl;
-//             break;
-//         case CH2_RECDUB:
-//             std::cout<<"Session::_notify_session -->CH2_RECDUB"<<std::endl;
-//             break;
-//         case CH2_STOP:
-//             std::cout<<"Session::_notify_session -->CH2_STOP"<<std::endl;
-//             break;
-//         case CH3_RECDUB:
-//             std::cout<<"Session::_notify_session -->CH3_RECDUB"<<std::endl;
-//             break;
-//         case CH3_STOP:
-//             std::cout<<"Session::_notify_session -->CH3_STOP"<<std::endl;
-//             break;
-//         case START_ALL:
-//             std::cout<<"Session::_notify_session -->START_ALL"<<std::endl;
-//             break;
-//         case SAVE_JAM:
-//             std::cout<<"Session::_notify_session -->SAVE_JAM"<<std::endl;
-//             break;
-//         case IN1_ARM:
-//             cfg.toggle_button_state(IN1_ARM);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
-//             break;
-//         case IN1_MNTR:
-//             cfg.toggle_button_state(IN1_MNTR);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
-//             break;
-//         case IN2_ARM:
-//             cfg.toggle_button_state(IN2_ARM);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
-//             break;
-//         case IN2_MNTR:
-//             cfg.toggle_button_state(IN2_MNTR);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
-//             break;
-//         case IN1_EFF1:
-//             cfg.toggle_button_state(IN1_EFF1);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
-//             break;
-//         case IN1_EFF2:
-//             cfg.toggle_button_state(IN1_EFF2);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
-//             break;
-//         case IN1_EFF3:
-//             cfg.toggle_button_state(IN1_EFF3);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
-//             break;
-//         case IN2_EFF1:
-//             cfg.toggle_button_state(IN2_EFF1);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
-//             break;
-//         case IN2_EFF2:
-//             cfg.toggle_button_state(IN2_EFF2);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
-//             break;
-//         case IN2_EFF3:
-//             cfg.toggle_button_state(IN2_EFF3);
-//             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
-//             break;
-//         case TAP_TEMPO:
-//             std::cout<<"Session::_notify_session -->TAP_TEMPO"<<std::endl;
-//             break;
-//         case CH1_VOL_LOW:
-//             std::cout<<"Session::_notify_session -->CH1_VOL_LOW"<<std::endl;
-//             break;
-//         case CH1_VOL_HIGH:
-//             std::cout<<"Session::_notify_session -->CH1_VOL_HIGH"<<std::endl;
-//             break;
-//         case CH2_VOL_LOW:
-//             std::cout<<"Session::_notify_session -->CH2_VOL_LOW"<<std::endl;
-//             break;
-//         case CH2_VOL_HIGH:
-//             std::cout<<"Session::_notify_session -->CH2_VOL_HIGH"<<std::endl;
-//             break;
-//         case CH3_VOL_LOW:
-//             std::cout<<"Session::_notify_session -->CH3_VOL_LOW"<<std::endl;
-//             break;
-//         case CH3_VOL_HIGH:
-//             std::cout<<"Session::_notify_session -->CH3_VOL_HIGH"<<std::endl;
-//             break;   
-//     }
-// }
-
 void Session::notify_session(Control trigger, bool isHold){
     switch (trigger)
     {
@@ -165,6 +105,7 @@ void Session::notify_session(Control trigger, bool isHold){
 //Session only responsible for calling the right function.
         case CH1_RECDUB:
             std::cout<<"call Looper.recdub(1,isHold)"<<std::endl; // rec/dub/erase_previous
+            // std::cout<<"mic_buffer[0] = "<<mic_buffer[0]<<std::endl;
             break;
         case CH1_STOP:
             std::cout<<"call Looper.stoperase(1,isHold)"<<std::endl; // stop/erase_all
@@ -189,28 +130,35 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM); 
-            std::cout<<"call Monitor.toggle_arm(1)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
+            // std::cout<<"call Monitor.toggle_arm(1)"<<std::endl; 
+            std::cout<<"Session::_notify_session IN1_ARM-->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
             break;
         case IN1_MNTR:
             cfg.toggle_button_state(IN1_MNTR);
+            std::cout<<"Session::_notify_session IN1_MNTR-->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
+
 // just for testing mute operation
             if (cfg.get_button_state(IN1_MNTR)){
-                hs.mute_microphone();
-            }else hs.unmute_microphone();
+                monitor.unmute_microphone();
+            }else monitor.mute_microphone();
 
-            std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
+
+            // std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
             break;
         case IN2_ARM:
             cfg.toggle_button_state(IN2_ARM);
-            std::cout<<"call Monitor.toggle_arm(2)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
+            // std::cout<<"call Monitor.toggle_arm(2)"<<std::endl; 
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
             break;
         case IN2_MNTR:
             cfg.toggle_button_state(IN2_MNTR);
-            std::cout<<"call Monitor.toggle_inout(2)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
+            if (cfg.get_button_state(IN2_MNTR)){
+                monitor.unmute_instrument();
+            }else monitor.mute_instrument();
+
+            // std::cout<<"call Monitor.toggle_inout(2)"<<std::endl; 
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
             break;
         case IN1_EFF1:
             cfg.toggle_button_state(IN1_EFF1);

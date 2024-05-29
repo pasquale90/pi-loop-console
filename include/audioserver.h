@@ -8,7 +8,6 @@
 #include <cstring>
 #include <jack/jack.h>
 #include <jack/control.h>
-#include "config.h"
 
 const char supported_driver[5] = "alsa";
 
@@ -39,7 +38,6 @@ private:
     void print_driver_info();
     void print_value(union jackctl_parameter_value, jackctl_param_type_t);
 
-    Config& cfg = Config::getInstance();
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "config.h"
+#include "audio_settings.h"
 
 // Initialize the static member to nullptr
 Config* Config::cfg_instance_ptr = nullptr;
@@ -49,16 +50,25 @@ void Config::display(){
     std::cout<<"#################### Session "<<current_session<<" Config ####################\n";
     std::cout<<"---------------------- session name : "<<currSession_name<<" ----------------------------\n";
     std::cout<<"---------------------- audio ----------------------------\n";
-    std::cout<<"device info              \t:\t"<<device_settings.device_info<<std::endl;
-    std::cout<<"audio device             \t:\t"<<device_settings.audio_device<<std::endl;
-    std::cout<<"sampling rate            \t:\t"<<audio_settings.sample_rate<<std::endl;
-    std::cout<<"quantization             \t:\t"<<audio_settings.bit_quantization<<std::endl;
-    std::cout<<"buffer size              \t:\t"<<audio_settings.buffer_size<<std::endl;
-    std::cout<<"is sterero               \t:\t"<<device_settings.stereoOut<<std::endl;
-    std::cout<<"has sub out              \t:\t"<<device_settings.subOut<<std::endl;
-    std::cout<<"phones                   \t:\t"<<device_settings.phones<<std::endl;
-    std::cout<<"has mic input            \t:\t"<<device_settings.micIn<<std::endl;
-    std::cout<<"has inst input           \t:\t"<<device_settings.instIn<<std::endl;
+    std::cout<<"device ID                \t:\t"<<DEVICE_ID<<std::endl;
+    std::cout<<"audio device info        \t:\t"<<DEV_INFO<<std::endl;
+    std::cout<<"sampling rate            \t:\t"<<SAMPLE_RATE<<std::endl;
+    std::cout<<"quantization             \t:\t"<<BIT_QUANTIZATION<<std::endl;
+    std::cout<<"buffer size              \t:\t"<<BUFFER_SIZE<<std::endl;
+    std::cout<<"is sterero               \t:\t"<<STEREO_OUT<<std::endl;
+    std::cout<<"has sub out              \t:\t"<<SUB_OUT<<std::endl;
+    std::cout<<"phones                   \t:\t"<<PHONES<<std::endl;
+    std::cout<<"has mic input            \t:\t"<<MIC<<std::endl;
+    std::cout<<"has inst input           \t:\t"<<INST<<std::endl;// std::cout<<"device info              \t:\t"<<device_settings.device_info<<std::endl;
+    // std::cout<<"audio device             \t:\t"<<device_settings.audio_device<<std::endl;
+    // std::cout<<"sampling rate            \t:\t"<<audio_settings.sample_rate<<std::endl;
+    // std::cout<<"quantization             \t:\t"<<audio_settings.bit_quantization<<std::endl;
+    // std::cout<<"buffer size              \t:\t"<<audio_settings.buffer_size<<std::endl;
+    // std::cout<<"is sterero               \t:\t"<<device_settings.stereoOut<<std::endl;
+    // std::cout<<"has sub out              \t:\t"<<device_settings.subOut<<std::endl;
+    // std::cout<<"phones                   \t:\t"<<device_settings.phones<<std::endl;
+    // std::cout<<"has mic input            \t:\t"<<device_settings.micIn<<std::endl;
+    // std::cout<<"has inst input           \t:\t"<<device_settings.instIn<<std::endl;
     std::cout<<"--------------------- metronome ----------------------------\n";
     std::cout<<"Tempo                    \t:\t"<<metronome.tempo<<std::endl;
     std::cout<<"rythm_numerator          \t:\t"<<metronome.rythm_numerator<<std::endl;
@@ -97,7 +107,7 @@ void Config::save(){
     root["sessions"][current_session]["UI_button_states"]["IN1_ARM"]=button_states[IN1_ARM];
     root["sessions"][current_session]["UI_button_states"]["IN1_MNTR"]=button_states[IN1_MNTR];
     root["sessions"][current_session]["UI_button_states"]["IN2_ARM"]=button_states[IN2_ARM];
-    root["sessions"][current_session]["UI_button_states"]["IN1_MNTR"]=button_states[IN2_MNTR];
+    root["sessions"][current_session]["UI_button_states"]["IN2_MNTR"]=button_states[IN2_MNTR];
     root["sessions"][current_session]["UI_button_states"]["IN1_EFF1"]=button_states[IN1_EFF1];
     root["sessions"][current_session]["UI_button_states"]["IN1_EFF2"]=button_states[IN1_EFF2];
     root["sessions"][current_session]["UI_button_states"]["IN1_EFF3"]=button_states[IN1_EFF3];
@@ -132,6 +142,8 @@ void Config::reset(){
 }
 
 bool Config::get_button_state(const Control& ctl){
+  // std::cout<<"ctl "<<ctl<<std::endl;
+  // std::cout<<"button_states "<<button_states[ctl]<<std::endl;
   return button_states[ctl];
 }
 void Config::toggle_button_state(const Control& ctl){
@@ -161,10 +173,10 @@ void Config::_open(){
     // auto session_data = root["sessions"][current_session];
     // std::cout<< session_data["name"] <<"  ---->  is of type"<<typeid(session_data).name()<<"\n\n\n\n"<<std::endl;
 
-    std::cout<< root["audio_settings"]<<"  ---->  is of type"<<typeid(root["audio_settings"]).name()<<"\n\n\n\n"<<std::endl;
+    // std::cout<< root["audio_settings"]<<"  ---->  is of type"<<typeid(root["audio_settings"]).name()<<"\n\n\n\n"<<std::endl;
 
     _parse_session(root["sessions"][current_session]);
-    _parse_audio_settings(root["audio_settings"]);
+    // _parse_audio_settings(root["audio_settings"]);
 }
 
 void Config::_parse_session(Json::Value data){
@@ -190,20 +202,20 @@ void Config::_parse_session(Json::Value data){
 
 }
 
-void Config::_parse_audio_settings(Json::Value data){
-    // device_settings.audio_device=data["selected_audio_device"].asString();
-    audio_settings.buffer_size=data["buffer_size"].asInt();
-    audio_settings.sample_rate=data["sample_rate"].asInt();
-    audio_settings.bit_quantization=data["bit_quantization"].asInt();
-    _parse_audio_device(data["audio_devices"][device_settings.audio_device]);
-}
+// void Config::_parse_audio_settings(Json::Value data){
+//     // device_settings.audio_device=data["selected_audio_device"].asString();
+//     audio_settings.buffer_size=data["buffer_size"].asInt();
+//     audio_settings.sample_rate=data["sample_rate"].asInt();
+//     audio_settings.bit_quantization=data["bit_quantization"].asInt();
+//     _parse_audio_device(data["audio_devices"][device_settings.audio_device]);
+// }
 
-void Config::_parse_audio_device(Json::Value data){
-    // parse data
-    device_settings.device_info=data["device_info"].asString();
-    device_settings.stereoOut=data["stereoOut"].asBool();
-		device_settings.subOut=data["subOut"].asBool();
-		device_settings.phones=data["phones"].asBool();
-		device_settings.micIn=data["micIn"].asBool();
-		device_settings.instIn=data["instIn"].asBool();
-}
+// void Config::_parse_audio_device(Json::Value data){
+//     // parse data
+//     device_settings.device_info=data["device_info"].asString();
+//     device_settings.stereoOut=data["stereoOut"].asBool();
+// 		device_settings.subOut=data["subOut"].asBool();
+// 		device_settings.phones=data["phones"].asBool();
+// 		device_settings.micIn=data["micIn"].asBool();
+// 		device_settings.instIn=data["instIn"].asBool();
+// }

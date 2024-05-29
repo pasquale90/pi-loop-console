@@ -25,6 +25,11 @@ set(SOURCE_FILES
     src/interface.cpp
     src/keyboard.cpp
     src/session.cpp
+    src/effects.cpp
+    src/monitor.cpp
+    src/mixer.cpp
+    src/channel.cpp
+    src/looper.cpp
 )
 
 include(CMakePrintHelpers)

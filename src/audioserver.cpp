@@ -1,5 +1,5 @@
 #include "audioserver.h"
-
+#include "audio_settings.h"
 
 // AudioServer::AudioServer(){
 //     driver_name=driver;
@@ -215,11 +215,17 @@ void AudioServer::print_driver_info(){
     }    
 }
 
+// inline const char* _concat_chars(const char* ch1, const char* ch2){
+//     int s1 = sizeof(ch1)/sizeof(ch1[0]);
+//     int s2 = sizeof(ch2)/sizeof(ch2[0]);
+//     char *s = new char[s1+s2+1];
+//     // char s[s1+s2+1];
+//     strcpy(s,ch1);
+//     strcat(s,ch2);
+//     return s;
+// }
 inline const char* _concat_chars(const char* ch1, const char* ch2){
-    int s1 = sizeof(ch1)/sizeof(ch1[0]);
-    int s2 = sizeof(ch2)/sizeof(ch2[0]);
-    char *s = new char[s1+s2+1];
-    // char s[s1+s2+1];
+    char *s = new char[20];
     strcpy(s,ch1);
     strcat(s,ch2);
     return s;
@@ -240,15 +246,19 @@ void AudioServer::change_ALSAdriver_parameters(){
                         
                         jackctl_parameter_t * parameter = (jackctl_parameter_t *)param_ptr->data;
                         const char* param_name = jackctl_parameter_get_name(parameter);
-// Config::sampling rate
+// Config::sampling rate --> take from global
                         if (!strcmp(param_name,"rate")){
-                            int sr = cfg.audio_settings.sample_rate;
-                            bool SRISCHANGED = jackctl_parameter_set_value (parameter, (const union jackctl_parameter_value*)&sr);
+                            // int sr = cfg.audio_settings.sample_rate;
+                            int sr = SAMPLE_RATE;
+                            // bool SRISCHANGED = jackctl_parameter_set_value (parameter, (const union jackctl_parameter_value*)&sr);
+                            if (jackctl_parameter_set_value (parameter, (const union jackctl_parameter_value*)&sr))
+                                printf("Audioserver::change_ALSAdriver_parameters : sample rate changed succesfully to %d",sr);
                         }
-// Config::device
+// Config::device --> take from global
                         else if (!strcmp(param_name,"device")){
-                            // const char* device_name = "hw:PCH";
-                            const char* device_name = _concat_chars("hw:",cfg.device_settings.audio_device.c_str());
+                            // const char* device_name = _concat_chars("hw:",cfg.device_settings.audio_device.c_str());
+                            // const char* device_name = DEVICE_ID;
+                            const char* device_name = _concat_chars("hw:",DEVICE_ID);
 // cfg.device_settings.
 // char *s = new[strlen("hw:")+strlen()+1];
 // strcpy(s,word);
@@ -262,7 +272,8 @@ void AudioServer::change_ALSAdriver_parameters(){
                         }
 // Config::buffer size
                         else if (!strcmp(param_name,"period")){
-                            int buffer_size = cfg.audio_settings.buffer_size;
+                            // int buffer_size = cfg.audio_settings.buffer_size;
+                            int buffer_size = BUFFER_SIZE;
                             if (jackctl_parameter_set_value (parameter, (const union jackctl_parameter_value*)&buffer_size)){
                                 printf("buffer size has changed!");
                             }

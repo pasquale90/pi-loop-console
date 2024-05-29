@@ -1,19 +1,20 @@
 #dependencies 
-- jack audio
-- jsoncpp
-- Audiofile
+- [jack audio](https://github.com/jackaudio/jack2)
+- [jsoncpp](https://github.com/adamstark/AudioFile)
+- [Audiofile](https://github.com/adamstark/AudioFile)
+- [libevdev](https://www.freedesktop.org/wiki/Software/libevdev/)
 
 # todo list
 - [x] [UML design](piloop.drawio)
-    - [ ] conform to design patterns
-        - Singleton
-        - Observer
-    - [ ] multi-threading
-- [ ] code reconstruction
-    - quick prototype
-    - start_server internally
+    - [x] conform to design patterns
+        - [x] Singleton
+        - [ ] Observer
+    - [x] multi-threading
+- [x] code reconstruction
+    - [] quick prototype
+    - [x] start_server internally
 - [ ] raspberry deployment
 - [ ] optimization step
 - [ ] update main branch
-    - description
-    - compilation/usage instructions
+    - [ ] description
+    - [ ] compilation/usage instructions

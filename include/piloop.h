@@ -2,6 +2,9 @@
 #define PILOOP_H
 
 #include <thread>
+
+#include <memory>
+
 #include "interface.h"
 #include "menu.h"
 #include "audioserver.h"
@@ -26,8 +29,6 @@ class PiLoop{
         void _listen();
         void _notify(Control, bool);
         void shutdown();
-
-        Config& cfg = Config::getInstance();
 };
 
 #endif

@@ -8,14 +8,9 @@ PiLoop::PiLoop(){
 }
 
 void PiLoop::start_console(){
-    // cfg.display();
+
     serverThread.join();
     uiThread.join();
-    
-    // std::cout<<"Waiting for 3 .................................................."<<std::endl;
-    // sleep(3);
-    // std::cout<<"Waking up after 3 .................................................."<<std::endl;
-
     sessionThread.join();
 }
 
@@ -25,6 +20,7 @@ void PiLoop::shutdown(){
     server.stop();
     // serverThread.detach();
     // uiThread.detach();
+    // sessionThread.detach();
     exit(0);
 }
 

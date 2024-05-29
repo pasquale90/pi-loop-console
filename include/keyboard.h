@@ -21,11 +21,6 @@
 // // used only for development purposes.
 // // Release version will provide buttons as an interface for user interaction
 
-static void setupKeyCodes(void);
-static const char *printableEventType(int t);
-static const char *keycodes[64 * 1024] = { 0 }; // hack
-static const char *eventDevice = "/dev/input/event3";
-
 class UI{
 
     public:

@@ -9,16 +9,6 @@
     #include "keyboard.h"
 #endif
 
-// class Menu;
-// class Session;
-// #include <atomic>
-
-//forward declare pointers to member functions
-// class Menu;
-// // class Session<;
-// int (Menu::*notify_menu)() = NULL;
-// int (TMyClass::*pt2ConstMember)(float, char, char) const = NULL;
-
 class PiLoop;
 
 //Observer class

@@ -1,6 +1,13 @@
 #include "keyboard.h"
 
+// #define VERBOSE_KEYBOARD
+
 UI* UI::ui_instance_ptr = nullptr;
+
+static void setupKeyCodes(void);
+static const char *printableEventType(int t);
+static const char *keycodes[64 * 1024] = { 0 }; // hack
+static const char *eventDevice = "/dev/input/event3";
 
 UI::UI(){
 } 
@@ -93,13 +100,14 @@ static const char* printableEventType(int t)
 void UI::listen_user_keyboard(std::atomic<bool> &event_occured, std::atomic<int> &msg){
 
     err = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
-    if (err == 0 && keycodes[ev.code]!="unknown"){
-        
-        // printf("KEY: Value=%s; Code=%s; Time=%i\n ; ",
-        //     printableEventType(ev.value),
-        //     keycodes[ev.code]);
+    // if (err == 0 && keycodes[ev.code]!="unknown"){
+    if (err == 0 && strcmp( keycodes[ev.code], "unknown") != 0){
+#if VERBOSE_KEYBOARD     
+            printf("KEY: Value=%s; Code=%s; Time=%i\n ; ",
+                printableEventType(ev.value),
+                    keycodes[ev.code]);
         // EV_SYN - EV_KEY - EV_REL
-
+#endif
 //@TODO EV_KEY === event_occured = true;
 
         if ( int(ev.value) == EV_SYN ) 
@@ -121,7 +129,7 @@ void UI::listen_user_keyboard(std::atomic<bool> &event_occured, std::atomic<int>
         }
     }
     event_occured = false;
-    msg = NULL;
+    msg = -1; //NULL 
     return;
 }
 

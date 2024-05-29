@@ -76,10 +76,10 @@
 			"UI_button_states" : 
 			{
 				"IN1_ARM" : true,
-				"IN1_EFF1" : false,
+				"IN1_EFF1" : true,
 				"IN1_EFF2" : false,
-				"IN1_EFF3" : false,
-				"IN1_MNTR" : true,
+				"IN1_EFF3" : true,
+				"IN1_MNTR" : false,
 				"IN2_ARM" : false,
 				"IN2_EFF1" : false,
 				"IN2_EFF2" : false,
@@ -142,7 +142,7 @@
 			"UI_button_states" : 
 			{
 				"IN1_ARM" : true,
-				"IN1_EFF1" : true,
+				"IN1_EFF1" : false,
 				"IN1_EFF2" : true,
 				"IN1_EFF3" : true,
 				"IN1_MNTR" : false,
@@ -177,12 +177,12 @@
 				"IN1_ARM" : true,
 				"IN1_EFF1" : false,
 				"IN1_EFF2" : false,
-				"IN1_EFF3" : false,
+				"IN1_EFF3" : true,
 				"IN1_MNTR" : true,
 				"IN2_ARM" : true,
 				"IN2_EFF1" : false,
 				"IN2_EFF2" : false,
-				"IN2_EFF3" : false,
+				"IN2_EFF3" : true,
 				"IN2_MNTR" : true
 			},
 			"controls" : 

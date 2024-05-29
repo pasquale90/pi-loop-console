@@ -1,15 +1,13 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-CFLAGS=-D DEV -D PCH #DEV/REL K6/PCH/CODEC
+CFLAGS=-D DEV -D K6 #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
-OBJECTS :=build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o
+OBJECTS := build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o
 
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
-
-EVDEV :=-I/usr/include -levdev #-L/usr/lib/x86_64-linux-gnu/
-
+EVDEV :=-I/usr/include -levdev
 JACK :=-I/usr/include -L/usr/lib -ljack -ljackserver -ljacknet
 
 all:piloop
@@ -23,11 +21,23 @@ build/audioserver.o: include/audioserver.h src/audioserver.cpp
 build/handshake.o:src/handshake.cpp include/handshake.h
 	$(COMPILE) -c src/handshake.cpp $(INCLUDE) $(JACK) $(JSONCPP) -o build/handshake.o
 
-# build/route.o:src/route.cpp src/handshake.h
-# 	$(COMPILE) -c src/route.cpp -o build/route.o
+build/monitor.o:src/monitor.cpp include/monitor.h
+	$(COMPILE) -c src/monitor.cpp $(INCLUDE) $(JSONCPP) -o build/monitor.o
 
-# build/channel.o:src/channel.cpp src/handshake.h src/route.h
-# 	$(COMPILE) -c src/channel.cpp -o build/channel.o
+build/effects.o:src/effects.cpp include/effects.h
+	$(COMPILE) -c src/effects.cpp $(INCLUDE) -o build/effects.o
+
+build/channel.o:src/channel.cpp include/channel.h
+	$(COMPILE) -c src/channel.cpp $(INCLUDE) -o build/channel.o
+
+build/mixer.o:src/mixer.cpp include/mixer.h
+	$(COMPILE) -c src/mixer.cpp $(INCLUDE) $(JSONCPP) -o build/mixer.o
+
+build/looper.o:src/looper.cpp include/looper.h
+	$(COMPILE) -c src/looper.cpp $(INCLUDE) $(JSONCPP) -o build/looper.o
+
+build/channel.o:src/channel.cpp include/channel.h
+	$(COMPILE) -c src/channel.cpp $(INCLUDE) -o build/channel.o
 
 build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp $(INCLUDE) $(JSONCPP) -o build/session.o
