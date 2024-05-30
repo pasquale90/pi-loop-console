@@ -7,7 +7,7 @@
 
 class Looper{
     public:
-        float** update_buffer(float*[F_NUM_INPUTS]);
+        float** update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);
 
         void recdub(int,bool);
         void stoperase(int,bool);
@@ -19,6 +19,7 @@ class Looper{
     private:
         Config& cfg = Config::getInstance();
         int loop_length;
+        int playback_idx;
         
         static const int num_channels{3};
         Channel channels[num_channels];

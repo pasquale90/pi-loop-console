@@ -3,15 +3,19 @@
 
 #include <random>
 
+const int NUM_EFFECTS = 3;
+
 class Effects{
     public:
         Effects();
         
-        void whiteNoise(float*);
-        void effect2(float*);
-        void effect3(float*);
-    
+        void apply_effect(int,float*);
+        void apply_effects(bool[NUM_EFFECTS],float*);
+        
     private:
-        int buffer_size;
+        void _whiteNoise(float*);
+        void _effect2(float*);
+        void _effect3(float*);
+    
 };
 #endif

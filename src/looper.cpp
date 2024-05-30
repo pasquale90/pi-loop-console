@@ -1,8 +1,12 @@
 #include "looper.h"
 #include <iostream>
 
-float** Looper::update_buffer(float* input[F_NUM_INPUTS]){
-
+float** Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
+    
+    // for (int j=0; i<F_NUM_INPUTS;++i){
+    //     if (armEnabled[j])
+    // }
+    
     for (int i=0; i<num_channels;++i){
         channels[i].update_signal(input);
     }

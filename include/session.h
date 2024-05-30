@@ -1,11 +1,10 @@
 #ifndef SESSION_H_INCLUDED
 #define SESSION_H_INCLUDED
 
-#include <atomic>
-// #include <functional>
 #include "monitor.h"
 #include "looper.h"
 #include "mixer.h"
+// #include <atomic>
 
 class Session{
     public:

@@ -5,7 +5,7 @@ Mixer::Mixer(){
 }
 
 
-void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], float* looper_buffers[F_NUM_OUTPUTS]){
+void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], float* looper_buffers[F_NUM_OUTPUTS],bool monitorIn[F_NUM_INPUTS]){
 
     // if (cfg.get_button_state()){
     // }else{
@@ -29,11 +29,12 @@ void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffe
 // START_ALL,
 // SAVE_JAM,
 
+/*
 // Mix signals here
     // if (cfg.get_button_state(IN1_ARM)){
     for (int i=0;i<BUFFER_SIZE;++i){
         
-        for (int j = 0 ; j < F_NUM_OUTPUTS; ++j )
+        // for (int j = 0 ; j < F_NUM_OUTPUTS; ++j )
 
 #if F_NUM_INPUTS == 1
         //L
@@ -47,6 +48,43 @@ void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffe
             output_buffers[1][i] = input_buffers[0][i] + input_buffers[1][i];
 #endif
     }
+*/
+
+
+
+// Mix signals here - solution 2 mix everything here
+    // if (cfg.get_button_state(IN1_ARM)){
+    for (int i=0;i<BUFFER_SIZE;++i){
+        
+        // for (int j = 0 ; j < F_NUM_OUTPUTS; ++j )
+
+#if F_NUM_INPUTS == 1
+        //L
+           output_buffers[0][i] = input_buffers[0][i] * (int)monitorIn[0];
+        //R
+            output_buffers[1][i] = input_buffers[0][i] * (int)monitorIn[0];
+#elif F_NUM_INPUTS == 2
+        //L
+            output_buffers[0][i] = input_buffers[0][i] * (int)monitorIn[0] + input_buffers[1][i] * (int)monitorIn[1];
+        //R
+            output_buffers[1][i] = input_buffers[0][i] * (int)monitorIn[0] + input_buffers[1][i] * (int)monitorIn[1];
+#endif
+    }
+
+
+/*
+// Mix signals here - option 3 get mixed from everywhere and simply add it
+    // if (cfg.get_button_state(IN1_ARM)){
+    for (int i=0;i<BUFFER_SIZE;++i){
+        //L
+           output_buffers[0][i] = input_buffers[0][i];
+        //R
+            output_buffers[1][i] = input_buffers[0][i];
+    }
+*/
+
+
+
     // memcpy (output_buffers[0], input_buffers[0] ,sizeof (float) * BUFFER_SIZE);
     // memcpy (output_buffers[1], input_buffers[0] ,sizeof (float) * BUFFER_SIZE);
 

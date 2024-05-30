@@ -16,6 +16,7 @@ class Channel{
         // Channel(const char*);
         void update_signal(float*[F_NUM_INPUTS]);
 
+        float** get_channel_buffer();
 // EVENTS FOR THOSE IN CHANNEL 
 // CH1_VOL_LOW,
 // CH1_VOL_HIGH,
@@ -32,10 +33,10 @@ class Channel{
     private:
         const char* channel_name;
 
-        static const int num_states{2};
+        static const int num_states{2}; // 2 states : the current state and the previous state
         float data[num_states][MAX_LOOP_LENGTH_SAMPLES];
 
-        int currSize;
+        int loopLength,loopIndex;
         std::atomic<int> rec_id; // points to the current or the previous recording , currently we have 2
         std::atomic<bool> isempty; // if nothing has been written yet
         std::atomic<bool> start; // start/pause looping/overdubing

@@ -12,7 +12,13 @@ int Monitor::process()
      */
 
     for (int i=0; i<F_NUM_INPUTS;++i){
-        input_buffers[i] = hs.get_input_buffer(i);
+        input_buffers[i] = hs.get_input_buffer(i);        
+        for (int eff = 0; eff<NUM_EFFECTS; ++eff){
+            if (effects_enabled[i][eff]){
+// @TODO improve this complexity
+                effects.apply_effect(eff, input_buffers[i]);
+            }
+        }
     }
 
     for (int i=0; i<F_NUM_OUTPUTS;++i){
@@ -20,8 +26,7 @@ int Monitor::process()
     }
 
     stream_buffer(input_buffers,output_buffers);
-    //     memcpy (output_buffers[0], input_buffers[0] ,sizeof (float) * BUFFER_SIZE);
-    // memcpy (output_buffers[1], input_buffers[0] ,sizeof (float) * BUFFER_SIZE);
+    
 	return 0;      
 }
 
@@ -32,7 +37,18 @@ void Monitor::set_stream_buffer(std::function<void(float *in[F_NUM_INPUTS],float
     stream_buffer = streamBufferf;
 }
 
-void Monitor::connect(char *name,bool mntr_curr_state[F_NUM_INPUTS]){
+void Monitor::initialize_effects(const bool effects_curr_state[F_NUM_INPUTS][NUM_EFFECTS]){
+    for (int i=0; i<F_NUM_INPUTS;++i){
+        for (int j = 0; j < NUM_EFFECTS; j++)
+            effects_enabled[i][j] = effects_curr_state[i][j];
+    }
+}
+
+void Monitor::toggle_effect(int ch,int eff,bool val){
+    effects_enabled[ch][eff] = val ; //!effects_enabled[ch][eff];
+}
+
+void Monitor::connect(char *name){
     hs.link_client(name);
     hs.set_process_callback();
     hs.prevent_failure();
@@ -52,8 +68,7 @@ void Monitor::connect(char *name,bool mntr_curr_state[F_NUM_INPUTS]){
     hs.register_devices();
 
     for (int i=0; i<F_NUM_INPUTS; ++i){
-        if (mntr_curr_state[i])
-            hs.connect_input_device(i);
+        hs.connect_input_device(i);
     }
     for (int i=0; i<F_NUM_OUTPUTS; ++i){
         hs.connect_output_device(i);
@@ -65,16 +80,30 @@ void Monitor::connect(char *name,bool mntr_curr_state[F_NUM_INPUTS]){
 }
 
 void Monitor::disconnect(){
-    for (int i=0; i<F_NUM_INPUTS; ++i){
-        hs.disconnect_input_device(i);
-    }
-
     for (int i=0; i<F_NUM_OUTPUTS; ++i){
+        mute_output(i);
         hs.disconnect_output_device(i);
     }
+    std::cout<<"\n\nMonitor::Output devices disconnected succesfully \n\n"<<std::endl;
+    
+    for (int i=0; i<F_NUM_INPUTS; ++i){
+        mute_input(i);
+        hs.disconnect_input_device(i);
+    }
+    std::cout<<"\n\nMonitor::Input devices disconnected succesfully \n\n"<<std::endl;
+
     hs.disconnect_client();
 }
 
+void Monitor::mute_input(int device){
+    hs.disconnect_input_device(device);
+}
+
+void Monitor::mute_output(int device){
+    hs.disconnect_output_device(device);
+}
+
+/*
 void Monitor::mute_microphone()
 {   
     hs.disconnect_input_device(0);
@@ -102,7 +131,7 @@ void Monitor::unmute_instrument()
     std::cout<<"Monitor::unmute_instrument --> No INST input supported for "<<DEV_INFO<<std::endl;
 #endif
 }
-
+*/
 
 /*
 //@TODO optimize this function with preproccessor if statements blocks

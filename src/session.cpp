@@ -4,8 +4,17 @@ Session::Session(){
     is_running.store(true);
     is_firsTime.store(true);
     re_initialize.store(true);
+
     
-    monitor.set_stream_buffer(std::bind(&Session::_update_buffers,this, _1, _2) );
+#if F_NUM_INPUTS == 1
+    bool effects_curr_state[NUM_INPUTS][NUM_EFFECTS] = {cfg.get_button_state(IN1_EFF1),cfg.get_button_state(IN1_EFF2),cfg.get_button_state(IN1_EFF3)};
+#elif F_NUM_INPUTS == 2
+    bool effects_curr_state[NUM_INPUTS][NUM_EFFECTS] = {
+        {cfg.get_button_state(IN1_EFF1),cfg.get_button_state(IN1_EFF2),cfg.get_button_state(IN1_EFF3)},
+        {cfg.get_button_state(IN2_EFF1),cfg.get_button_state(IN2_EFF2),cfg.get_button_state(IN2_EFF3)}};
+#endif
+    monitor.initialize_effects(effects_curr_state);
+    monitor.set_stream_buffer(std::bind(&Session::_update_buffers,this, std::placeholders::_1, std::placeholders::_2) );
 }
 
 // no need for method, command is called directly in this.migrate()
@@ -26,19 +35,23 @@ void Session::load(){
             }else{
                 monitor.disconnect();
             }
-#if F_NUM_INPUTS == 1
-            bool mntr_current_state[F_NUM_INPUTS] = {cfg.get_button_state(IN1_MNTR)};
-#elif F_NUM_INPUTS == 2
-            bool mntr_current_state[F_NUM_INPUTS] = {cfg.get_button_state(IN1_MNTR),cfg.get_button_state(IN2_MNTR)};
-#endif
-            monitor.connect(const_cast<char*>(&cfg.currSession_name[0]),mntr_current_state);
+            monitor.connect(const_cast<char*>(&cfg.currSession_name[0]));
         }   
     }
 }
 
 void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_buffers[F_NUM_OUTPUTS]){
-    float** looper_buff = looper.update_buffer(input_buffers);
-    mixer.update_buffer(input_buffers,output_buffers,looper_buff);
+#if F_NUM_INPUTS == 1
+    bool monitorIn[F_NUM_INPUTS]={cfg.get_button_state(IN1_MNTR)};
+    bool armEnabled[F_NUM_INPUTS]={cfg.get_button_state(IN1_ARM)};
+#elif F_NUM_INPUTS == 2
+    bool monitorIn[F_NUM_INPUTS]={cfg.get_button_state(IN1_MNTR),cfg.get_button_state(IN2_MNTR)};
+    bool armEnabled[F_NUM_INPUTS]={cfg.get_button_state(IN1_ARM),cfg.get_button_state(IN2_ARM)};
+#endif
+
+    // float** looper_buff = looper.update_buffer(input_buffers,armEnabled);
+    float *looper_buff[F_NUM_OUTPUTS] = {0};
+    mixer.update_buffer(input_buffers,output_buffers,looper_buff,monitorIn);
 }
 
 void Session::save(){
@@ -138,9 +151,9 @@ void Session::notify_session(Control trigger, bool isHold){
             std::cout<<"Session::_notify_session IN1_MNTR-->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
 
 // just for testing mute operation
-            if (cfg.get_button_state(IN1_MNTR)){
-                monitor.unmute_microphone();
-            }else monitor.mute_microphone();
+            // if (cfg.get_button_state(IN1_MNTR)){
+            //     monitor.unmute_microphone();
+            // }else monitor.mute_microphone();
 
 
             // std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
@@ -153,42 +166,38 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case IN2_MNTR:
             cfg.toggle_button_state(IN2_MNTR);
-            if (cfg.get_button_state(IN2_MNTR)){
-                monitor.unmute_instrument();
-            }else monitor.mute_instrument();
+            // if (cfg.get_button_state(IN2_MNTR)){
+            //     monitor.unmute_instrument();
+            // }else monitor.mute_instrument();
 
             // std::cout<<"call Monitor.toggle_inout(2)"<<std::endl; 
             std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
             break;
         case IN1_EFF1:
             cfg.toggle_button_state(IN1_EFF1);
-            std::cout<<"call ???.toggle_effect(1,1)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF1)<<std::endl;
+            monitor.toggle_effect(0,0,cfg.get_button_state(IN1_EFF1));
             break;
         case IN1_EFF2:
             cfg.toggle_button_state(IN1_EFF2);
-            std::cout<<"call ???.toggle_effect(1,2)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF2)<<std::endl;
+            monitor.toggle_effect(0,1,cfg.get_button_state(IN1_EFF2));
             break;
         case IN1_EFF3:
             cfg.toggle_button_state(IN1_EFF3);
-            std::cout<<"call ???.toggle_effect(1,3)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_EFF3)<<std::endl;
+            monitor.toggle_effect(1,2,cfg.get_button_state(IN1_EFF3));
             break;
         case IN2_EFF1:
             cfg.toggle_button_state(IN2_EFF1);
-            std::cout<<"call ???.toggle_effect(2,1)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF1)<<std::endl;
+            monitor.toggle_effect(1,0,cfg.get_button_state(IN2_EFF1));
             break;
         case IN2_EFF2:
             cfg.toggle_button_state(IN2_EFF2);
-            std::cout<<"call ???.toggle_effect(2,2)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF2)<<std::endl;
+            monitor.toggle_effect(1,1,cfg.get_button_state(IN2_EFF2));
             break;
         case IN2_EFF3:
             cfg.toggle_button_state(IN2_EFF3);
-            std::cout<<"call ???.toggle_effect(2,3)"<<std::endl; 
-            // std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
+            // std::cout<<"call ???.toggle_effect(2,3)"<<std::endl; 
+            monitor.toggle_effect(1,2,cfg.get_button_state(IN2_EFF3));
+            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
             break;
         case TAP_TEMPO:
             std::cout<<"call Metronome.tap()"<<std::endl; 
@@ -211,7 +220,9 @@ void Session::notify_session(Control trigger, bool isHold){
         case CH3_VOL_HIGH:
             std::cout<<"call Mixer.volume_up(3)"<<std::endl; 
             break;   
+
     }
+    // cfg.display();
 }
 
 
