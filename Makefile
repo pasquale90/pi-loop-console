@@ -1,7 +1,7 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-CFLAGS=-D DEV -D K6 #DEV/REL K6/PCH/CODEC
+CFLAGS=-D DEV -D PCH #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
 OBJECTS := build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o

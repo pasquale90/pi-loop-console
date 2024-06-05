@@ -50,7 +50,8 @@ void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_b
 #endif
 
     // float** looper_buff = looper.update_buffer(input_buffers,armEnabled);
-    float *looper_buff[F_NUM_OUTPUTS] = {0};
+    std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_buff = looper.update_buffer(input_buffers,armEnabled);
+    // float *looper_buff[F_NUM_OUTPUTS] = {0};
     mixer.update_buffer(input_buffers,output_buffers,looper_buff,monitorIn);
 }
 
@@ -84,13 +85,17 @@ void Session::migrate(int next_session){
 
     // change_audio_client();
     re_initialize.store(true);
+
+    looper.reset();
+// @TODO mixer reset
+    // mixer.reset();
 }
 
 void Session::evacuate(){
     is_running.store(false);
     
     // mixer.turnOff();
-    // looper.turnOff();
+    looper.reset();
     monitor.disconnect();
 }
 
@@ -117,61 +122,61 @@ void Session::notify_session(Control trigger, bool isHold){
 //@TODO toggle states within object methods. 
 //Session only responsible for calling the right function.
         case CH1_RECDUB:
-            std::cout<<"call Looper.recdub(1,isHold)"<<std::endl; // rec/dub/erase_previous
-            // std::cout<<"mic_buffer[0] = "<<mic_buffer[0]<<std::endl;
+            looper.recdub(0,isHold);
             break;
         case CH1_STOP:
-            std::cout<<"call Looper.stoperase(1,isHold)"<<std::endl; // stop/erase_all
+        // @TODO --> tap tempo?
+            looper.stoperase(0,isHold); 
             break;
         case CH2_RECDUB:
-            std::cout<<"call Looper.recdub(2,isHold)"<<std::endl; 
+            looper.recdub(1,isHold);
             break;
         case CH2_STOP:
-            std::cout<<"call Looper.stoperase(2,isHold)"<<std::endl; 
+            looper.stoperase(1,isHold);
             break;
         case CH3_RECDUB:
-            std::cout<<"call Looper.recdub(3,isHold)"<<std::endl;
+            looper.recdub(2,isHold);
             break;
         case CH3_STOP:
-            std::cout<<"call Looper.stoperase(3,isHold)"<<std::endl; 
+            looper.stoperase(2,isHold);
             break;
         case START_ALL:
-            std::cout<<"call Mixer.StartStop()"<<std::endl; // startALL/stopALL
+            looper.start_stop_all(isHold); // startALL/stopALL
             break;
         case SAVE_JAM:
-            std::cout<<"call ??? to save jam? Mixer?? --> Mixer.saveJam() "<<std::endl; 
+            std::cout<<"call Mixer.saveJam() "<<std::endl; 
             break;
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM); 
-            // std::cout<<"call Monitor.toggle_arm(1)"<<std::endl; 
-            std::cout<<"Session::_notify_session IN1_ARM-->"<<cfg.get_button_state(IN1_ARM)<<std::endl;
+            
+            if (cfg.get_button_state(IN1_ARM)){
+                std::cout<<"Arm for IN1 is ON"<<std::endl;
+            }else std::cout<<"Arm for IN1 is OFF"<<std::endl;
+
             break;
         case IN1_MNTR:
             cfg.toggle_button_state(IN1_MNTR);
-            std::cout<<"Session::_notify_session IN1_MNTR-->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
-
-// just for testing mute operation
-            // if (cfg.get_button_state(IN1_MNTR)){
-            //     monitor.unmute_microphone();
-            // }else monitor.mute_microphone();
-
-
-            // std::cout<<"call Monitor.toggle_inout(1)"<<std::endl; 
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN1_MNTR)<<std::endl;
+            
+            if (cfg.get_button_state(IN1_MNTR)){
+                std::cout<<"Monitor for IN1 is ON"<<std::endl;
+            }else std::cout<<"Monitor for IN1 is OFF"<<std::endl;
+            
             break;
         case IN2_ARM:
             cfg.toggle_button_state(IN2_ARM);
-            // std::cout<<"call Monitor.toggle_arm(2)"<<std::endl; 
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_ARM)<<std::endl;
+            
+            if (cfg.get_button_state(IN2_ARM)){
+                std::cout<<"Arm for IN2 is ON"<<std::endl;
+            }else std::cout<<"Arm for IN2 is OFF"<<std::endl;
+            
             break;
         case IN2_MNTR:
             cfg.toggle_button_state(IN2_MNTR);
-            // if (cfg.get_button_state(IN2_MNTR)){
-            //     monitor.unmute_instrument();
-            // }else monitor.mute_instrument();
-
-            // std::cout<<"call Monitor.toggle_inout(2)"<<std::endl; 
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_MNTR)<<std::endl;
+            
+            if (cfg.get_button_state(IN2_MNTR)){
+                std::cout<<"Monitor for IN2 is ON"<<std::endl;
+            }else std::cout<<"Monitor for IN2 is OFF"<<std::endl;
+            
             break;
         case IN1_EFF1:
             cfg.toggle_button_state(IN1_EFF1);
@@ -195,34 +200,32 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case IN2_EFF3:
             cfg.toggle_button_state(IN2_EFF3);
-            // std::cout<<"call ???.toggle_effect(2,3)"<<std::endl; 
             monitor.toggle_effect(1,2,cfg.get_button_state(IN2_EFF3));
-            std::cout<<"Session::_notify_session -->"<<cfg.get_button_state(IN2_EFF3)<<std::endl;
             break;
         case TAP_TEMPO:
             std::cout<<"call Metronome.tap()"<<std::endl; 
             break;
         case CH1_VOL_LOW:
-            std::cout<<"call Mixer.volume_down(1)"<<std::endl; 
+            looper.volume_down(0);
             break;
         case CH1_VOL_HIGH:
-            std::cout<<"call Mixer.volume_up(1)"<<std::endl; 
+            looper.volume_up(0);
             break;
         case CH2_VOL_LOW:
-            std::cout<<"call Mixer.volume_down(2)"<<std::endl; 
+            looper.volume_down(1);
             break;
         case CH2_VOL_HIGH:
-            std::cout<<"call Mixer.volume_up(2)"<<std::endl; 
+            looper.volume_up(1);
             break;
         case CH3_VOL_LOW:
-            std::cout<<"call Mixer.volume_down(3)"<<std::endl; 
+            looper.volume_down(2);
             break;
         case CH3_VOL_HIGH:
-            std::cout<<"call Mixer.volume_up(3)"<<std::endl; 
+            looper.volume_up(2);
             break;   
-
     }
     // cfg.display();
+    looper.display_states();
 }
 
 

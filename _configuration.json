@@ -36,7 +36,7 @@
 		"sample_rate" : 44100,
 		"selected_audio_device" : "PCH"
 	},
-	"last_session" : 2,
+	"last_session" : 3,
 	"sessions" : 
 	[
 		{
@@ -76,15 +76,15 @@
 			"UI_button_states" : 
 			{
 				"IN1_ARM" : true,
-				"IN1_EFF1" : true,
+				"IN1_EFF1" : false,
 				"IN1_EFF2" : false,
 				"IN1_EFF3" : true,
-				"IN1_MNTR" : false,
+				"IN1_MNTR" : true,
 				"IN2_ARM" : false,
 				"IN2_EFF1" : false,
 				"IN2_EFF2" : false,
 				"IN2_EFF3" : false,
-				"IN2_MNTR" : false
+				"IN2_MNTR" : true
 			},
 			"controls" : 
 			{
@@ -145,12 +145,12 @@
 				"IN1_EFF1" : false,
 				"IN1_EFF2" : true,
 				"IN1_EFF3" : true,
-				"IN1_MNTR" : false,
+				"IN1_MNTR" : true,
 				"IN2_ARM" : false,
 				"IN2_EFF1" : false,
 				"IN2_EFF2" : false,
 				"IN2_EFF3" : false,
-				"IN2_MNTR" : false
+				"IN2_MNTR" : true
 			},
 			"controls" : 
 			{

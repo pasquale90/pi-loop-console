@@ -4,7 +4,7 @@
 #include "monitor.h"
 #include "looper.h"
 #include "mixer.h"
-// #include <atomic>
+#include <atomic>
 
 class Session{
     public:
