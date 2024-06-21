@@ -14,7 +14,7 @@ int Monitor::process()
     for (int i=0; i<F_NUM_INPUTS;++i){
         input_buffers[i] = hs.get_input_buffer(i);        
         for (int eff = 0; eff<NUM_EFFECTS; ++eff){
-            if (effects_enabled[i][eff]){
+            if (effects_enabled[i][eff].load()){
 // @TODO improve this complexity
                 effects.apply_effect(eff, input_buffers[i]);
             }
@@ -40,12 +40,12 @@ void Monitor::set_stream_buffer(std::function<void(float *in[F_NUM_INPUTS],float
 void Monitor::initialize_effects(const bool effects_curr_state[F_NUM_INPUTS][NUM_EFFECTS]){
     for (int i=0; i<F_NUM_INPUTS;++i){
         for (int j = 0; j < NUM_EFFECTS; j++)
-            effects_enabled[i][j] = effects_curr_state[i][j];
+            effects_enabled[i][j].store(effects_curr_state[i][j]);
     }
 }
 
 void Monitor::toggle_effect(int ch,int eff,bool val){
-    effects_enabled[ch][eff] = val ; //!effects_enabled[ch][eff];
+    effects_enabled[ch][eff].store(val) ; //!effects_enabled[ch][eff];
 }
 
 void Monitor::connect(char *name){

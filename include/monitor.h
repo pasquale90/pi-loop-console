@@ -4,6 +4,7 @@
 #include "handshake.h"
 #include "effects.h"
 #include <functional>
+#include <atomic>
 
 class Session;
 
@@ -30,7 +31,7 @@ class Monitor{
     private:
         Handshake hs;
         Effects effects;
-        bool effects_enabled[F_NUM_INPUTS][NUM_EFFECTS];
+        std::atomic<bool> effects_enabled[F_NUM_INPUTS][NUM_EFFECTS];
 
         float *input_buffers[F_NUM_INPUTS];
         float *output_buffers[F_NUM_OUTPUTS];
