@@ -181,26 +181,44 @@ void Session::notify_session(Control trigger, bool isHold){
         case IN1_EFF1:
             cfg.toggle_button_state(IN1_EFF1);
             monitor.toggle_effect(0,0,cfg.get_button_state(IN1_EFF1));
+            if (cfg.get_button_state(IN1_EFF1)){
+                std::cout<<"Effect 1 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 1 for IN1 is OFF"<<std::endl;
             break;
         case IN1_EFF2:
             cfg.toggle_button_state(IN1_EFF2);
             monitor.toggle_effect(0,1,cfg.get_button_state(IN1_EFF2));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 2 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 2 for IN1 is OFF"<<std::endl;
             break;
         case IN1_EFF3:
             cfg.toggle_button_state(IN1_EFF3);
             monitor.toggle_effect(1,2,cfg.get_button_state(IN1_EFF3));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 3 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 3 for IN1 is OFF"<<std::endl;
             break;
         case IN2_EFF1:
             cfg.toggle_button_state(IN2_EFF1);
             monitor.toggle_effect(1,0,cfg.get_button_state(IN2_EFF1));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 1 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 1 for IN2 is OFF"<<std::endl;
             break;
         case IN2_EFF2:
             cfg.toggle_button_state(IN2_EFF2);
             monitor.toggle_effect(1,1,cfg.get_button_state(IN2_EFF2));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 2 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 2 for IN2 is OFF"<<std::endl;
             break;
         case IN2_EFF3:
             cfg.toggle_button_state(IN2_EFF3);
             monitor.toggle_effect(1,2,cfg.get_button_state(IN2_EFF3));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 3 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 3 for IN2 is OFF"<<std::endl;
             break;
         case TAP_TEMPO:
             std::cout<<"call Metronome.tap()"<<std::endl; 
