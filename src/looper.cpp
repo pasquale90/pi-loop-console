@@ -1,37 +1,39 @@
 #include "looper.h"
 #include <iostream>
-
+#include <assert.h>     /* assert */
 std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
 // float** Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
 
 // fuse input signals and pass them on channel update if arm is enabled (mic arm || inst arm)
     float armed_input[BUFFER_SIZE] = {0.};
-    arm_enabled = _fuse_input(input,armEnabled,armed_input);
-    if (arm_enabled){
+    arm_enabled.store(_fuse_input(input,armEnabled,armed_input));
+    if (arm_enabled.load()){
         for (int i=0; i<num_channels;++i){
-            if (record == i){
-                channels[i].update_rec_signal(armed_input, playback_idx);
+            if (record.load() == i){
+                channels[i].update_rec_signal(armed_input, playback_idx.load());
             }
         }
     }
 
     bool playback_enabled = false;
     for (int ch=0; ch<num_channels; ++ch)    {
-        if ( playback[ch] == true ){ //!channels[ch].isEmpty() ||
+        if ( playback[ch].load() == true ){ //!channels[ch].isEmpty() ||
             playback_enabled = true;
             break;
         }
     }
 
-    bool isFirstloop = (loop_length == 0) && record != -1;
-    if (playback_enabled || (loop_length && record!=-1) ){
-        playback_idx+=BUFFER_SIZE;
-        if (playback_idx > loop_length-1 ) {//+ BUFFER_SIZE
-            playback_idx = 0;
+    bool isFirstloop = (loop_length.load() == 0) && record.load() != -1;
+    if (isFirstloop)
+        // playback_idx+=BUFFER_SIZE;
+        playback_idx.store(playback_idx.load() + BUFFER_SIZE);
+    else if (playback_enabled || (loop_length.load() && record.load()!=-1) ){
+        // playback_idx+=BUFFER_SIZE;
+        playback_idx.store(playback_idx.load() + BUFFER_SIZE);
+        if (playback_idx.load() > loop_length.load() - BUFFER_SIZE) {//+ BUFFER_SIZE
+            playback_idx.store(0);
         }
     }
-    else if (isFirstloop)
-        playback_idx+=BUFFER_SIZE;
 
     return mix();
 }
@@ -58,33 +60,35 @@ Looper::Looper(){
 // logic for setting the metronome and setting the range for the playback pointer
 void Looper::_initialize_looper(){
     // set the loop length 
-    loop_length = playback_idx;
+    loop_length.store(playback_idx.load());
     // update all channels to reserve such space
     for (int ch = 0; ch< num_channels; ++ch)
-        if (ch == record)
-            channels[ch].set_loop_length(true,loop_length);
+        if (ch == record.load())
+            channels[ch].set_loop_length(true,loop_length.load());
         else 
-            channels[ch].set_loop_length(false,loop_length);
+            channels[ch].set_loop_length(false,loop_length.load());
 
 // @TODO create the metronome
 }
 
 void Looper::reset(){
     _set_inactive();
-    for (int ch=0; ch<num_channels; ++ch)
+    for (int ch=0; ch<num_channels; ++ch){
         channels[ch].clean();
+        channels[ch].reset();
+    }        
     // std::cout<<"Looper is reset!"<<std::endl;
 }
 
 void Looper::_set_inactive(){
     for (int ch=0; ch<num_channels; ++ch){
-        playback[ch] = false;
+        playback[ch].store(false);
 // @TODO channels.clean() instead of set_loop_length(0)
         // channels[ch].clean();
     }   
-    record = -1;
-    loop_length = 0 ;
-    playback_idx = 0 ;
+    record.store(-1);
+    loop_length.store(0) ;
+    playback_idx.store(0) ;
 // @TODO how to reset channels????
 }
 
@@ -93,36 +97,36 @@ void Looper::recdub(int channel,bool isHold){
 
 // check if not initialized, if first loop, if playback on other channels
     if (isHold){
-        if (record==channel)
-            record = -1;
+        if (record.load()==channel)
+            record.store(-1);
         else
             channels[channel].undub();
     }else
     {
         // is playback
-        if (!channels[channel].isEmpty() && !playback[channel])
-                playback[channel] = true;
-        else if (record == -1){                                             // if not writting
-            if (arm_enabled)                                            // if at least one input is has arm enabled, start looping. @NOTE if arm disabled for both instrunments during writting, then 0 the signal until stop writting the loop(No sound when arm is disabled). 
-                record = channel;
+        if (!channels[channel].isEmpty() && !playback[channel].load())
+                playback[channel].store(true);
+        else if (record.load() == -1){                                             // if not writting
+            if (arm_enabled.load())                                            // if at least one input is has arm enabled, start looping. @NOTE if arm disabled for both instrunments during writting, then 0 the signal until stop writting the loop(No sound when arm is disabled). 
+                record.store(channel);
             else return;
         }
         else { // if already writting on a channel, then it is a save_loop + playback signal
 
             // check if it is the first loop;
-            if (loop_length == 0)
+            if (loop_length.load() == 0)
                 // loop_length = playback_idx;     // initialize the looper
                 _initialize_looper();
                   
-            if ( record == channel){ // if already writting        
-                record = -1;
-                playback[channel] = true;
+            if ( record.load() == channel){ // if already writting        
+                record.store(-1);
+                playback[channel].store(true);
                 channels[channel].add_track();
-            }else if (record!=channel) // otherwise check if writting others
+            }else if (record.load()!=channel) // otherwise check if writting others
             {
-                playback[record] = true;
-                channels[record].add_track();
-                record = channel;                   
+                playback[record.load()].store(true);
+                channels[record.load()].add_track();
+                record.store(channel);                   
             }
         }
     }
@@ -157,7 +161,7 @@ void Looper::stoperase(int channel,bool isHold){
 // loop_length = 71680                                               <-- new loop length defined. The behaviour will be probably undefined.
 // ###########################################################
 
-    playback[channel] = false;
+    playback[channel].store(false);
 
     if (isHold){ // erase tracks on channel . If all other are empty, reset the looper
         channels[channel].clean();
@@ -169,32 +173,35 @@ void Looper::stoperase(int channel,bool isHold){
             }
         }
         if (allEmpty){
-            loop_length = 0;
-            playback_idx = 0;
+            loop_length.store(0);
+            playback_idx.store(0);
+            reset();
+            // for (int ch=0;ch<num_channels;++ch)
+                // channels[ch].set_first_loop_mode();
+                // channels[ch].reset();
         }
 
-        if (record == channel)
-            record = -1;
+        if (record.load() == channel)
+            record.store(-1);
     }        
     else{ // Pause the playback state for this channel (check if all paused). If writting enabled for this channel check if looper_initialized.
 
-        if (record == channel){ // if already writting    
-            if (loop_length == 0)             // check if it is the first loop;
+        if (record.load() == channel){ // if already writting    
+            if (loop_length.load() == 0)             // check if it is the first loop;
                 // loop_length = playback_idx; // initialize the looper
                 _initialize_looper();
-            record = -1;
+            record.store(-1);
             channels[channel].add_track();
         } 
-
         bool allPaused = true;
         for (int ch=0; ch<num_channels;++ch){
-            if (playback[ch]) {
+            if (playback[ch].load()) {
                 allPaused = false;
                 break;
             }
         }
         if (allPaused)
-            playback_idx = 0;
+            playback_idx.store(0);
 
     }
 }
@@ -212,22 +219,22 @@ void Looper::start_stop_all(bool isHold){
     {
         bool atLeastOneIsPlaying = false;     
         for (int ch=0; ch<num_channels; ++ch){
-            if (playback[ch]){
+            if (playback[ch].load()){
                 atLeastOneIsPlaying = true;
                 break;
             }
         }
-        if (record!=-1){
-            recdub(record,false);
+        if (record.load()!=-1){
+            recdub(record.load(),false);
         }
         if (atLeastOneIsPlaying){
             for (int ch=0; ch<num_channels; ++ch)
-                playback[ch] = false;
-            playback_idx = 0;
+                playback[ch].store(false);
+            playback_idx.store(0);
         }else{
             for (int ch=0; ch<num_channels; ++ch){
                 if (!channels[ch].isEmpty())
-                    playback[ch] = true;
+                    playback[ch].store(true);
             }
         }
     }
@@ -237,9 +244,9 @@ std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::mix(){
 
     std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_output {0};
     for (int ch=0; ch<num_channels; ++ch){
-        if ( playback[ch] == true ){
+        if ( playback[ch].load() == true ){
             if ( !channels[ch].isEmpty() ){ // || playback[ch]
-                std::vector<float> chout = channels[ch].get_out_signal(playback_idx);
+                std::vector<float> chout = channels[ch].get_out_signal(playback_idx.load());
                 for (int i=0; i< BUFFER_SIZE; ++i){
                     for (int speaker=0; speaker<F_NUM_OUTPUTS;++speaker){
                         looper_output[speaker][i] = looper_output[speaker][i] + chout[i] * channels[ch].get_volume();
@@ -261,16 +268,24 @@ void Looper::volume_down(int channel){
 }
 
 void Looper::display_states(){
-    bool rec1 = (record == 0) ? true :false;
-    bool rec2 = (record == 1) ? true :false;
-    bool rec3 = (record == 2) ? true :false;
+    bool rec1 = (record.load() == 0) ? true :false;
+    bool rec2 = (record.load() == 1) ? true :false;
+    bool rec3 = (record.load() == 2) ? true :false;
     std::cout<<"################## DISPLAY LOOPER STATES ##################"<<std::endl;
     std::cout<<"        CH1        |        CH2        |        CH3"<<std::endl;
     std::cout<<"rec:     "<<rec1<<"         |        "<<rec2<<"          |        "<<rec3<<std::endl;
-    std::cout<<"play:    "<<playback[0]<<"         |        "<<playback[1]<<"          |        "<<playback[2]<<std::endl;
+    std::cout<<"play:    "<<playback[0].load()<<"         |        "<<playback[1].load()<<"          |        "<<playback[2].load()<<std::endl;
     std::cout<<"#tracks: "<<channels[0].get_num_tracks()<<"         |        "<<channels[1].get_num_tracks()<<"          |        "<<channels[2].get_num_tracks()<<std::endl;
+/*
     // std::cout<<"rec_id:  "<<channels[0].GET_REC_ID()<<"         |        "<<channels[1].GET_REC_ID()<<"          |        "<<channels[2].GET_REC_ID()<<std::endl;
     // std::cout<<"play_id  "<<channels[0].GET_PLAY_ID()<<"         |        "<<channels[1].GET_PLAY_ID()<<"          |        "<<channels[2].GET_PLAY_ID()<<std::endl;    
-    std::cout<<"loop_length = "<<loop_length<<std::endl;
+    std::cout<<"loop_length = "<<loop_length.load()<<std::endl;
+    std::cout<<"record = "<<record.load()<<std::endl;
+    // if (loop_length)
+        for (int i=0; i<num_channels;++i){
+            channels[i].debug();
+        }
+        std::cout<<"playback id "<<playback_idx.load()<<std::endl;
+*/
     std::cout<<"###########################################################"<<std::endl;
 }

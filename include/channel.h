@@ -4,6 +4,7 @@
 // #include <atomic>
 #include <array>
 #include <vector>
+#include <atomic>
 
 #include "audio_settings.h"
 
@@ -12,6 +13,7 @@
 
 // #define DEBUGLOOP
 // @TODO consider stereo operations for looper class.
+// @TODO optimize channel operations
 
 // + consider master channel
 
@@ -21,6 +23,9 @@ class Channel{
 
     public:
         Channel();
+        
+        // void set_first_loop_mode();
+        void reset();
 
         void set_name(const char*);
         const char* get_name();
@@ -45,7 +50,7 @@ class Channel{
         std::vector<float> get_out_signal(int);
         
         bool isEmpty();
-        
+        //  void debug();
     private:
         const char* channel_name;
         int volume;
@@ -59,6 +64,8 @@ class Channel{
         int num_tracks,rec_id,play_id;
 
         int volume_step;
+
+        std::atomic<int> loop_length;
 };
 
 #endif
