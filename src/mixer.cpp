@@ -20,6 +20,9 @@ Mixer::Mixer(){
     jam_buffer[0].resize(JAM_LENGTH);
     jam_buffer[1].resize(JAM_LENGTH);
 
+    audioFile.setBitDepth (BIT_QUANTIZATION);
+    audioFile.setSampleRate (SAMPLE_RATE);
+
     cnt.store(0);
     curr_max_size.store(0);
 }
