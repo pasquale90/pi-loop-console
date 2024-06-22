@@ -144,7 +144,8 @@ void Session::notify_session(Control trigger, bool isHold){
             looper.start_stop_all(isHold); // startALL/stopALL
             break;
         case SAVE_JAM:
-            std::cout<<"call Mixer.saveJam() "<<std::endl; 
+            if (isHold)
+                mixer.save_jam();
             break;
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM); 
