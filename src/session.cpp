@@ -1,5 +1,9 @@
 #include "session.h"
 
+#include <ctime>
+#include <cstring>
+#include <string>
+
 Session::Session(){
     is_running.store(true);
     is_firsTime.store(true);
@@ -107,6 +111,14 @@ void Session::evacuate(){
 //     // ...
 // }
 
+void Session::save_jam(){
+
+    std::string savepath = cfg.jam_savepath + "/" + _get_datetime();
+    mixer.save_jam(savepath + ".wav");
+// @TODO create metadata for the file. This will server as a method to import this file in DAWs to be used latter as a songwritting guide.
+    // save tempo. save rythm
+}
+
 const char* Session::get_name(){
     // return session_name;
     return cfg.currSession_name.c_str();
@@ -145,7 +157,7 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case SAVE_JAM:
             if (isHold)
-                mixer.save_jam();
+                save_jam();
             break;
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM); 
@@ -247,4 +259,30 @@ void Session::notify_session(Control trigger, bool isHold){
     looper.display_states();
 }
 
+std::string Session::_parse_time_val(int value){
+    int num_digits = 0;
+    int temp = value;
+    while (temp){   
+    temp /= 10;
+    ++num_digits;
+    }
+    if (num_digits == 1){
+        return "0"+std::to_string(value);
+    }else if (num_digits == 2){
+        return std::to_string(value);
+    }else if (num_digits > 2){
+        return std::to_string(value).substr (num_digits-2,2);
+    }
+}
 
+std::string Session::_get_datetime(){ 
+    std::time_t t = std::time(0);   // get time now
+    std::tm* now = std::localtime(&t);
+
+    return _parse_time_val(now->tm_year + 1900)
+         + _parse_time_val (now->tm_mon + 1)
+         +  _parse_time_val(now->tm_mday)  + '_' 
+         +  _parse_time_val(now->tm_hour)
+         +  _parse_time_val(now->tm_min)
+         +  _parse_time_val(now->tm_sec);
+}

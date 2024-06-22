@@ -17,6 +17,8 @@ class Session{
         void evacuate(); // rename to stop_running???
         void notify_session(Control, bool);
 
+        void save_jam();
+
         void set_name(const char*);
         const char* get_name();
 
@@ -30,6 +32,8 @@ class Session{
         
         void _update_buffers(float *[F_NUM_INPUTS],float *[F_NUM_OUTPUTS]);
 
+        std::string _parse_time_val(int);
+        std::string _get_datetime();
         // void reset2defaults();
         
 };

@@ -1,4 +1,6 @@
 {
+	"jam_savepath" : "data/jams",
+	"session_savepath" : "data/sessions",
 	"audio_settings" : 
 	{
 		"audio_devices" : 

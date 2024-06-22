@@ -177,6 +177,10 @@ void Config::_open(){
 
     _parse_session(root["sessions"][current_session]);
     // _parse_audio_settings(root["audio_settings"]);
+
+    jam_savepath = root["jam_savepath"].asString();
+    session_savepath = root["session_savepath"].asString();
+
 }
 
 void Config::_parse_session(Json::Value data){

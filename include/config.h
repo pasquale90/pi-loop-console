@@ -57,6 +57,8 @@ class Config {
 
 			int get_max_sessions();
 			int get_curr_session();
+
+			std::string jam_savepath,session_savepath;
 			
 		private:
 			Config();

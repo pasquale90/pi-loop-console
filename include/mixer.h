@@ -15,7 +15,7 @@ class Mixer{
     // void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],float*[F_NUM_OUTPUTS],bool[F_NUM_INPUTS]);
     void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS>,bool[F_NUM_INPUTS]);
 
-    void save_jam();
+    void save_jam(std::string);
     
   private:
     char* name;
@@ -23,10 +23,6 @@ class Mixer{
     std::atomic<int> cnt,curr_max_size; 
     AudioFile<float> audioFile;
     AudioFile<float>::AudioBuffer jam_buffer;
-
-    std::string _get_jamsavepath();
-    std::string _parse_time_val(int);
-    std::string _get_datetime();
 };
 
 #endif
