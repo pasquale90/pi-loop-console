@@ -14,3 +14,9 @@ ___old__repo/*
 _devel/
 src_old/
 .$piloop.drawio.bkp
+external/*
+!external/AudioFile_cxx11.h
+!data/jams/
+!data/sessions/
+data/jams/*
+data/sessions/*
