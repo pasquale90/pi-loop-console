@@ -10,11 +10,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 
 set (INCLUDE_DIRECTORIES
     ./include
+    ./external
     /usr/include
     /usr/include/jsoncpp/
     /usr/lib/x86_64-linux-gnu/
     )
-    
+
 set(SOURCE_FILES
     src/audioserver.cpp  
     src/handshake.cpp  

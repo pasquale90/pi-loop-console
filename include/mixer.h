@@ -2,12 +2,11 @@
 #define MIXER_H_INCLUDED
 
 #include "audio_settings.h"
+#include "AudioFile_cxx11.h"
 
-#include <iostream>
-#include <cstring>
-#include "config.h"
+#include <atomic>
 
-// @TODO consider making Mixer a function
+// @TODO conform to both mono and stereo out
 
 class Mixer{
   public:
@@ -19,8 +18,15 @@ class Mixer{
     void save_jam();
     
   private:
-    Config& cfg = Config::getInstance();
     char* name;
+
+    std::atomic<int> cnt,curr_max_size; 
+    AudioFile<float> audioFile;
+    AudioFile<float>::AudioBuffer jam_buffer;
+
+    std::string _get_jamsavepath();
+    std::string _parse_time_val(int);
+    std::string _get_datetime();
 };
 
 #endif
