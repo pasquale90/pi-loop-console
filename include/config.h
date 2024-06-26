@@ -5,7 +5,6 @@
 #include <string>
 #include <unordered_map>
 #include <json/json.h>
-#include "metronome.h"
 #include "controls.h"
 
 // #ifdef K6
@@ -30,7 +29,6 @@ class Config {
 
 		// public attributes. No need for getters/setters
 			std::string currSession_name;
-			Metronome metronome;
 			// struct{
 			// 		int buffer_size;
 			// 		int sample_rate;
@@ -51,9 +49,11 @@ class Config {
 			// struct controls{}; 
 			// struct looper {};
 			std::unordered_map<Control,bool> button_states;
-			 
 			bool get_button_state(const Control&);
 			void toggle_button_state(const Control&);
+
+			float tempo;
+			int rythm_numerator,rythm_denominator;
 
 			int get_max_sessions();
 			int get_curr_session();

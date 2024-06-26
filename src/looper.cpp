@@ -32,6 +32,8 @@ std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::update_buffer
         playback_idx.store(playback_idx.load() + BUFFER_SIZE);
         if (playback_idx.load() > loop_length.load() - BUFFER_SIZE) {//+ BUFFER_SIZE
             playback_idx.store(0);
+            metronome.pause();
+            metronome.unpause();
         }
     }
 
@@ -57,8 +59,18 @@ Looper::Looper(){
     _set_inactive();
 }
 
+void Looper::load_metronome(){
+    metronome.tick_tock();
+}
+
 // logic for setting the metronome and setting the range for the playback pointer
 void Looper::_initialize_looper(){
+
+// @TODO create the metronome
+    metronome.stop_timing();
+    // std::cout<< "\n\n\n\n\t\t\tMetronome stop timer \n\n\n\n"<<std::endl;
+
+
     // set the loop length 
     loop_length.store(playback_idx.load());
     // update all channels to reserve such space
@@ -68,7 +80,6 @@ void Looper::_initialize_looper(){
         else 
             channels[ch].set_loop_length(false,loop_length.load());
 
-// @TODO create the metronome
 }
 
 void Looper::reset(){
@@ -78,6 +89,23 @@ void Looper::reset(){
         channels[ch].reset();
     }        
     // std::cout<<"Looper is reset!"<<std::endl;
+    
+    
+    std::cout<< "\n\n\n\n\t\t\tReset the metronome to defaults? \n\n\n\n"<<std::endl;
+    metronome.clear();
+    metronome.unlock();
+    metronome.display();
+    
+}
+
+void Looper::tap_alter_metronome(bool isHold){
+    if (isHold)
+        metronome.alter_tempo();
+    else 
+        metronome.tap_tempo();
+
+    metronome.display();
+
 }
 
 void Looper::_set_inactive(){
@@ -90,6 +118,10 @@ void Looper::_set_inactive(){
     loop_length.store(0) ;
     playback_idx.store(0) ;
 // @TODO how to reset channels????
+
+
+
+    metronome.pause();
 }
 
 void Looper::recdub(int channel,bool isHold){
@@ -103,12 +135,26 @@ void Looper::recdub(int channel,bool isHold){
             channels[channel].undub();
     }else
     {
+    // check if all stoped to unpause the metronome
+        bool all_stoped = true;
+        for (int ch=0; ch<num_channels; ++ch){
+            if (playback[ch]){
+                all_stoped = false;
+                break;
+            }
+        }
+
         // is playback
         if (!channels[channel].isEmpty() && !playback[channel].load())
                 playback[channel].store(true);
         else if (record.load() == -1){                                             // if not writting
-            if (arm_enabled.load())                                            // if at least one input is has arm enabled, start looping. @NOTE if arm disabled for both instrunments during writting, then 0 the signal until stop writting the loop(No sound when arm is disabled). 
+            if (arm_enabled.load()){                                            // if at least one input is has arm enabled, start looping. @NOTE if arm disabled for both instrunments during writting, then 0 the signal until stop writting the loop(No sound when arm is disabled). 
                 record.store(channel);
+
+                if (loop_length == 0 )
+                    metronome.start_timing();
+                    std::cout<< "\n\n\n\n\t\t\tMetronome start timer \n\n\n\n"<<std::endl;
+            }
             else return;
         }
         else { // if already writting on a channel, then it is a save_loop + playback signal
@@ -129,6 +175,10 @@ void Looper::recdub(int channel,bool isHold){
                 record.store(channel);                   
             }
         }
+    // unpause the metronome
+        if(all_stoped)
+            metronome.unpause();
+            
     }
 }
 void Looper::stoperase(int channel,bool isHold){
@@ -200,14 +250,17 @@ void Looper::stoperase(int channel,bool isHold){
                 break;
             }
         }
-        if (allPaused)
+        if (allPaused){
             playback_idx.store(0);
-
+            metronome.pause();
+        }
+            
     }
 }
 
 bool Looper::save(){
 // @TODO integrate AudioFile
+// @TODO save metronome
 }
 
 void Looper::start_stop_all(bool isHold){
@@ -217,7 +270,7 @@ void Looper::start_stop_all(bool isHold){
         reset();
     }else
     {
-        bool atLeastOneIsPlaying = false;     
+        bool atLeastOneIsPlaying = false;           // find out if any channel is playing 
         for (int ch=0; ch<num_channels; ++ch){
             if (playback[ch].load()){
                 atLeastOneIsPlaying = true;
@@ -225,17 +278,19 @@ void Looper::start_stop_all(bool isHold){
             }
         }
         if (record.load()!=-1){
-            recdub(record.load(),false);
+            recdub(record.load(),false);            // stop recording 
         }
-        if (atLeastOneIsPlaying){
+        if (atLeastOneIsPlaying){                   // pause all playbacks
             for (int ch=0; ch<num_channels; ++ch)
                 playback[ch].store(false);
             playback_idx.store(0);
+            metronome.pause();
         }else{
-            for (int ch=0; ch<num_channels; ++ch){
+            for (int ch=0; ch<num_channels; ++ch){  // unpause them all
                 if (!channels[ch].isEmpty())
                     playback[ch].store(true);
             }
+            metronome.unpause();
         }
     }
 }

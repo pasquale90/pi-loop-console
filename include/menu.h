@@ -8,6 +8,7 @@ class Menu {
         static Menu& getInstance(); //Singleton
 
         void load_session();
+        void load_metronome();
         void notify_menu(Control, bool);
         void unload();
     

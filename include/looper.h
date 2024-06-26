@@ -9,6 +9,9 @@ class Looper{
     public:
         Looper();
 
+        void load_metronome();
+        void tap_alter_metronome(bool);
+
         // float** update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);
         std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);
 
@@ -24,8 +27,9 @@ class Looper{
 
         void reset();
     private:
-        void _set_inactive();
+void _set_inactive();
 
+        Metronome metronome;
         static const int num_channels{3};
         Channel channels[num_channels];
         // Channel ch1{"LoopCh1"},ch2{"LoopCh2"},ch3{"LoopCh3"};

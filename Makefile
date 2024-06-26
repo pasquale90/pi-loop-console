@@ -4,7 +4,7 @@ NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
 CFLAGS=-D DEV -D PCH #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
-OBJECTS := build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o
+OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o
 
 AUDIOFILE :=-I./external
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
@@ -39,6 +39,9 @@ build/looper.o:src/looper.cpp include/looper.h
 
 build/channel.o:src/channel.cpp include/channel.h
 	$(COMPILE) -c src/channel.cpp $(INCLUDE) -o build/channel.o
+
+build/metronome.o:src/metronome.cpp include/metronome.h
+	$(COMPILE) -c src/metronome.cpp $(INCLUDE) $(JSONCPP) -o build/metronome.o
 
 build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/session.o

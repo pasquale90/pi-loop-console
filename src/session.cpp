@@ -44,6 +44,10 @@ void Session::load(){
     }
 }
 
+void Session::load_metronome(){
+    looper.load_metronome();
+}
+
 void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_buffers[F_NUM_OUTPUTS]){
 #if F_NUM_INPUTS == 1
     bool monitorIn[F_NUM_INPUTS]={cfg.get_button_state(IN1_MNTR)};
@@ -234,7 +238,7 @@ void Session::notify_session(Control trigger, bool isHold){
             }else std::cout<<"Effect 3 for IN2 is OFF"<<std::endl;
             break;
         case TAP_TEMPO:
-            std::cout<<"call Metronome.tap()"<<std::endl; 
+            looper.tap_alter_metronome(isHold);
             break;
         case CH1_VOL_LOW:
             looper.volume_down(0);

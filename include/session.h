@@ -11,7 +11,8 @@ class Session{
         Session();
         
         void load(); // calls monitor.setup_audio() --> rename to setup()
-
+        void load_metronome();
+        
         void save();
         void migrate(int);
         void evacuate(); // rename to stop_running???
@@ -23,15 +24,16 @@ class Session{
         const char* get_name();
 
     private:
-        std::atomic<bool> is_running,is_firsTime,re_initialize;
         Monitor monitor;
         Looper looper;
         Mixer mixer;
 
         Config& cfg = Config::getInstance();
         
-        void _update_buffers(float *[F_NUM_INPUTS],float *[F_NUM_OUTPUTS]);
+        std::atomic<bool> is_running,is_firsTime,re_initialize;
 
+        void _update_buffers(float *[F_NUM_INPUTS],float *[F_NUM_OUTPUTS]);
+        
         std::string _parse_time_val(int);
         std::string _get_datetime();
         // void reset2defaults();

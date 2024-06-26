@@ -29,6 +29,7 @@ set(SOURCE_FILES
     src/effects.cpp
     src/monitor.cpp
     src/mixer.cpp
+    src/metronome.cpp
     src/channel.cpp
     src/looper.cpp
 )

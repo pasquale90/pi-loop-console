@@ -70,9 +70,9 @@ void Config::display(){
     // std::cout<<"has mic input            \t:\t"<<device_settings.micIn<<std::endl;
     // std::cout<<"has inst input           \t:\t"<<device_settings.instIn<<std::endl;
     std::cout<<"--------------------- metronome ----------------------------\n";
-    std::cout<<"Tempo                    \t:\t"<<metronome.tempo<<std::endl;
-    std::cout<<"rythm_numerator          \t:\t"<<metronome.rythm_numerator<<std::endl;
-    std::cout<<"rythm_denominator        \t:\t"<<metronome.rythm_denominator<<std::endl;
+    std::cout<<"Tempo                    \t:\t"<<tempo<<std::endl;
+    std::cout<<"rythm_numerator          \t:\t"<<rythm_numerator<<std::endl;
+    std::cout<<"rythm_denominator        \t:\t"<<rythm_denominator<<std::endl;
     std::cout<<"--------------------- button's state ----------------------------\n";
     std::cout<<"IN1_ARM                  \t:\t"<<button_states[IN1_ARM]<<std::endl;
     std::cout<<"IN1_MNTR                 \t:\t"<<button_states[IN1_MNTR]<<std::endl;
@@ -94,9 +94,9 @@ void Config::save(){
   
   // replace all data with current values
     root["sessions"][current_session]["name"] = currSession_name;
-    root["sessions"][current_session]["metronome"]["tempo"] = metronome.tempo;
-    root["sessions"][current_session]["metronome"]["rythm_denominator"] = metronome.rythm_denominator;
-    root["sessions"][current_session]["metronome"]["rythm_numerator"] = metronome.rythm_numerator;
+    root["sessions"][current_session]["metronome"]["tempo"] = tempo;
+    root["sessions"][current_session]["metronome"]["rythm_denominator"] = rythm_denominator;
+    root["sessions"][current_session]["metronome"]["rythm_numerator"] = rythm_numerator;
     // root["sessions"][current_session]["audio_settings"]["buffer_size"] = audio_settings.buffer_size;
     // root["sessions"][current_session]["audio_settings"]["sample_rate"] = audio_settings.sample_rate;
     // root["sessions"][current_session]["audio_settings"]["bit_quantization"] = audio_settings.bit_quantization;
@@ -186,9 +186,9 @@ void Config::_open(){
 void Config::_parse_session(Json::Value data){
     // parse data
     currSession_name = data["name"].asString();
-    metronome.tempo=data["metronome"]["tempo"].asFloat();
-    metronome.rythm_denominator=data["metronome"]["rythm_denominator"].asInt();
-    metronome.rythm_numerator=data["metronome"]["rythm_numerator"].asInt();
+    tempo=data["metronome"]["tempo"].asFloat();
+    rythm_denominator=data["metronome"]["rythm_denominator"].asInt();
+    rythm_numerator=data["metronome"]["rythm_numerator"].asInt();
     // audio_settings.buffer_size=data["audio_settings"]["buffer_size"].asInt();
     // audio_settings.sample_rate=data["audio_settings"]["sample_rate"].asInt();
     // audio_settings.bit_quantization=data["audio_settings"]["bit_quantization"].asInt();
@@ -203,7 +203,6 @@ void Config::_parse_session(Json::Value data){
     button_states[IN2_EFF1] = data["UI_button_states"]["IN2_EFF1"].asBool();
     button_states[IN2_EFF2] = data["UI_button_states"]["IN2_EFF2"].asBool();
     button_states[IN2_EFF3] = data["UI_button_states"]["IN2_ARM"].asBool();
-
 }
 
 // void Config::_parse_audio_settings(Json::Value data){

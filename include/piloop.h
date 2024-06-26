@@ -25,6 +25,7 @@ class PiLoop{
         std::thread uiThread;
         std::thread serverThread; 
         std::thread sessionThread; 
+        std::thread metroThread;
         
         void _listen();
         void _notify(Control, bool);
