@@ -32,13 +32,10 @@ build/channel.o:src/channel.cpp include/channel.h
 	$(COMPILE) -c src/channel.cpp $(INCLUDE) -o build/channel.o
 
 build/mixer.o:src/mixer.cpp include/mixer.h
-	$(COMPILE) -c src/mixer.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/mixer.o 
+	$(COMPILE) -c src/mixer.cpp $(INCLUDE) $(AUDIOFILE) -o build/mixer.o 
 
 build/looper.o:src/looper.cpp include/looper.h
 	$(COMPILE) -c src/looper.cpp $(INCLUDE) $(JSONCPP) -o build/looper.o
-
-build/channel.o:src/channel.cpp include/channel.h
-	$(COMPILE) -c src/channel.cpp $(INCLUDE) -o build/channel.o
 
 build/metronome.o:src/metronome.cpp include/metronome.h
 	$(COMPILE) -c src/metronome.cpp $(INCLUDE) $(JSONCPP) -o build/metronome.o
