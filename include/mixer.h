@@ -4,6 +4,7 @@
 #include "audio_settings.h"
 #include "AudioFile_cxx11.h"
 
+#include <array>
 #include <atomic>
 
 // @TODO conform to both mono and stereo out
