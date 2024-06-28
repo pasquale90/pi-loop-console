@@ -52,7 +52,7 @@ void Channel::rec(float monitor[BUFFER_SIZE], int idx){
     if ( looper_initialized){
         if( idx<loop_length.load()-BUFFER_SIZE-1 ){
             for (int j=0; j<BUFFER_SIZE; ++j){
-                data[rec_id][idx++] = monitor[j];
+                data[rec_id][idx++] += monitor[j];
                 // ++idx;
             }
         }
@@ -66,7 +66,7 @@ void Channel::rec(float monitor[BUFFER_SIZE], int idx){
 void Channel::dub(float monitor[BUFFER_SIZE], int idx){
 
     for (int j=0, i=idx; i < idx+BUFFER_SIZE; j++,++i){
-        data[rec_id].at(i) = monitor[j] + data[play_id].at(i); // overwrite data[play_id] data to data[rec_id]
+        data[rec_id].at(i) += monitor[j] + data[play_id].at(i); // overwrite data[play_id] data to data[rec_id]
     }
 }
 
