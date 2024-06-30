@@ -1,11 +1,21 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-CFLAGS=-D DEV -D PCH #DEV/REL K6/PCH/CODEC
+MODE :=REL
+CFLAGS=-D $(MODE) -D K6 #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
-OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o build/keyboard.o build/interface.o build/config.o build/menu.o build/piloop.o build/main.o
+OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o  build/interface.o build/config.o build/menu.o build/piloop.o build/main.o 
 
+ifeq ($(MODE), DEV)
+	OBJECTS += build/keyboard.o
+else ifeq ($(MODE), REL)
+	OBJECTS += build/buttons.o 
+else
+	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
+endif
+
+WIRINGPI :=-L/usr/lib -lwiringPi
 AUDIOFILE :=-I./external
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
 EVDEV :=-I/usr/include -levdev
@@ -14,7 +24,7 @@ JACK :=-I/usr/include -L/usr/lib -ljack -ljackserver -ljacknet
 all:piloop
 
 piloop:$(OBJECTS)
-	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV)  $(JACK) -o piloop -ljsoncpp -lpthread
+	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV)  $(JACK) $(WIRINGPI) -o piloop -ljsoncpp -lpthread
 
 build/audioserver.o: include/audioserver.h src/audioserver.cpp
 	$(COMPILE) -c src/audioserver.cpp $(INCLUDE) $(JACK) $(JSONCPP) -o build/audioserver.o
@@ -43,8 +53,15 @@ build/metronome.o:src/metronome.cpp include/metronome.h
 build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/session.o
 
-build/keyboard.o:src/keyboard.cpp include/keyboard.h
+ifeq ($(MODE), DEV)
+build/keyboard.o: src/keyboard.cpp include/keyboard.h
 	$(COMPILE) -c src/keyboard.cpp $(INCLUDE) $(EVDEV) -o build/keyboard.o
+else ifeq ($(MODE), REL)
+build/buttons.o: src/gpio/buttons.cpp include/gpio/buttons.h	
+	$(COMPILE) -c src/gpio/buttons.cpp $(INCLUDE) $(WIRINGPI) -o build/buttons.o
+else
+	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
+endif
 
 build/interface.o:src/interface.cpp include/interface.h
 	$(COMPILE) -c src/interface.cpp $(INCLUDE) -o build/interface.o

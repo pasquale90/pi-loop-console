@@ -3,6 +3,7 @@
 - [jsoncpp](https://github.com/adamstark/AudioFile)
 - [Audiofile](https://github.com/adamstark/AudioFile)
 - [libevdev](https://www.freedesktop.org/wiki/Software/libevdev/)
+- [wiringPi](https://github.com/WiringPi/WiringPi)
 
 # todo list
 - [x] [UML design](piloop.drawio)

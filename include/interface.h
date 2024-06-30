@@ -4,7 +4,7 @@
 #include <iostream>
 
 #ifdef REL
-    #include "buttons.h"
+    #include "gpio/buttons.h"
 #elif DEV
     #include "keyboard.h"
 #endif
@@ -31,7 +31,7 @@ class hardwareInterface{
 
         std::atomic<bool> keep_running;
         UI& ui = UI::getInstance();
-
+//@TODO make msg and array of messages to accept multiple messages at the same simultaneously
         std::atomic<int> msg;
         std::atomic<bool> event_occured;
         // std::string event_list[2];
