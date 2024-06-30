@@ -7,7 +7,7 @@ UI* UI::ui_instance_ptr = nullptr;
 static void setupKeyCodes(void);
 static const char *printableEventType(int t);
 static const char *keycodes[64 * 1024] = { 0 }; // hack
-static const char *eventDevice = "/dev/input/event3";
+static const char *eventDevice = "/dev/input/event0";
 
 UI::UI(){
 } 
@@ -16,12 +16,12 @@ UI& UI::getInstance() {
   
   if (ui_instance_ptr == nullptr) {
     ui_instance_ptr = new UI(); // Create the instance if it doesn't exist
-    ui_instance_ptr->initialize();
+    ui_instance_ptr->_initialize();
   }
   return *ui_instance_ptr;  // Dereference the pointer to return the instance
 }
 
-void UI::initialize(){
+void UI::_initialize(){
     setupKeyCodes();
 
     const int fd = open(eventDevice, O_RDONLY | O_NONBLOCK);
@@ -97,7 +97,7 @@ static const char* printableEventType(int t)
     }
 }
 
-void UI::listen_user_keyboard(std::atomic<bool> &event_occured, std::atomic<int> &msg){
+void UI::listen_user(std::atomic<bool> &event_occured, std::atomic<int> &msg){
 
     err = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
     // if (err == 0 && keycodes[ev.code]!="unknown"){
@@ -131,8 +131,4 @@ void UI::listen_user_keyboard(std::atomic<bool> &event_occured, std::atomic<int>
     event_occured = false;
     msg = -1; //NULL 
     return;
-}
-
-void UI::listen_user(std::atomic<bool> &event_occured, std::atomic<int> &msg){
-    listen_user_keyboard(event_occured, msg); 
 }

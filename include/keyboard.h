@@ -38,14 +38,12 @@ class UI{
         void operator=(const UI&) = delete;
         static UI* ui_instance_ptr;
 
-        void initialize();
+        void _initialize();
         struct libevdev *dev;
         int err;
         struct input_event ev;
 
-        std::unordered_map<Control,int> time_pressed;
-        
-        void listen_user_keyboard(std::atomic<bool>&, std::atomic<int>&);
+        std::unordered_map<Control,int> time_pressed;        
 };
 
 #endif
