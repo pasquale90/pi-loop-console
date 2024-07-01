@@ -7,7 +7,7 @@
 #include <wiringPi.h>
 
 
-int dmux[4] = {26,6,5,16}; //gpio
+int dmux[4] = {26,6,5,16}; //gpio {A0 A1 A2 A3}
 int Le = 21;
 int e = 7;
 //int dmux[4] = {13,11,19,15}; //board/physical
@@ -16,8 +16,23 @@ int e = 7;
 //int Le = 5;
 
 
-// int matrix[16][4] ={{0,0,0,0},{1,0,0,0},{0,1,0,0},{1,1,0,0},{0,0,1,0},{1,0,1,0},{0,1,1,0},{1,1,1,0},{0,0,0,1},{1,0,0,1},{0,1,0,1},{1,1,0,1},{0,0,1,1},{1,0,1,1},{0,1,1,1},{1,1,1,1}};
-
+int matrix[16][4] ={{0,0,0,0},{1,0,0,0},{0,1,0,0},{1,1,0,0},{0,0,1,0},{1,0,1,0},{0,1,1,0},{1,1,1,0},{0,0,0,1},{1,0,0,1},{0,1,0,1},{1,1,0,1},{0,0,1,1},{1,0,1,1},{0,1,1,1},{1,1,1,1}};
+/*
+std::string names[16] = {"",""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""
+,""}*/
 /*
 14{1,0,1,1},
 13{0,0,1,1},
@@ -36,10 +51,10 @@ int e = 7;
 3{0,1,0,0},
 1{0,0,0,0}};
 */
-int matrix[16][4] ={{1,0,1,1},{0,0,1,1},{1,1,1,1},{0,1,1,1},{1,0,0,1},{0,0,0,1},{0,1,0,1},{1,1,0,1},{1,1,1,0},{0,1,1,0},{1,0,1,0},{0,0,1,0},{1,1,0,0},{1,0,0,0},{0,1,0,0},{0,0,0,0}};
+//int matrix[16][4] ={{1,0,1,1},{0,0,1,1},{1,1,1,1},{0,1,1,1},{1,0,0,1},{0,0,0,1},{0,1,0,1},{1,1,0,1},{1,1,1,0},{0,1,1,0},{1,0,1,0},{0,0,1,0},{1,1,0,0},{1,0,0,0},{0,1,0,0},{0,0,0,0}};
 
 
-int DirectLeds[5] = {14,24,22,27,17};
+int DirectLeds[6] = {14,4,24,22,27,17};
 
 int main (int argc, char *argv[]){
         std::cout<<"Hello!"<<std::endl;
@@ -47,10 +62,10 @@ int main (int argc, char *argv[]){
         wiringPiSetupGpio();
 
 	for (int i = 0; i < 4; ++i){
-    		pinMode(dmux[i], OUTPUT);
+                pinMode(dmux[i], OUTPUT);
                 digitalWrite(dmux[i],LOW);
 	}
-	for (int i = 0; i < 5; ++i){
+	for (int i = 0; i < 6; ++i){
     		pinMode(DirectLeds[i], OUTPUT);
                 digitalWrite(DirectLeds[i],LOW);
 	}
@@ -62,7 +77,7 @@ int main (int argc, char *argv[]){
        digitalWrite(e, LOW);
 
 
-        for (int j = 0; j < 16; ++j){
+        for (int j = 15; j >= 0; --j){
                 for (int i = 0; i < 4; ++i){
 			if (matrix[j][i] == 0)
                             digitalWrite(dmux[i],LOW);
@@ -71,10 +86,10 @@ int main (int argc, char *argv[]){
 		}
 	delay(500);
        }
-       digitalWrite(e, HIGH);
+       digitalWrite(e, HIGH); // E high for the direct LEDS
 
 	// direct leds
-	for (int i=0; i<5; ++i){
+	for (int i=0; i<6; ++i){
             digitalWrite(DirectLeds[i],HIGH);
             delay(500);
            digitalWrite(DirectLeds[i],LOW);
