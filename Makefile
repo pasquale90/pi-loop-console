@@ -11,6 +11,8 @@ ifeq ($(MODE), DEV)
 	OBJECTS += build/keyboard.o
 else ifeq ($(MODE), REL)
 	OBJECTS += build/buttons.o 
+	OBJECTS += build/leds.o 
+	INCLUDE += -I./include/gpio
 else
 	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
 endif
@@ -59,6 +61,8 @@ build/keyboard.o: src/keyboard.cpp include/keyboard.h
 else ifeq ($(MODE), REL)
 build/buttons.o: src/gpio/buttons.cpp include/gpio/buttons.h	
 	$(COMPILE) -c src/gpio/buttons.cpp $(INCLUDE) $(WIRINGPI) -o build/buttons.o
+build/leds.o: src/gpio/leds.cpp include/gpio/leds.h	
+	$(COMPILE) -c src/gpio/leds.cpp $(INCLUDE) $(WIRINGPI) -o build/leds.o
 else
 	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
 endif

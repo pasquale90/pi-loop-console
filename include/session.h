@@ -5,6 +5,7 @@
 #include "looper.h"
 #include "mixer.h"
 #include "config.h"
+#include "gpio/leds.h"
 
 class Session{
     public:
@@ -27,6 +28,7 @@ class Session{
         Monitor monitor;
         Looper looper;
         Mixer mixer;
+        Leds leds;
 
         Config& cfg = Config::getInstance();
         
@@ -38,6 +40,7 @@ class Session{
         std::string _get_datetime();
         // void reset2defaults();
         
+        void _initialize_leds();
 };
 
 #endif
