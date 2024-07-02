@@ -22,6 +22,10 @@ Metronome::Metronome()
     display();
 }
 
+void Metronome::set_led_display(std::function<void(int)> metro_display){
+    led_display = metro_display;
+}
+
 void Metronome::lock(){
     is_locked.store(true);
 }
@@ -112,13 +116,16 @@ void Metronome::tick_tock()
 
                     if (intonation == (int)RYTHM_INTONATION){
                         if (measure_begin == (int)RYTHM_INTONATION){
-                            std::cout<<std::endl<<"tick (first)"<<std::endl;
+                            led_display(0);
+                            // std::cout<<std::endl<<"tick (first)"<<std::endl;
                         }else{
-                            std::cout<<std::endl<<"tick"<<std::endl;
+                            led_display(1);
+                            // std::cout<<std::endl<<"tick"<<std::endl;
                         }
                     }
                     else{
-                        std::cout<<"tock"<<std::endl;
+                        led_display(2);
+                        // std::cout<<"tock"<<std::endl;
                     }
                     ++intonation;
                     ++measure_begin;

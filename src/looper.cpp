@@ -59,6 +59,10 @@ Looper::Looper(){
     _set_inactive();
 }
 
+void Looper::set_metro_display(std::function<void(int)> metro_display){
+    metronome.set_led_display(std::bind(metro_display, std::placeholders::_1));
+}
+
 void Looper::load_metronome(){
     metronome.tick_tock();
 }
@@ -153,7 +157,7 @@ void Looper::recdub(int channel,bool isHold){
 
                 if (loop_length == 0 )
                     metronome.start_timing();
-                    std::cout<< "\n\n\n\n\t\t\tMetronome start timer \n\n\n\n"<<std::endl;
+                    // std::cout<< "\n\n\n\n\t\t\tMetronome start timer \n\n\n\n"<<std::endl;
             }
             else return;
         }

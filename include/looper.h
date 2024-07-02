@@ -2,7 +2,6 @@
 #define LOOPER_H_INCLUDED
 
 #include "channel.h"
-// #include "config.h"
 #include "metronome.h"
 
 class Looper{
@@ -26,6 +25,8 @@ class Looper{
         void display_states();
 
         void reset();
+
+        void set_metro_display(std::function<void(int)>);
     private:
 void _set_inactive();
 
@@ -34,7 +35,7 @@ void _set_inactive();
         Channel channels[num_channels];
         // Channel ch1{"LoopCh1"},ch2{"LoopCh2"},ch3{"LoopCh3"};
         // ch1{"LoopCh1"},ch2{"LoopCh2"},ch3{"LoopCh3"};
-        
+
         std::atomic<bool> arm_enabled;
         std::atomic<int> loop_length, playback_idx;
         std::atomic<bool> playback[num_channels]; //,record[num_channels];

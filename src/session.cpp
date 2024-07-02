@@ -21,6 +21,7 @@ Session::Session(){
     monitor.set_stream_buffer(std::bind(&Session::_update_buffers,this, std::placeholders::_1, std::placeholders::_2) );
 
     _initialize_leds();
+    looper.set_metro_display(std::bind(&Leds::tick_tock,&leds, std::placeholders::_1));
 
 }
 

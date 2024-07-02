@@ -66,3 +66,24 @@ void Leds::_setupLedMapping(){
 	// PREV_SESSION;
 	// NEXT_SESSION;
 }
+
+void Leds::tick_tock(int intonation){
+	
+	if (intonation == 0){						// is first beat of the loop segment
+		digitalWrite(GPIO_LED_METRO_R,HIGH);
+		digitalWrite(GPIO_LED_METRO_G,HIGH);
+		delay(50);
+		digitalWrite(GPIO_LED_METRO_R,LOW);
+		digitalWrite(GPIO_LED_METRO_G,LOW);
+	}
+	if (intonation == 1){						// is first beat of the current measure
+		digitalWrite(GPIO_LED_METRO_R,HIGH);
+		delay(50);
+		digitalWrite(GPIO_LED_METRO_R,LOW);
+	}
+	if (intonation == 2){						// is not first beat
+		digitalWrite(GPIO_LED_METRO_G,HIGH);
+		delay(50);
+		digitalWrite(GPIO_LED_METRO_G,LOW);
+	}
+}

@@ -40,13 +40,12 @@ class Leds{
 		void set_off(Control);
 
 		
-		// void tick_tock(int);
-		// void toggle_effects(int,int,bool);
+		void tick_tock(int);
+		void toggle_effects(int,int,bool);
 
     private: 
         void _setupLedMapping();
 		std::unordered_map<Control,int> led_mapping;
-
 		std::array<int,17> led_store_helper = {
 											GPIO_LED_IN1_EFF1, \
 											GPIO_LED_IN1_EFF2, \

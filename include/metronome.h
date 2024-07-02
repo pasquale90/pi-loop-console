@@ -4,7 +4,7 @@
 #include <chrono>
 #include <atomic>
 #include <vector>
-// #include <functional>
+#include <functional>
 
 #include "config.h"
 
@@ -50,7 +50,8 @@ public:
     void quit();
 
     // void set_updater(std::function<void(float,int,int)>);
-
+    void set_led_display(std::function<void(int)>);
+    std::function<void(int)> led_display;
 private:
 
     Config& cfg = Config::getInstance();
