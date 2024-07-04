@@ -37,6 +37,8 @@ std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::update_buffer
         }
     }
 
+    metronome.tick_tock();
+
     return mix();
 }
 
@@ -57,10 +59,6 @@ Looper::Looper(){
     channels[1].set_name("LoopCh2");
     channels[2].set_name("LoopCh3");
     _set_inactive();
-}
-
-void Looper::load_metronome(){
-    metronome.tick_tock();
 }
 
 // logic for setting the metronome and setting the range for the playback pointer

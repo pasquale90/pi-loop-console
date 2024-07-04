@@ -9,7 +9,6 @@ class Looper{
     public:
         Looper();
 
-        void load_metronome();
         void tap_alter_metronome(bool);
 
         // float** update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);

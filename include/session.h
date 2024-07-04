@@ -14,7 +14,6 @@ class Session{
         Session();
         
         void load(); // calls monitor.setup_audio() --> rename to setup()
-        void load_metronome();
         
         void save();
         void migrate(int);

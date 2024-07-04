@@ -6,10 +6,6 @@ Menu* Menu::menu_instance_ptr = nullptr;
 Menu::Menu(){
 } 
 
-void Menu::load_metronome(){
-  session.load_metronome();
-}
-
 void Menu::load_session(){
   session.load();
 }
