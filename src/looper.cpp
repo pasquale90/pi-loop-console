@@ -66,20 +66,10 @@ void Looper::load_metronome(){
 // logic for setting the metronome and setting the range for the playback pointer
 void Looper::_initialize_looper(){
 
-// @TODO create the metronome
     metronome.stop_timing();
-    // std::cout<< "\n\n\n\n\t\t\tMetronome stop timer \n\n\n\n"<<std::endl;
-
 
     // set the loop length 
     loop_length.store(playback_idx.load());
-    // update all channels to reserve such space
-    for (int ch = 0; ch< num_channels; ++ch)
-        if (ch == record.load())
-            channels[ch].set_loop_length(true,loop_length.load());
-        else 
-            channels[ch].set_loop_length(false,loop_length.load());
-
 }
 
 void Looper::reset(){
