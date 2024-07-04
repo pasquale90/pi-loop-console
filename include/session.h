@@ -5,7 +5,9 @@
 #include "looper.h"
 #include "mixer.h"
 #include "config.h"
-#include "gpio/leds.h"
+#ifdef REL
+    #include "gpio/leds.h"
+#endif
 
 class Session{
     public:
@@ -28,8 +30,9 @@ class Session{
         Monitor monitor;
         Looper looper;
         Mixer mixer;
+#ifdef REL
         Leds leds;
-
+#endif
         Config& cfg = Config::getInstance();
         
         std::atomic<bool> is_running,is_firsTime,re_initialize;

@@ -20,8 +20,9 @@ Session::Session(){
     monitor.initialize_effects(effects_curr_state);
     monitor.set_stream_buffer(std::bind(&Session::_update_buffers,this, std::placeholders::_1, std::placeholders::_2) );
 
+#ifdef REL
     _initialize_leds();
-
+#endif
 }
 
 // no need for method, command is called directly in this.migrate()
@@ -100,14 +101,17 @@ void Session::migrate(int next_session){
     looper.reset();
 // @TODO mixer reset
     // mixer.reset();
+#ifdef REL
     leds.blink_all();
     _initialize_leds();
+#endif
 }
 
 void Session::evacuate(){
     is_running.store(false);
-    
+#ifdef REL  
     leds.turnOff();
+#endif
     // mixer.turnOff();
     looper.reset();
     monitor.disconnect();
@@ -169,6 +173,7 @@ void Session::notify_session(Control trigger, bool isHold){
             if (isHold)
                 save_jam();
             break;
+#ifdef REL
         case IN1_ARM:
             cfg.toggle_button_state(IN1_ARM); 
             
@@ -238,6 +243,82 @@ void Session::notify_session(Control trigger, bool isHold){
             //     leds.set_on(IN2_EFF3);
             // }else leds.set_off(IN2_EFF3);
             break;
+#elif DEV
+        case IN1_ARM:
+            cfg.toggle_button_state(IN1_ARM); 
+            
+            if (cfg.get_button_state(IN1_ARM)){
+                std::cout<<"Arm for IN1 is ON"<<std::endl;
+            }else std::cout<<"Arm for IN1 is OFF"<<std::endl;
+
+            break;
+        case IN1_MNTR:
+            cfg.toggle_button_state(IN1_MNTR);
+            
+            if (cfg.get_button_state(IN1_MNTR)){
+                std::cout<<"Monitor for IN1 is ON"<<std::endl;
+            }else std::cout<<"Monitor for IN1 is OFF"<<std::endl;
+            
+            break;
+        case IN2_ARM:
+            cfg.toggle_button_state(IN2_ARM);
+            
+            if (cfg.get_button_state(IN2_ARM)){
+                std::cout<<"Arm for IN2 is ON"<<std::endl;
+            }else std::cout<<"Arm for IN2 is OFF"<<std::endl;
+            
+            break;
+        case IN2_MNTR:
+            cfg.toggle_button_state(IN2_MNTR);
+            
+            if (cfg.get_button_state(IN2_MNTR)){
+                std::cout<<"Monitor for IN2 is ON"<<std::endl;
+            }else std::cout<<"Monitor for IN2 is OFF"<<std::endl;
+            
+            break;
+        case IN1_EFF1:
+            cfg.toggle_button_state(IN1_EFF1);
+            monitor.toggle_effect(0,0,cfg.get_button_state(IN1_EFF1));
+            if (cfg.get_button_state(IN1_EFF1)){
+                std::cout<<"Effect 1 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 1 for IN1 is OFF"<<std::endl;
+            break;
+        case IN1_EFF2:
+            cfg.toggle_button_state(IN1_EFF2);
+            monitor.toggle_effect(0,1,cfg.get_button_state(IN1_EFF2));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 2 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 2 for IN1 is OFF"<<std::endl;
+            break;
+        case IN1_EFF3:
+            cfg.toggle_button_state(IN1_EFF3);
+            monitor.toggle_effect(1,2,cfg.get_button_state(IN1_EFF3));
+            if (cfg.get_button_state(IN1_EFF2)){
+                std::cout<<"Effect 3 for IN1 is ON"<<std::endl;
+            }else std::cout<<"Effect 3 for IN1 is OFF"<<std::endl;
+            break;
+        case IN2_EFF1:
+            cfg.toggle_button_state(IN2_EFF1);
+            monitor.toggle_effect(1,0,cfg.get_button_state(IN2_EFF1));
+            if (cfg.get_button_state(IN2_EFF1)){
+                std::cout<<"Effect 1 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 1 for IN2 is OFF"<<std::endl;
+            break;
+        case IN2_EFF2:
+            cfg.toggle_button_state(IN2_EFF2);
+            monitor.toggle_effect(1,1,cfg.get_button_state(IN2_EFF2));
+            if (cfg.get_button_state(IN2_EFF2)){
+                std::cout<<"Effect 2 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 2 for IN2 is OFF"<<std::endl;
+            break;
+        case IN2_EFF3:
+            cfg.toggle_button_state(IN2_EFF3);
+            monitor.toggle_effect(1,2,cfg.get_button_state(IN2_EFF3));
+            if (cfg.get_button_state(IN2_EFF3)){
+                std::cout<<"Effect 3 for IN2 is ON"<<std::endl;
+            }else std::cout<<"Effect 3 for IN2 is OFF"<<std::endl;
+            break;
+#endif
         case TAP_TEMPO:
             looper.tap_alter_metronome(isHold);
             break;
@@ -292,6 +373,7 @@ std::string Session::_get_datetime(){
          +  _parse_time_val(now->tm_sec);
 }
 
+#ifdef REL
 void Session::_initialize_leds(){
     if (cfg.get_button_state(IN1_ARM)){
         leds.set_on(IN1_ARM);
@@ -324,3 +406,4 @@ void Session::_initialize_leds(){
     //     leds.set_on(IN2_EFF3);
     // }
 }
+#endif
