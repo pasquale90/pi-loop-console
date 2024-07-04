@@ -4,11 +4,15 @@ project(piloop)
 
 set(CMAKE_CXX_STANDARD 11)
 
+
+
+#manual parameters - set those manually
 # option(DEV "development using keyboards" OFF)
 # option(REL "release using gpio-pin connected buttons" ON)
 set(MODE "DEV")
+set(AUDIO_INTERFACE "PCH") #K6/PCH/CODEC
 
-SET (CMAKE_CXX_FLAGS "-D  ${MODE} -D PCH") 
+SET (CMAKE_CXX_FLAGS "-D  ${MODE} -D ${AUDIO_INTERFACE}") 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 

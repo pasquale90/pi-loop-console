@@ -1,8 +1,9 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-MODE :=DEV
-CFLAGS=-D $(MODE) -D PCH #DEV/REL K6/PCH/CODEC
+MODE := DEV
+AUDIO_INTERFACE := PCH
+CFLAGS=-D $(MODE) -D $(AUDIO_INTERFACE) #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
 OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o  build/interface.o build/config.o build/menu.o build/piloop.o build/main.o 
