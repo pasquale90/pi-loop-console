@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#define JAM_LENGTH SAMPLE_RATE*60*5 // the last 1 minute     //  PREPROCESSOR VALUE max_size_samples = SR* (5min*60seconds/minute)
+#define JAM_LENGTH SAMPLE_RATE*60*5 // the last 5 minutes     //  PREPROCESSOR VALUE max_size_samples = SR* (5min*60seconds/minute)
 
 static const std::string dataPath = "data/jams";
 // @TODO move dataPath to config
