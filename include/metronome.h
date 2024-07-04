@@ -47,15 +47,10 @@ public:
     void alter_tempo();
 
     void clear();
-    void quit();
-
-    // void set_updater(std::function<void(float,int,int)>);
 
 private:
 
     Config& cfg = Config::getInstance();
-
-    // std::function<void(float,int,int)> update_cfg;
 
 	float tempo; //bpm
 	time_signature rythm; // i.e. 4/4 (tick on first beat)
@@ -71,7 +66,7 @@ private:
     void _set_tempo();
 
 
-	std::atomic<bool> is_active,is_initialized,is_paused,is_locked;
+	std::atomic<bool> is_initialized,is_paused,is_locked;
 
     std::vector<std::pair<int,float>> alternative_tempos;
     int current_tempo;

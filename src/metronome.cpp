@@ -10,7 +10,6 @@ Metronome::Metronome()
     is_initialized.store(false);
     is_paused.store(false);
     is_locked.store(false);
-    is_active.store(true);
     ms_beep = 0;
     num_measures = 1;
     tap = std::chrono::steady_clock::time_point::min();
@@ -55,7 +54,6 @@ void Metronome::display(){
                 std::cout<<t.second<<"("<<t.first<<")";
             std::cout<<" ]";
             std::cout
-            <<"\nis active "<<is_active.load()
             <<"\nis initialized "<<is_initialized.load()
             <<"\nis paused "<<is_paused.load();
             std::cout<<std::endl;
@@ -101,38 +99,38 @@ void Metronome::tick_tock()
     std::chrono::duration<float> time_elapsed;
     int intonation, measure_begin;
 
-    while (is_active.load())
+    if (is_initialized.load() && !is_paused.load())
     {
-        if (is_initialized.load() && !is_paused.load())
-        {
-            present = std::chrono::steady_clock::now();
-            time_elapsed=std::chrono::duration_cast< std::chrono::duration<float> >(future-present);
-            if( time_elapsed.count() < std::numeric_limits<float>::min() ){
-                    future = present + std::chrono::milliseconds(ms_beep);
+        present = std::chrono::steady_clock::now();
+        time_elapsed=std::chrono::duration_cast< std::chrono::duration<float> >(future-present);
+        if( time_elapsed.count() < std::numeric_limits<float>::min() ){
+                future = present + std::chrono::milliseconds(ms_beep);
 
-                    if (intonation == (int)RYTHM_INTONATION){
-                        if (measure_begin == (int)RYTHM_INTONATION){
-                            std::cout<<std::endl<<"tick (first)"<<std::endl;
-                        }else{
-                            std::cout<<std::endl<<"tick"<<std::endl;
-                        }
+                if (intonation == (int)RYTHM_INTONATION){
+                    if (measure_begin == (int)RYTHM_INTONATION){
+                        std::cout<<std::endl<<"tick (first)"<<std::endl;
+                    }else{
+                        std::cout<<std::endl<<"tick"<<std::endl;
                     }
-                    else{
-                        std::cout<<"tock"<<std::endl;
-                    }
-                    ++intonation;
-                    ++measure_begin;
-                    intonation %= rythm.numerator;
-                    measure_begin %= (rythm.numerator*num_measures);
-            } 
-        } else if (!is_initialized.load()){
-            intonation=1;
-            measure_begin = 1;
-        } else if (is_paused.load()){
-            intonation=0;
-            measure_begin = 0;
-        }
+                }
+                else{
+                    std::cout<<"tock"<<std::endl;
+                }
+                ++intonation;
+                ++measure_begin;
+                intonation %= rythm.numerator;
+                measure_begin %= (rythm.numerator*num_measures);
+        } 
+    } else if (!is_initialized.load()){
+        intonation=1;
+        measure_begin = 1;
+    } else if (is_paused.load()){
+        intonation=0;
+        measure_begin = 0;
     }
+
+    // for debugging
+    // display();
 }
 
 void Metronome::tap_tempo(){
@@ -159,10 +157,6 @@ void Metronome::clear(){
     tempo = cfg.tempo;
     rythm.numerator = cfg.rythm_numerator;
     rythm.denominator = cfg.rythm_denominator;
-}
-
-void Metronome::quit(){
-    is_active.store(false);
 }
 
 void Metronome::_nullify_tempo(){

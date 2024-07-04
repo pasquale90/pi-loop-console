@@ -5,7 +5,6 @@ PiLoop::PiLoop(){
     serverThread = std::thread(&AudioServer::start, &server);
     uiThread = std::thread(&PiLoop::_listen, this);
     sessionThread = std::thread(&Menu::load_session,&menu);
-    metroThread = std::thread(&Menu::load_metronome,&menu);
 }
 
 void PiLoop::start_console(){
@@ -13,7 +12,6 @@ void PiLoop::start_console(){
     serverThread.join();
     uiThread.join();
     sessionThread.join();
-    metroThread.join();
 }
 
 void PiLoop::shutdown(){
