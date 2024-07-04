@@ -55,7 +55,8 @@ void Metronome::display(){
             std::cout<<" ]";
             std::cout
             <<"\nis initialized "<<is_initialized.load()
-            <<"\nis paused "<<is_paused.load();
+            <<"\nis paused "<<is_paused.load()
+            <<"\nms_beep "<<ms_beep;
             std::cout<<std::endl;
 }
 
@@ -96,8 +97,6 @@ void Metronome::alter_tempo(){
 
 void Metronome::tick_tock()
 {
-    std::chrono::duration<float> time_elapsed;
-    int intonation, measure_begin;
 
     if (is_initialized.load() && !is_paused.load())
     {

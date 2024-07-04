@@ -59,7 +59,8 @@ private:
     int num_measures;
 
 	std::chrono::steady_clock::time_point present, future, tap;
-    std::chrono::duration<float> beep_span;
+    std::chrono::duration<float> time_elapsed, beep_span;
+    int intonation, measure_begin;
     int ms_beep;
     
     void _nullify_tempo();
