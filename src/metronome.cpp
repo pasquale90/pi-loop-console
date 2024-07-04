@@ -186,8 +186,10 @@ void Metronome::_set_tempo(){
             std::cout<<temp<<"("<<num_measures<<") ";
 
             alternative_tempos.push_back(std::make_pair(num_measures,temp));
-            num_measures *= 2;
         }
+        
+        num_measures *= 2;
+
     }
     std::cout<<" ]"<<std::endl;
                                                         // check if there are potential tempos ..

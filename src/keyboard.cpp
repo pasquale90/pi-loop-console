@@ -7,7 +7,7 @@ UI* UI::ui_instance_ptr = nullptr;
 static void setupKeyCodes(void);
 static const char *printableEventType(int t);
 static const char *keycodes[64 * 1024] = { 0 }; // hack
-static const char *eventDevice = "/dev/input/event0";
+static const char *eventDevice = "/dev/input/event3";
 
 UI::UI(){
 } 

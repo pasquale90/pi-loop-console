@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 
 # option(DEV "development using keyboards" OFF)
 # option(REL "release using gpio-pin connected buttons" ON)
-set(MODE "REL")
+set(MODE "DEV")
 
-SET (CMAKE_CXX_FLAGS "-D  ${MODE} -D K6") 
+SET (CMAKE_CXX_FLAGS "-D  ${MODE} -D PCH") 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pedantic -Wall -Wextra -Wno-error")
 
@@ -37,17 +37,6 @@ set(SOURCE_FILES
     src/looper.cpp
 )
 
-if("${MODE}" STREQUAL "DEV")
-    list(APPEND SOURCE_FILES "src/keyboard.cpp")
-elseif("${MODE}" STREQUAL "REL")
-    list(APPEND INCLUDE_DIRECTORIES "./include/gpio")
-    list(APPEND SOURCE_FILES "src/gpio/buttons.cpp")
-    list(APPEND SOURCE_FILES "src/gpio/leds.cpp")
-else()
-    message(FATAL_ERROR "MODE variable is set with wrong value. Set as REL for release and DEV for dev")
-endif()
-
-
 include(CMakePrintHelpers)
 cmake_print_variables(INCLUDE_DIRECTORIES)
 set(LIBRARIES
@@ -56,8 +45,19 @@ set(LIBRARIES
     jacknet
     pthread
     jsoncpp
-    wiringPi
 )
+
+if("${MODE}" STREQUAL "DEV")
+    list(APPEND SOURCE_FILES "src/keyboard.cpp")
+    list(APPEND LIBRARIES evdev)
+elseif("${MODE}" STREQUAL "REL")
+    list(APPEND INCLUDE_DIRECTORIES "./include/gpio")
+    list(APPEND SOURCE_FILES "src/gpio/buttons.cpp")
+    list(APPEND SOURCE_FILES "src/gpio/leds.cpp")
+    list(APPEND LIBRARIES wiringPi)
+else()
+    message(FATAL_ERROR "MODE variable is set with wrong value. Set as REL for release and DEV for dev")
+endif()
 
 add_executable(piloop ${SOURCE_FILES})
 

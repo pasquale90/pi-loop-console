@@ -1,8 +1,8 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-MODE :=REL
-CFLAGS=-D $(MODE) -D K6 #DEV/REL K6/PCH/CODEC
+MODE :=DEV
+CFLAGS=-D $(MODE) -D PCH #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
 OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o  build/interface.o build/config.o build/menu.o build/piloop.o build/main.o 
@@ -13,11 +13,11 @@ else ifeq ($(MODE), REL)
 	OBJECTS += build/buttons.o 
 	OBJECTS += build/leds.o 
 	INCLUDE += -I./include/gpio
+	WIRINGPI :=-L/usr/lib -lwiringPi
 else
 	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
 endif
 
-WIRINGPI :=-L/usr/lib -lwiringPi
 AUDIOFILE :=-I./external
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
 EVDEV :=-I/usr/include -levdev
