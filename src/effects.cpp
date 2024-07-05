@@ -2,58 +2,84 @@
 #include "audio_settings.h"
 
 Effects::Effects(){
+    
+    // effect 1
+
+    // effect 2
+
+    // effect 3
+        
 }
 
-void Effects::apply_effects(bool enabled_effects[NUM_EFFECTS],float* signal){
-
-//update signal with effects, if at least of the effects is enabled
-
-    // for (int i=0;i<NUM_EFFECTS;++i){
-    //     if (enabled_effects[i])
-    //          ...
-    // }
-
-// @TODO improve this complexity
-    if (enabled_effects[0])
-        _whiteNoise(signal);
-    if (enabled_effects[1])
-        _effect2(signal);
-    if (enabled_effects[2])
-        _effect3(signal);
-}
-
-void Effects::apply_effect(int effect,float* sig){
-
-// @TODO improve this complexity. Make 1 traversal instead?
-    if (effect==0)
-        _whiteNoise(sig);
-    if (effect==1)
-        _effect2(sig);
-    if (effect==2)
-        _effect3(sig);
-}
-
-void Effects::_whiteNoise(float *in)
-{
-    // Define random generator with Gaussian distribution
-    const double mean = 0.0;
-    // const double stddev = 0.002;
-    const double stddev = 0.01;
-    std::default_random_engine generator;
-    std::normal_distribution<double> dist(mean, stddev);
-
-    // Add Gaussian noise
-    for (int i=0; i<BUFFER_SIZE; ++i) {
-        in[i] = in[i] + dist(generator);
+void Effects::initialize_effects(const bool effects_curr_state[F_NUM_INPUTS][NUM_EFFECTS]){
+    for (int i=0; i<F_NUM_INPUTS;++i){
+        for (int j = 0; j < NUM_EFFECTS; j++)
+            effects_enabled[i][j].store(effects_curr_state[i][j]);
     }
+}
+
+void Effects::toggle_effect(int ch,int eff,bool val){
+    effects_enabled[ch][eff].store(val) ; //!effects_enabled[ch][eff];
+}
+
+void Effects::apply(float *input_buffers[F_NUM_INPUTS]){
+
+// @TODO complexity improvement using this loop
+    /*
+    for (int i = 0; i<F_NUM_INPUTS; ++i){
+
+        for (int j = 0; j<BUFFER_SIZE; ++j){
+            
+            for (int eff = 0; eff < NUM_EFFECTS; ++eff){                
+
+                if (effects_enabled[i][eff].load()) {
+                    
+                    // contribute to the final sig at pos i,j
+                
+                }
+
+            }
+
+        }
+
+    }
+    */
+
+   // for now naive solution
+   for (int i = 0; i<F_NUM_INPUTS; ++i){
+
+        if (effects_enabled[i][0].load()) 
+            _apply_whiteNoise(input_buffers[i]);
+
+        if (effects_enabled[i][1].load())   
+            _apply_effect2(input_buffers[i]);
+
+        if (effects_enabled[i][2].load())
+            _apply_effect3(input_buffers[i]);
+
+    }
+}
+
+
+float* Effects::_apply_whiteNoise(float *in)
+{
+/*
+
+   for (int i=0; i<BUFFER_SIZE; ++i) {
+        float x = in[i] * 0.005; // * 0.005 to reduce noise
+  //      in[i] = (x / abs(x)) * ( 1. - std::pow ( std::exp(1) , std::pow(x,2)/ abs(x)) );                  // <------------------DONT TRY THIS
+      in[i] = (x / abs(x)) * ( 1. - std::pow ( std::exp(1) , -1. * std::pow(x,2)/ abs(x)) ) * 0.000000005;                  // nicer but NO!
+    }
+*/
 
 }
 
-void Effects::_effect2(float *in){
-    // delay ?
+float* Effects::_apply_effect2(float *in){
+    // delay ?    
 }
 
 
-void Effects::_effect3(float *in){
+
+float* Effects::_apply_effect3(float *in){
     // metro-synched wah ?
 }

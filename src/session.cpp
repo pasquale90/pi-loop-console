@@ -213,7 +213,7 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case IN1_EFF3:
             cfg.toggle_button_state(IN1_EFF3);
-            monitor.toggle_effect(1,2,cfg.get_button_state(IN1_EFF3));
+            monitor.toggle_effect(0,2,cfg.get_button_state(IN1_EFF3));
             // if (cfg.get_button_state(IN1_EFF3)){
             //     leds.set_on(IN1_EFF3);
             // }else leds.set_off(IN1_EFF3);
@@ -288,7 +288,7 @@ void Session::notify_session(Control trigger, bool isHold){
             break;
         case IN1_EFF3:
             cfg.toggle_button_state(IN1_EFF3);
-            monitor.toggle_effect(1,2,cfg.get_button_state(IN1_EFF3));
+            monitor.toggle_effect(0,2,cfg.get_button_state(IN1_EFF3));
             if (cfg.get_button_state(IN1_EFF2)){
                 std::cout<<"Effect 3 for IN1 is ON"<<std::endl;
             }else std::cout<<"Effect 3 for IN1 is OFF"<<std::endl;
