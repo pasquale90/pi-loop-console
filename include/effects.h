@@ -2,6 +2,7 @@
 #define EFFECTS_H_INCLUDED
 
 #include <random>
+#include <cmath>
 
 const int NUM_EFFECTS = 3;
 

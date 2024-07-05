@@ -33,18 +33,12 @@ void Effects::apply_effect(int effect,float* sig){
         _effect3(sig);
 }
 
+
 void Effects::_whiteNoise(float *in)
 {
-    // Define random generator with Gaussian distribution
-    const double mean = 0.0;
-    // const double stddev = 0.002;
-    const double stddev = 0.01;
-    std::default_random_engine generator;
-    std::normal_distribution<double> dist(mean, stddev);
-
-    // Add Gaussian noise
-    for (int i=0; i<BUFFER_SIZE; ++i) {
-        in[i] = in[i] + dist(generator);
+   for (int i=0; i<BUFFER_SIZE; ++i) {
+        float x = in[i] * 0.005; // * 0.005 to reduce noise
+        in[i] = (x / abs(x)) * ( 1. - std::pow ( std::exp(1) , std::pow(x,2)/ abs(x)) );
     }
 
 }
