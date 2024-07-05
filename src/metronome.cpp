@@ -180,11 +180,6 @@ void Metronome::_set_tempo(){
 
             alternative_tempos.push_back(std::make_pair(num_measures,temp));
         }
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> rework-latest
         num_measures *= 2;
 
     }
