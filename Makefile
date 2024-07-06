@@ -1,8 +1,8 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-MODE := DEV
-AUDIO_INTERFACE := PCH
+MODE := REL
+AUDIO_INTERFACE := K6
 CFLAGS=-D $(MODE) -D $(AUDIO_INTERFACE) #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
