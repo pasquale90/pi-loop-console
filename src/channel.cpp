@@ -22,8 +22,6 @@ Channel::Channel() {
 
 void Channel::reset(){
 
-    // std::cout<<"Resetting channel "<<channel_name<<std::endl;
-
     for (int state = 0; state<num_states; ++state){
         std::fill(data[state].begin(), data[state].end(), 0);   // set to zero rather than clearing or erasing. Zeros required for dubing + do not affect size
     }
@@ -69,8 +67,6 @@ void Channel::undub(){
     
     play_id = states_avail[0]%num_states;
     rec_id = states_avail[1]%num_states;
-    // play_id = rec_id;
-    // rec_id = int(!(bool)rec_id);
 }
 
 void Channel::clean(){      
@@ -107,6 +103,10 @@ int Channel::get_num_tracks(){
 
 float Channel::get_volume(){
     return (volume)/100.;
+}
+
+void Channel::set_volume(int volume){
+    this->volume = volume;
 }
 
 void Channel::volume_up(){

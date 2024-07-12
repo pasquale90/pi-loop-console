@@ -1,8 +1,10 @@
 #ifndef AUDIO_SETTINGS_H
 #define AUDIO_SETTINGS_H
 
-    #define BUFFER_SIZE 256
-    #define SAMPLE_RATE 44100
+    // #define BUFFER_SIZE 256
+    // #define SAMPLE_RATE 44100
+    #define BUFFER_SIZE 512
+    #define SAMPLE_RATE 16000
     #define BIT_QUANTIZATION 24
 
     #ifdef K6

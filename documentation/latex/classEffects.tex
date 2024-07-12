@@ -1,0 +1,90 @@
+\hypertarget{classEffects}{}\doxysection{Effects Class Reference}
+\label{classEffects}\index{Effects@{Effects}}
+
+
+The effects module. Currently unsupported.  
+
+
+
+
+{\ttfamily \#include $<$effects.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classEffects_aa7263de39844131769629d4690ecc604}\label{classEffects_aa7263de39844131769629d4690ecc604}} 
+\mbox{\hyperlink{classEffects_aa7263de39844131769629d4690ecc604}{Effects}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEffects_af84300f97bac9c72b7794b76946e062a}{initialize\+\_\+effects}} (const bool\mbox{[}F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+TS\mbox{]}\mbox{[}N\+U\+M\+\_\+\+E\+F\+F\+E\+C\+TS\mbox{]})
+\begin{DoxyCompactList}\small\item\em Implicit initialization of all effects for each channel, depending on the state of the current session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classEffects_a8fc10c11ce5e3e33909fcfdc32e83305}{toggle\+\_\+effect}} (int, int)
+\begin{DoxyCompactList}\small\item\em Enables/\+Disables the an effect. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEffects_a40b5ca26925f042837b021956f208d82}{apply}} (float $\ast$\mbox{[}F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+TS\mbox{]})
+\begin{DoxyCompactList}\small\item\em Function to apply all the enabled effects to the input signal altogether. Currently unsupported. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The effects module. Currently unsupported. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classEffects_a40b5ca26925f042837b021956f208d82}\label{classEffects_a40b5ca26925f042837b021956f208d82}} 
+\index{Effects@{Effects}!apply@{apply}}
+\index{apply@{apply}!Effects@{Effects}}
+\doxysubsubsection{\texorpdfstring{apply()}{apply()}}
+{\footnotesize\ttfamily void Effects\+::apply (\begin{DoxyParamCaption}\item[{float $\ast$}]{\mbox{[}\+F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+T\+S\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Function to apply all the enabled effects to the input signal altogether. Currently unsupported. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em float$\ast$\mbox{[}\+F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+T\+S\mbox{]}} & -\/ the input signal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classEffects_af84300f97bac9c72b7794b76946e062a}\label{classEffects_af84300f97bac9c72b7794b76946e062a}} 
+\index{Effects@{Effects}!initialize\_effects@{initialize\_effects}}
+\index{initialize\_effects@{initialize\_effects}!Effects@{Effects}}
+\doxysubsubsection{\texorpdfstring{initialize\_effects()}{initialize\_effects()}}
+{\footnotesize\ttfamily void Effects\+::initialize\+\_\+effects (\begin{DoxyParamCaption}\item[{const bool}]{\mbox{[}\+F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+T\+S\mbox{]}\mbox{[}\+N\+U\+M\+\_\+\+E\+F\+F\+E\+C\+T\+S\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Implicit initialization of all effects for each channel, depending on the state of the current session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em const} & bool\mbox{[}F\+\_\+\+N\+U\+M\+\_\+\+I\+N\+P\+U\+TS\mbox{]}\mbox{[}N\+U\+M\+\_\+\+E\+F\+F\+E\+C\+TS\mbox{]} -\/ a boolean table containing the states of the effects (enabled/disabled) for each input channel. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classEffects_a8fc10c11ce5e3e33909fcfdc32e83305}\label{classEffects_a8fc10c11ce5e3e33909fcfdc32e83305}} 
+\index{Effects@{Effects}!toggle\_effect@{toggle\_effect}}
+\index{toggle\_effect@{toggle\_effect}!Effects@{Effects}}
+\doxysubsubsection{\texorpdfstring{toggle\_effect()}{toggle\_effect()}}
+{\footnotesize\ttfamily bool Effects\+::toggle\+\_\+effect (\begin{DoxyParamCaption}\item[{int}]{,  }\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Enables/\+Disables the an effect. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ the corresponding channel \\
+\hline
+{\em int} & -\/ the corresponding effect \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool -\/ the current state of the corresponding effect after processing. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/effects.\+h\end{DoxyCompactItemize}

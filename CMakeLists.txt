@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD 11)
 #manual parameters - set those manually
 # option(DEV "development using keyboards" OFF)
 # option(REL "release using gpio-pin connected buttons" ON)
-set(MODE "REL")
-set(AUDIO_INTERFACE "K6") #K6/PCH/CODEC
+set(MODE "DEV")
+set(AUDIO_INTERFACE "PCH") #K6/PCH/CODEC
 
 SET (CMAKE_CXX_FLAGS "-D  ${MODE} -D ${AUDIO_INTERFACE}") 
 
@@ -51,12 +51,12 @@ set(LIBRARIES
 )
 
 if("${MODE}" STREQUAL "DEV")
-    list(APPEND SOURCE_FILES "src/keyboard.cpp")
+    list(APPEND INCLUDE_DIRECTORIES "./include/computer")
+    list(APPEND SOURCE_FILES "src/computer.cpp" "src/computer/keyboard.cpp" "src/computer/screen.cpp")
     list(APPEND LIBRARIES evdev)
 elseif("${MODE}" STREQUAL "REL")
     list(APPEND INCLUDE_DIRECTORIES "./include/gpio")
-    list(APPEND SOURCE_FILES "src/gpio/buttons.cpp")
-    list(APPEND SOURCE_FILES "src/gpio/leds.cpp")
+    list(APPEND SOURCE_FILES "src/gpio/buttons.cpp"  "src/gpio/leds.cpp" "src/gpio/potentiometers.cpp" )
     list(APPEND LIBRARIES wiringPi)
 else()
     message(FATAL_ERROR "MODE variable is set with wrong value. Set as REL for release and DEV for dev")

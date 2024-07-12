@@ -2,7 +2,6 @@
 
 ###### bash arguments ######
 # b : build code
-# s : server run
 # e : code execution
 ############################
 

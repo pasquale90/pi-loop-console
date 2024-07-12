@@ -1,18 +1,18 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-MODE := REL
-AUDIO_INTERFACE := K6
+MODE := DEV
+AUDIO_INTERFACE := PCH
 CFLAGS=-D $(MODE) -D $(AUDIO_INTERFACE) #DEV/REL K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
 OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o  build/interface.o build/config.o build/menu.o build/piloop.o build/main.o 
 
 ifeq ($(MODE), DEV)
-	OBJECTS += build/keyboard.o
+	OBJECTS += build/keyboard.o build/screen.o build/computer.o
+	INCLUDE += -I./include/computer
 else ifeq ($(MODE), REL)
-	OBJECTS += build/buttons.o 
-	OBJECTS += build/leds.o 
+	OBJECTS += build/buttons.o build/potentiometers.o build/leds.o build/gpio.o
 	INCLUDE += -I./include/gpio
 	WIRINGPI :=-L/usr/lib -lwiringPi
 else
@@ -57,13 +57,29 @@ build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/session.o
 
 ifeq ($(MODE), DEV)
-build/keyboard.o: src/keyboard.cpp include/keyboard.h
-	$(COMPILE) -c src/keyboard.cpp $(INCLUDE) $(EVDEV) -o build/keyboard.o
+
+build/computer.o: src/computer.cpp include/computer.h
+	$(COMPILE) -c src/computer.cpp $(INCLUDE) -o build/computer.o
+
+build/keyboard.o: src/computer/keyboard.cpp include/computer/keyboard.h
+	$(COMPILE) -c src/computer/keyboard.cpp $(INCLUDE) $(EVDEV) -o build/keyboard.o
+
+build/screen.o: src/computer/screen.cpp include/computer/screen.h
+	$(COMPILE) -c src/computer/screen.cpp $(INCLUDE) -o build/screen.o
+
 else ifeq ($(MODE), REL)
+
+build/gpio.o: src/gpio.cpp include/gpio.h	
+	$(COMPILE) -c src/gpio.cpp $(INCLUDE) $(WIRINGPI) -o build/gpio.o
+
 build/buttons.o: src/gpio/buttons.cpp include/gpio/buttons.h	
 	$(COMPILE) -c src/gpio/buttons.cpp $(INCLUDE) $(WIRINGPI) -o build/buttons.o
+
 build/leds.o: src/gpio/leds.cpp include/gpio/leds.h	
 	$(COMPILE) -c src/gpio/leds.cpp $(INCLUDE) $(WIRINGPI) -o build/leds.o
+	
+build/potentiometers.o: src/gpio/potentiometers.cpp include/gpio/potentiometers.h	
+	$(COMPILE) -c src/gpio/potentiometers.cpp $(INCLUDE) $(WIRINGPI) -o build/potentiometers.o
 else
 	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
 endif

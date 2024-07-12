@@ -9,13 +9,26 @@
 
 // @TODO conform to both mono and stereo out
 
+/*! @brief The mixer module responsible to stream the output signal.*/
 class Mixer{
   public:
+    /*! @brief Class contructor.
+     */
     Mixer();
 
-    // void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],float*[F_NUM_OUTPUTS],bool[F_NUM_INPUTS]);
+    /*! @brief Function that streams the output audio signal
+     * @param float*[F_NUM_INPUTS] - the monitor audio input signal
+     * @param float*[F_NUM_OUTPUTS] - the output buffers connected to the speakers
+     * @param std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> - the looper output buffers
+     * @param bool[F_NUM_INPUTS] - bool array to indicate if monitorIn is enabled.
+     * @return void
+     */
     void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS>,bool[F_NUM_INPUTS]);
 
+    /*! @brief Function that saves the last minutes to a file
+     * @param std::string - the path to save the file.
+     * @return void
+     */
     void save_jam(std::string);
     
   private:

@@ -1,0 +1,140 @@
+\hypertarget{classhardwareInterface}{}\doxysection{hardware\+Interface Class Reference}
+\label{classhardwareInterface}\index{hardwareInterface@{hardwareInterface}}
+
+
+The generic interface of the pi-\/loop. It has an input and an output interface.  
+
+
+
+
+{\ttfamily \#include $<$interface.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhardwareInterface_a6c80d472d97db9cff91a0129ae69f379}\label{classhardwareInterface_a6c80d472d97db9cff91a0129ae69f379}} 
+\mbox{\hyperlink{classhardwareInterface_a6c80d472d97db9cff91a0129ae69f379}{hardware\+Interface}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a10b48003a3ec082185f182b892ce2074}{get\+\_\+metro\+\_\+display}} (int)
+\begin{DoxyCompactList}\small\item\em Method to call the metronome display function triggered by the \mbox{\hyperlink{classMetronome}{Metronome}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a9ecc992bfe373de5a66f86b9aa450940}{get\+\_\+display\+\_\+initializer}} (int\mbox{[}9\mbox{]})
+\begin{DoxyCompactList}\small\item\em Method to initialize the display for some display components (i.\+e. if E\+F\+F1 is enabled by default on the current session) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a907956c9d8a98945cffeca7940f5cdd0}{listen}} (void(Pi\+Loop\+::$\ast$\+\_\+notify)(\mbox{\hyperlink{structTrigger}{Trigger}}), \mbox{\hyperlink{classPiLoop}{Pi\+Loop}} \&)
+\begin{DoxyCompactList}\small\item\em Prime method that runs on the ui thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a589960d5048960f0dc69636046f85e6b}{display}} ()
+\begin{DoxyCompactList}\small\item\em Prime method that runs on the display thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a80f9a34bb045c0221bced2e7688dd4fb}{update}} (\mbox{\hyperlink{structResponse}{Response}})
+\begin{DoxyCompactList}\small\item\em Method to update the display thread upon user interventions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhardwareInterface_a1757a88c60ba71a4a69f50e022ca094f}{deafen}} ()
+\begin{DoxyCompactList}\small\item\em Method to shutdown the interface. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The generic interface of the pi-\/loop. It has an input and an output interface. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhardwareInterface_a1757a88c60ba71a4a69f50e022ca094f}\label{classhardwareInterface_a1757a88c60ba71a4a69f50e022ca094f}} 
+\index{hardwareInterface@{hardwareInterface}!deafen@{deafen}}
+\index{deafen@{deafen}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{deafen()}{deafen()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::deafen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method to shutdown the interface. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhardwareInterface_a589960d5048960f0dc69636046f85e6b}\label{classhardwareInterface_a589960d5048960f0dc69636046f85e6b}} 
+\index{hardwareInterface@{hardwareInterface}!display@{display}}
+\index{display@{display}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prime method that runs on the display thread. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhardwareInterface_a9ecc992bfe373de5a66f86b9aa450940}\label{classhardwareInterface_a9ecc992bfe373de5a66f86b9aa450940}} 
+\index{hardwareInterface@{hardwareInterface}!get\_display\_initializer@{get\_display\_initializer}}
+\index{get\_display\_initializer@{get\_display\_initializer}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{get\_display\_initializer()}{get\_display\_initializer()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::get\+\_\+display\+\_\+initializer (\begin{DoxyParamCaption}\item[{int}]{\mbox{[}9\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Method to initialize the display for some display components (i.\+e. if E\+F\+F1 is enabled by default on the current session) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int\mbox{[}9\mbox{]}} & -\/ integer data to initialize the display object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhardwareInterface_a10b48003a3ec082185f182b892ce2074}\label{classhardwareInterface_a10b48003a3ec082185f182b892ce2074}} 
+\index{hardwareInterface@{hardwareInterface}!get\_metro\_display@{get\_metro\_display}}
+\index{get\_metro\_display@{get\_metro\_display}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{get\_metro\_display()}{get\_metro\_display()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::get\+\_\+metro\+\_\+display (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to call the metronome display function triggered by the \mbox{\hyperlink{classMetronome}{Metronome}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ the metronome intonation signal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhardwareInterface_a907956c9d8a98945cffeca7940f5cdd0}\label{classhardwareInterface_a907956c9d8a98945cffeca7940f5cdd0}} 
+\index{hardwareInterface@{hardwareInterface}!listen@{listen}}
+\index{listen@{listen}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{listen()}{listen()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::listen (\begin{DoxyParamCaption}\item[{void(Pi\+Loop\+::$\ast$)(\mbox{\hyperlink{structTrigger}{Trigger}})}]{\+\_\+notify,  }\item[{\mbox{\hyperlink{classPiLoop}{Pi\+Loop}} \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Prime method that runs on the ui thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & (\mbox{\hyperlink{classPiLoop}{Pi\+Loop}}\+:\+:$\ast$\+\_\+notify)(\mbox{\hyperlink{structTrigger}{Trigger}}) -\/ the function pointer fo the Piloop class that is responsible for receiving the trigger from the current function. \\
+\hline
+{\em Pi\+Loop\&} & -\/ reference to the Piloop object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhardwareInterface_a80f9a34bb045c0221bced2e7688dd4fb}\label{classhardwareInterface_a80f9a34bb045c0221bced2e7688dd4fb}} 
+\index{hardwareInterface@{hardwareInterface}!update@{update}}
+\index{update@{update}!hardwareInterface@{hardwareInterface}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void hardware\+Interface\+::update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structResponse}{Response}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to update the display thread upon user interventions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \mbox{\hyperlink{structResponse}{Response}}} & -\/ post-\/process signal to update the display thread. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/interface.\+h\end{DoxyCompactItemize}

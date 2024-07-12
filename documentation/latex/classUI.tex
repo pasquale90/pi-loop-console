@@ -1,0 +1,155 @@
+\hypertarget{classUI}{}\doxysection{UI Class Reference}
+\label{classUI}\index{UI@{UI}}
+
+
+Defines a computer based interface constisted of a keyboard and the screen.  
+
+
+
+
+{\ttfamily \#include $<$computer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classUI_a675985a56b5e87ebdc8e5884b9f2ee09}\label{classUI_a675985a56b5e87ebdc8e5884b9f2ee09}} 
+\mbox{\hyperlink{classUI_a675985a56b5e87ebdc8e5884b9f2ee09}{UI}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUI_ab5de5a3d56017601af93a42a05fdb24e}{listen\+\_\+user}} (\mbox{\hyperlink{structTrigger}{Trigger}} \&)
+\begin{DoxyCompactList}\small\item\em Method to pass the trigger stucture by reference to a function that gets the keyboard input messages by the user. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUI_a79f1ae469eec91f73c34982e2ae1ee10}{update\+\_\+output\+\_\+state}} (\mbox{\hyperlink{structResponse}{Response}})
+\begin{DoxyCompactList}\small\item\em Method to update the output based on the system\textquotesingle{}s response message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUI_a2c4ed1a6ccb8400d86e4e6f3b2ebdc1f}{show}} ()
+\begin{DoxyCompactList}\small\item\em Method that runs on the display thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUI_a6e39dd52639106beb97989ad81dc2803}{initialize\+\_\+display}} (int\mbox{[}9\mbox{]})
+\item 
+void \mbox{\hyperlink{classUI_af4b4e9b912b2b55c71802e77dee702b1}{metro\+\_\+display}} (int)
+\begin{DoxyCompactList}\small\item\em Method to call the displayer\textquotesingle{}s tick\+\_\+tock function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUI_a85bad95813883cb9f6b0a66cb6547efe}{turn\+Off}} ()
+\begin{DoxyCompactList}\small\item\em Method to shutdown \mbox{\hyperlink{classUI}{UI}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classUI_ab5de5a3d56017601af93a42a05fdb24e}\label{classUI_ab5de5a3d56017601af93a42a05fdb24e}} 
+void {\bfseries listen\+\_\+user} (\mbox{\hyperlink{structTrigger}{Trigger}} \&)
+\item 
+\mbox{\Hypertarget{classUI_a79f1ae469eec91f73c34982e2ae1ee10}\label{classUI_a79f1ae469eec91f73c34982e2ae1ee10}} 
+void {\bfseries update\+\_\+output\+\_\+state} (\mbox{\hyperlink{structResponse}{Response}})
+\item 
+\mbox{\Hypertarget{classUI_a2c4ed1a6ccb8400d86e4e6f3b2ebdc1f}\label{classUI_a2c4ed1a6ccb8400d86e4e6f3b2ebdc1f}} 
+void {\bfseries show} ()
+\item 
+\mbox{\Hypertarget{classUI_a77f2dbd23774b981d31801b19ba0a7fe}\label{classUI_a77f2dbd23774b981d31801b19ba0a7fe}} 
+void {\bfseries initialize\+\_\+display} (int\mbox{[}8\mbox{]})
+\item 
+\mbox{\Hypertarget{classUI_af4b4e9b912b2b55c71802e77dee702b1}\label{classUI_af4b4e9b912b2b55c71802e77dee702b1}} 
+void {\bfseries metro\+\_\+display} (int)
+\item 
+\mbox{\Hypertarget{classUI_a85bad95813883cb9f6b0a66cb6547efe}\label{classUI_a85bad95813883cb9f6b0a66cb6547efe}} 
+void {\bfseries turn\+Off} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines a computer based interface constisted of a keyboard and the screen. 
+
+Defines a G\+P\+IO based interface constisted of buttons, potentiometers and leds. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classUI_a6e39dd52639106beb97989ad81dc2803}\label{classUI_a6e39dd52639106beb97989ad81dc2803}} 
+\index{UI@{UI}!initialize\_display@{initialize\_display}}
+\index{initialize\_display@{initialize\_display}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{initialize\_display()}{initialize\_display()}}
+{\footnotesize\ttfamily void U\+I\+::initialize\+\_\+display (\begin{DoxyParamCaption}\item[{int}]{\mbox{[}9\mbox{]} }\end{DoxyParamCaption})}
+
+Method to pass some initialization values to the displayer before the program starts 
+\begin{DoxyParams}{Parameters}
+{\em int\mbox{[}9\mbox{]}} & -\/ integer data to initialize the display object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classUI_ab5de5a3d56017601af93a42a05fdb24e}\label{classUI_ab5de5a3d56017601af93a42a05fdb24e}} 
+\index{UI@{UI}!listen\_user@{listen\_user}}
+\index{listen\_user@{listen\_user}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{listen\_user()}{listen\_user()}}
+{\footnotesize\ttfamily void U\+I\+::listen\+\_\+user (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTrigger}{Trigger}} \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to pass the trigger stucture by reference to a function that gets the keyboard input messages by the user. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Trigger\&} & -\/ The trigger to be set by the user using the pc-\/keyboard. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classUI_af4b4e9b912b2b55c71802e77dee702b1}\label{classUI_af4b4e9b912b2b55c71802e77dee702b1}} 
+\index{UI@{UI}!metro\_display@{metro\_display}}
+\index{metro\_display@{metro\_display}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{metro\_display()}{metro\_display()}}
+{\footnotesize\ttfamily void U\+I\+::metro\+\_\+display (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to call the displayer\textquotesingle{}s tick\+\_\+tock function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ the intonation signal obtained from the metronome obj. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classUI_a2c4ed1a6ccb8400d86e4e6f3b2ebdc1f}\label{classUI_a2c4ed1a6ccb8400d86e4e6f3b2ebdc1f}} 
+\index{UI@{UI}!show@{show}}
+\index{show@{show}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{show()}{show()}}
+{\footnotesize\ttfamily void U\+I\+::show (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method that runs on the display thread. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classUI_a85bad95813883cb9f6b0a66cb6547efe}\label{classUI_a85bad95813883cb9f6b0a66cb6547efe}} 
+\index{UI@{UI}!turnOff@{turnOff}}
+\index{turnOff@{turnOff}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{turnOff()}{turnOff()}}
+{\footnotesize\ttfamily void U\+I\+::turn\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method to shutdown \mbox{\hyperlink{classUI}{UI}}. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classUI_a79f1ae469eec91f73c34982e2ae1ee10}\label{classUI_a79f1ae469eec91f73c34982e2ae1ee10}} 
+\index{UI@{UI}!update\_output\_state@{update\_output\_state}}
+\index{update\_output\_state@{update\_output\_state}!UI@{UI}}
+\doxysubsubsection{\texorpdfstring{update\_output\_state()}{update\_output\_state()}}
+{\footnotesize\ttfamily void U\+I\+::update\+\_\+output\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structResponse}{Response}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to update the output based on the system\textquotesingle{}s response message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \mbox{\hyperlink{structResponse}{Response}}} & -\/ the program\textquotesingle{}s response carried to the displayer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/computer.\+h\item 
+include/gpio.\+h\end{DoxyCompactItemize}

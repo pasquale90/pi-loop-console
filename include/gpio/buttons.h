@@ -1,5 +1,5 @@
-#ifndef GPIO_H
-#define GPIO_H
+#ifndef BUTTONS_H
+#define BUTTONS_H
 
 // BUTTONS
 #define BASE 100
@@ -24,24 +24,22 @@
 #include <wiringPi.h>
 #include <mcp23017.h>
 
-#include "controls.h"
+#include "trigger.h"
 
-class UI{
+/*! @brief Buttons as the GPIO-based input interface.*/
+class Buttons{
 
     public:
-        static UI& getInstance();  // Singleton
+        Buttons();
 
-        void listen_user(std::atomic<bool>&, std::atomic<int>&);
+        void setup(int);
+
+        void is_pressed(Trigger&);
 
     private: 
-
-        // Singleton        
-        UI();
-        UI(const UI&) = delete;
-        void operator=(const UI&) = delete;
-        static UI* ui_instance_ptr;
         
-        void _initialize();
+        int base;
+
         void _setupControlMapping();
         void _initialize_timings();
 

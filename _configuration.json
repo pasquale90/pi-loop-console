@@ -1,6 +1,4 @@
 {
-	"jam_savepath" : "data/jams",
-	"session_savepath" : "data/sessions",
 	"audio_settings" : 
 	{
 		"audio_devices" : 
@@ -38,7 +36,9 @@
 		"sample_rate" : 44100,
 		"selected_audio_device" : "PCH"
 	},
+	"jam_savepath" : "data/jams",
 	"last_session" : 3,
+	"session_savepath" : "data/sessions",
 	"sessions" : 
 	[
 		{

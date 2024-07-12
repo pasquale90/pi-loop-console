@@ -1,0 +1,208 @@
+\hypertarget{classSession}{}\doxysection{Session Class Reference}
+\label{classSession}\index{Session@{Session}}
+
+
+Defines a musical session. It is consisted of a \mbox{\hyperlink{classMonitor}{Monitor}}, a \mbox{\hyperlink{classLooper}{Looper}} and a \mbox{\hyperlink{classMixer}{Mixer}}.  
+
+
+
+
+{\ttfamily \#include $<$session.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSession_ad92ef09b872c9227e38a6efdd4d8a837}\label{classSession_ad92ef09b872c9227e38a6efdd4d8a837}} 
+\mbox{\hyperlink{classSession_ad92ef09b872c9227e38a6efdd4d8a837}{Session}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_ae97e4793121c1b3f4cf268cfdc7073fc}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Setup whatever needed for implicit initiatialization of the imported classes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_acd2b6460aa486278cffb9a46fbe0abde}{load}} ()
+\begin{DoxyCompactList}\small\item\em Threaded function. This one is to have the audio client up and running. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_aec0dc9e097213458c68d32d7f09d8cfc}{save}} ()
+\begin{DoxyCompactList}\small\item\em Function to save the current session. Currently it is partially unsupported (\mbox{\hyperlink{classLooper}{Looper}} session will not be saved). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_a943236dcb46fd808913a20a0de539821}{migrate}} (int)
+\begin{DoxyCompactList}\small\item\em Function used to change session. @params int -\/ the next session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_ac7c9a354d20fd4d31d40fe0097981772}{evacuate}} ()
+\begin{DoxyCompactList}\small\item\em Function shutdown the session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_a18cded74779fd45eea85d6f5948f75c0}{notify\+\_\+session}} (\mbox{\hyperlink{structTrigger}{Trigger}}, \mbox{\hyperlink{structResponse}{Response}} \&)
+\begin{DoxyCompactList}\small\item\em Function used to retrieve the user\textquotesingle{}s input trigger, and process the message and pass it all around the program, getting sure that a response will be returned for display. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_aaeb05657cef24f5046580c474b21cb75}{save\+\_\+jam}} ()
+\begin{DoxyCompactList}\small\item\em Function to save the last minutes of the current jam. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_a3b2ab14cd0591666d2ee2388383fd15f}{set\+\_\+name}} (const char $\ast$)
+\begin{DoxyCompactList}\small\item\em Function to set the name of the current session. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{classSession_afa6457df2009c471570cb797fc788cc9}{get\+\_\+name}} ()
+\begin{DoxyCompactList}\small\item\em Function to return the name of the current session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_a6de220e55159e7b2996d3cd13abd7e53}{set\+\_\+metronome\+\_\+display}} (std\+::function$<$ void(int)$>$)
+\begin{DoxyCompactList}\small\item\em Function to pass the metronome-\/display-\/function-\/pointer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSession_af77b338f8ead3160ca35d55130894921}{set\+\_\+disp\+\_\+initializer}} (std\+::function$<$ void(int\mbox{[}9\mbox{]})$>$)
+\begin{DoxyCompactList}\small\item\em Function that gets a function pointer to set a member function, which is used to implicitly initialize the display module with default/predefined values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines a musical session. It is consisted of a \mbox{\hyperlink{classMonitor}{Monitor}}, a \mbox{\hyperlink{classLooper}{Looper}} and a \mbox{\hyperlink{classMixer}{Mixer}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSession_ac7c9a354d20fd4d31d40fe0097981772}\label{classSession_ac7c9a354d20fd4d31d40fe0097981772}} 
+\index{Session@{Session}!evacuate@{evacuate}}
+\index{evacuate@{evacuate}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{evacuate()}{evacuate()}}
+{\footnotesize\ttfamily void Session\+::evacuate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function shutdown the session. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_afa6457df2009c471570cb797fc788cc9}\label{classSession_afa6457df2009c471570cb797fc788cc9}} 
+\index{Session@{Session}!get\_name@{get\_name}}
+\index{get\_name@{get\_name}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{get\_name()}{get\_name()}}
+{\footnotesize\ttfamily const char$\ast$ Session\+::get\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to return the name of the current session. 
+
+\begin{DoxyReturn}{Returns}
+const char$\ast$ -\/ the name of the current session. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_acd2b6460aa486278cffb9a46fbe0abde}\label{classSession_acd2b6460aa486278cffb9a46fbe0abde}} 
+\index{Session@{Session}!load@{load}}
+\index{load@{load}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily void Session\+::load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Threaded function. This one is to have the audio client up and running. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_a943236dcb46fd808913a20a0de539821}\label{classSession_a943236dcb46fd808913a20a0de539821}} 
+\index{Session@{Session}!migrate@{migrate}}
+\index{migrate@{migrate}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{migrate()}{migrate()}}
+{\footnotesize\ttfamily void Session\+::migrate (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function used to change session. @params int -\/ the next session. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_a18cded74779fd45eea85d6f5948f75c0}\label{classSession_a18cded74779fd45eea85d6f5948f75c0}} 
+\index{Session@{Session}!notify\_session@{notify\_session}}
+\index{notify\_session@{notify\_session}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{notify\_session()}{notify\_session()}}
+{\footnotesize\ttfamily void Session\+::notify\+\_\+session (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTrigger}{Trigger}}}]{,  }\item[{\mbox{\hyperlink{structResponse}{Response}} \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Function used to retrieve the user\textquotesingle{}s input trigger, and process the message and pass it all around the program, getting sure that a response will be returned for display. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_aec0dc9e097213458c68d32d7f09d8cfc}\label{classSession_aec0dc9e097213458c68d32d7f09d8cfc}} 
+\index{Session@{Session}!save@{save}}
+\index{save@{save}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{save()}{save()}}
+{\footnotesize\ttfamily void Session\+::save (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to save the current session. Currently it is partially unsupported (\mbox{\hyperlink{classLooper}{Looper}} session will not be saved). 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_aaeb05657cef24f5046580c474b21cb75}\label{classSession_aaeb05657cef24f5046580c474b21cb75}} 
+\index{Session@{Session}!save\_jam@{save\_jam}}
+\index{save\_jam@{save\_jam}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{save\_jam()}{save\_jam()}}
+{\footnotesize\ttfamily void Session\+::save\+\_\+jam (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to save the last minutes of the current jam. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_af77b338f8ead3160ca35d55130894921}\label{classSession_af77b338f8ead3160ca35d55130894921}} 
+\index{Session@{Session}!set\_disp\_initializer@{set\_disp\_initializer}}
+\index{set\_disp\_initializer@{set\_disp\_initializer}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{set\_disp\_initializer()}{set\_disp\_initializer()}}
+{\footnotesize\ttfamily void Session\+::set\+\_\+disp\+\_\+initializer (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(int\mbox{[}9\mbox{]})$>$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function that gets a function pointer to set a member function, which is used to implicitly initialize the display module with default/predefined values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em std\+::function$<$void(int\mbox{[}9\mbox{]})$>$} & -\/ the pointer to the function that takes 9 integer values to initialize the output states before use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_a6de220e55159e7b2996d3cd13abd7e53}\label{classSession_a6de220e55159e7b2996d3cd13abd7e53}} 
+\index{Session@{Session}!set\_metronome\_display@{set\_metronome\_display}}
+\index{set\_metronome\_display@{set\_metronome\_display}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{set\_metronome\_display()}{set\_metronome\_display()}}
+{\footnotesize\ttfamily void Session\+::set\+\_\+metronome\+\_\+display (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(int)$>$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to pass the metronome-\/display-\/function-\/pointer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em std\+::function$<$void(int)$>$} & -\/ the metronome display function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_a3b2ab14cd0591666d2ee2388383fd15f}\label{classSession_a3b2ab14cd0591666d2ee2388383fd15f}} 
+\index{Session@{Session}!set\_name@{set\_name}}
+\index{set\_name@{set\_name}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{set\_name()}{set\_name()}}
+{\footnotesize\ttfamily void Session\+::set\+\_\+name (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to set the name of the current session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em const} & char$\ast$ -\/ the new name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSession_ae97e4793121c1b3f4cf268cfdc7073fc}\label{classSession_ae97e4793121c1b3f4cf268cfdc7073fc}} 
+\index{Session@{Session}!setup@{setup}}
+\index{setup@{setup}!Session@{Session}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void Session\+::setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Setup whatever needed for implicit initiatialization of the imported classes. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/session.\+h\end{DoxyCompactItemize}

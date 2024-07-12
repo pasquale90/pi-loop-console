@@ -4,7 +4,6 @@
 #include <limits>
 #include <cmath>
 
-//default constructor
 Metronome::Metronome()
 {
     is_initialized.store(false);
@@ -18,7 +17,7 @@ Metronome::Metronome()
     rythm.numerator = cfg.rythm_numerator;
     rythm.denominator = cfg.rythm_denominator;
 
-    display();
+    // display();
 }
 
 void Metronome::lock(){
@@ -41,24 +40,24 @@ void Metronome::unpause(){
     is_paused.store(false);
 }
 
-void Metronome::display(){
-    std::cout<<"Metronome configuration:\n"
-            <<"rythm is set to : "
-            << rythm.numerator
-            <<"/"
-            <<rythm.denominator
-            <<"tempo is set to "
-            << tempo<< " bpm."
-            <<"\nTempo list : [ ";
-            for (auto t:alternative_tempos)
-                std::cout<<t.second<<"("<<t.first<<")";
-            std::cout<<" ]";
-            std::cout
-            <<"\nis initialized "<<is_initialized.load()
-            <<"\nis paused "<<is_paused.load()
-            <<"\nms_beep "<<ms_beep;
-            std::cout<<std::endl;
-}
+// void Metronome::display(){
+//     std::cout<<"Metronome configuration:\n"
+//             <<"rythm is set to : "
+//             << rythm.numerator
+//             <<"/"
+//             <<rythm.denominator
+//             <<"tempo is set to "
+//             << tempo<< " bpm."
+//             <<"\nTempo list : [ ";
+//             for (auto t:alternative_tempos)
+//                 std::cout<<t.second<<"("<<t.first<<")";
+//             std::cout<<" ]";
+//             std::cout
+//             <<"\nis initialized "<<is_initialized.load()
+//             <<"\nis paused "<<is_paused.load()
+//             <<"\nms_beep "<<ms_beep;
+//             std::cout<<std::endl;
+// }
 
 void Metronome::start_timing(){
     
@@ -74,8 +73,8 @@ void Metronome::stop_timing(){
     
     future = std::chrono::steady_clock::now();
 
-    auto time_span = std::chrono::duration_cast< std::chrono::duration<double> >(future-present);
-    beep_span = time_span / (double)rythm.numerator;
+    auto time_span = std::chrono::duration_cast< std::chrono::duration<float> >(future-present);
+    beep_span = time_span / (float)rythm.numerator;
     _set_tempo();
 
 }
@@ -95,9 +94,9 @@ void Metronome::alter_tempo(){
     cfg.tempo = tempo;
 }
 
-void Metronome::tick_tock()
+int Metronome::tick_tock()
 {
-
+    int state = -1;
     if (is_initialized.load() && !is_paused.load())
     {
         present = std::chrono::steady_clock::now();
@@ -107,13 +106,16 @@ void Metronome::tick_tock()
 
                 if (intonation == (int)RYTHM_INTONATION){
                     if (measure_begin == (int)RYTHM_INTONATION){
-                        std::cout<<std::endl<<"tick (first)"<<std::endl;
+                        state = 0;
+                        // std::cout<<std::endl<<"tick (first)"<<std::endl;
                     }else{
-                        std::cout<<std::endl<<"tick"<<std::endl;
+                        state = 1;
+                        // std::cout<<std::endl<<"tick"<<std::endl;
                     }
                 }
                 else{
-                    std::cout<<"tock"<<std::endl;
+                    state = 2;
+                    // std::cout<<"tock"<<std::endl;
                 }
                 ++intonation;
                 ++measure_begin;
@@ -128,6 +130,7 @@ void Metronome::tick_tock()
         measure_begin = 0;
     }
 
+    return state;
     // for debugging
     // display();
 }
@@ -138,7 +141,7 @@ void Metronome::tap_tempo(){
 
         _nullify_tempo();
 
-        beep_span = std::chrono::duration_cast< std::chrono::duration<double> >(std::chrono::steady_clock::now() - tap);
+        beep_span = std::chrono::duration_cast< std::chrono::duration<float> >(std::chrono::steady_clock::now() - tap);
 
         if (beep_span.count() >= (float)MIN_BEEP_SPAN && 
             beep_span.count() <= (float)MAX_BEEP_SPAN)
@@ -163,7 +166,7 @@ void Metronome::_nullify_tempo(){
         alternative_tempos.clear();
     tempo = 0;
     current_tempo = 0;
-    beep_span = std::chrono::duration<double, std::micro>{0.0};
+    beep_span = std::chrono::duration<float, std::micro>{0.0};
     num_measures = 1;
     is_initialized.store(false);
 }

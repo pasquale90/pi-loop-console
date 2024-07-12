@@ -1,61 +1,55 @@
 #include "menu.h"
 
-// Initialize the static member to nullptr
-Menu* Menu::menu_instance_ptr = nullptr;
-
 Menu::Menu(){
 } 
+
+void Menu::set_metro_display(std::function<void(int)> f){
+    session.set_metronome_display(f);
+}
+
+void Menu::set_display_initializer(std::function<void(int[9])> f){
+    session.set_disp_initializer(f);
+}
+
+void Menu::setup(){
+    session.setup();
+}
 
 void Menu::load_session(){
   session.load();
 }
-// void Menu::load(){
-  // Session temp(cfg.currSession_name.c_str());
-  // session = temp;
-  // std::cout<<"Menu loading -->> "<<session.get_name()<<std::endl;
-  // interface.listen(&Menu::_notify_menu, *this, &Session::notify_session,session);
-// }
-
-Menu& Menu::getInstance() {
-  
-  if (menu_instance_ptr == nullptr) {
-    menu_instance_ptr = new Menu(); // Create the instance if it doesn't exist
-  }
-  return *menu_instance_ptr;  // Dereference the pointer to return the instance
-}
 
 void Menu::unload(){
   session.evacuate();
-  delete menu_instance_ptr;
-  std::cout<<"Unload menu"<<std::endl;
 }
 
-void Menu::notify_menu(Control msg, bool isHold){
+void Menu::notify_menu(Trigger trigger, Response &response){
+
   // NO HOLD OPERATIONS DEFINED YET...
-    if(msg!=PREV_SESSION && msg != NEXT_SESSION && msg != SAVE_SESSION)
-      session.notify_session(msg,isHold);
+    if(trigger.control.load()!=PREV_SESSION && trigger.control.load() != NEXT_SESSION && trigger.control.load() != SAVE_SESSION)
+      session.notify_session(trigger,response);
     else
-      _edit(msg);
+      _edit(trigger.control.load(),response);
 }
 
-void Menu::_edit(Control trigger){
+void Menu::_edit(Control control, Response &response){
     //3 menu buttons defined : SAVE_SESSION - PREV_SESSION - NEXT_SESSION + QUIT
-    if (trigger == SAVE_SESSION)
+    if (control == SAVE_SESSION){
         _save_session();
-    // else if (trigger == SHUTDOWN_PILOOP)
-        // terminate 
-    else _change_session(trigger);
+        // response.msg = SAVE_SESSION;    //unsupported yet
+    }
+    else {_change_session(control,response);}
 }
 
 void Menu::_save_session(){
-// 2 things here : 
+// 2 things here : >
 //    a) save config
 //    b) save session (tracks in channels , saved jams ..)
 // session.save is responsible for both
     session.save();
 }
 
-void Menu::_change_session(Control trigger){
+void Menu::_change_session(Control control, Response &response){
 // 2 things here:
 //    a)change config 
 //    b)reset/load new session
@@ -68,15 +62,21 @@ void Menu::_change_session(Control trigger){
     int current_session = cfg.get_curr_session();
     int next_session;
 
-    if (trigger == NEXT_SESSION)
+    if (control == NEXT_SESSION)
     {
       next_session = current_session+1;
       if (next_session > max_sessions) next_session = 1;
+      response.msg.store(SESSION_CHANGE);
+      response.value.store(0);
+      response.holder.store(next_session);
     }
-    else if (trigger == PREV_SESSION)
+    else if (control == PREV_SESSION)
     {
       next_session = current_session-1;
       if (next_session==0) next_session = max_sessions;
+      response.msg.store(SESSION_CHANGE);
+      response.value.store(1);
+      response.holder.store(next_session);
     } 
 
 // reset/load new session

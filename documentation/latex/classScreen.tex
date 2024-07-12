@@ -1,0 +1,113 @@
+\hypertarget{classScreen}{}\doxysection{Screen Class Reference}
+\label{classScreen}\index{Screen@{Screen}}
+
+
+The screen as the computer-\/based output interface.  
+
+
+
+
+{\ttfamily \#include $<$screen.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classScreen_ae7576476fc6e6a6eaa66389fdc41fe72}\label{classScreen_ae7576476fc6e6a6eaa66389fdc41fe72}} 
+\mbox{\hyperlink{classScreen_ae7576476fc6e6a6eaa66389fdc41fe72}{Screen}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScreen_a346039e98f6d8095d3c72bab215587c3}{initialize\+\_\+states}} (int\mbox{[}9\mbox{]})
+\begin{DoxyCompactList}\small\item\em Method to impicitly initialize some output display components. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScreen_af3e943b52cd8c877bfdda04f57d5ca34}{display}} ()
+\begin{DoxyCompactList}\small\item\em Threaded function running on the display thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScreen_a9be43274f392d5a4dfe9b42f35936e9a}{perform\+\_\+operation}} (\mbox{\hyperlink{structResponse}{Response}})
+\begin{DoxyCompactList}\small\item\em Function running on the session thread, and carries the system\textquotesingle{}s response to the displayer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScreen_a38e02850637ddacc969d86e496ab4b5a}{tick\+\_\+tock}} (int)
+\begin{DoxyCompactList}\small\item\em Method to display the metronome\textquotesingle{}s state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classScreen_acffd06b85eaa1289475bce585ed15991}{turn\+Off}} ()
+\begin{DoxyCompactList}\small\item\em Method to shutdown the displayer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The screen as the computer-\/based output interface. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classScreen_af3e943b52cd8c877bfdda04f57d5ca34}\label{classScreen_af3e943b52cd8c877bfdda04f57d5ca34}} 
+\index{Screen@{Screen}!display@{display}}
+\index{display@{display}!Screen@{Screen}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void Screen\+::display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Threaded function running on the display thread. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classScreen_a346039e98f6d8095d3c72bab215587c3}\label{classScreen_a346039e98f6d8095d3c72bab215587c3}} 
+\index{Screen@{Screen}!initialize\_states@{initialize\_states}}
+\index{initialize\_states@{initialize\_states}!Screen@{Screen}}
+\doxysubsubsection{\texorpdfstring{initialize\_states()}{initialize\_states()}}
+{\footnotesize\ttfamily void Screen\+::initialize\+\_\+states (\begin{DoxyParamCaption}\item[{int}]{\mbox{[}9\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Method to impicitly initialize some output display components. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int\mbox{[}9\mbox{]}} & -\/ 9 values (2x2 effects, 2x2 monitor states + the current session) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classScreen_a9be43274f392d5a4dfe9b42f35936e9a}\label{classScreen_a9be43274f392d5a4dfe9b42f35936e9a}} 
+\index{Screen@{Screen}!perform\_operation@{perform\_operation}}
+\index{perform\_operation@{perform\_operation}!Screen@{Screen}}
+\doxysubsubsection{\texorpdfstring{perform\_operation()}{perform\_operation()}}
+{\footnotesize\ttfamily void Screen\+::perform\+\_\+operation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structResponse}{Response}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Function running on the session thread, and carries the system\textquotesingle{}s response to the displayer. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classScreen_a38e02850637ddacc969d86e496ab4b5a}\label{classScreen_a38e02850637ddacc969d86e496ab4b5a}} 
+\index{Screen@{Screen}!tick\_tock@{tick\_tock}}
+\index{tick\_tock@{tick\_tock}!Screen@{Screen}}
+\doxysubsubsection{\texorpdfstring{tick\_tock()}{tick\_tock()}}
+{\footnotesize\ttfamily void Screen\+::tick\+\_\+tock (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Method to display the metronome\textquotesingle{}s state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ the metronome\textquotesingle{}s intonation signal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classScreen_acffd06b85eaa1289475bce585ed15991}\label{classScreen_acffd06b85eaa1289475bce585ed15991}} 
+\index{Screen@{Screen}!turnOff@{turnOff}}
+\index{turnOff@{turnOff}!Screen@{Screen}}
+\doxysubsubsection{\texorpdfstring{turnOff()}{turnOff()}}
+{\footnotesize\ttfamily void Screen\+::turn\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method to shutdown the displayer. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/computer/screen.\+h\end{DoxyCompactItemize}

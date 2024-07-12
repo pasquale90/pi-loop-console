@@ -1,58 +1,49 @@
 #include "interface.h"
-
-hardwareInterface* hardwareInterface::interface_instance_ptr = nullptr;
+#define MS_SLEEP 30
+#include <chrono>
+#include <thread>
 
 hardwareInterface::hardwareInterface(){
     keep_running.store(true);
 }
 
-hardwareInterface& hardwareInterface::getInstance() {
-  if (interface_instance_ptr == nullptr) {
-    interface_instance_ptr = new hardwareInterface(); // Create the instance if it doesn't exist
-  }
-  return *interface_instance_ptr;  // Dereference the pointer to return the instance
+void hardwareInterface::get_metro_display(int state){
+    ui.metro_display(state);
 }
 
-// void hardwareInterface::listen(void (Menu::*_notify_menu)(Control, bool), Menu& m,    void (Session::*_notify_session)(Control, bool), Session& s){
-//     Control trigger;
-//     bool isHold;
-//     while(true){
-//         ui.listen_user(event_occured,msg);
-//         if (event_occured){            
-//             _parse_msg(trigger,isHold); // parse the message
-//             // std::cout<<"Interface::listen::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;
-//             if(trigger==PREV_SESSION || trigger == NEXT_SESSION || trigger == SAVE_SESSION || trigger == SHUTDOWN_PILOOP)
-//                 // _notify_menu(trigger,isHold);
-//                 // (*notify_menu)(trigger,isHold);
-//                 (m.*_notify_menu)(trigger,isHold);
-//             else
-//                 (s.*_notify_session)(trigger,isHold);
-//                 // _notify_session(trigger,isHold);
-//         }
-//     }   
-// }
+void hardwareInterface::get_display_initializer(int data[9]){
+    ui.initialize_display(data);
+}
 
+void hardwareInterface::listen(void (PiLoop::*_notify)(Trigger), PiLoop& pl){
 
-void hardwareInterface::listen(void (PiLoop::*_notify)(Control, bool), PiLoop& pl){
-    Control trigger;
-    bool isHold;
     while(keep_running.load()){
-        ui.listen_user(event_occured,msg);
-        if (event_occured){            
-            _parse_msg(trigger,isHold); // parse the message
-            (pl.*_notify)(trigger,isHold);
+        ui.listen_user(trigger);
+   
+        if (trigger.control != ISEMPTY){
+            (pl.*_notify)(trigger);
+            trigger.reset();
         }
-    }   
+        std::this_thread::sleep_for(std::chrono::milliseconds(MS_SLEEP));
+    }
+
+}
+
+void hardwareInterface::display(){
+
+    while(keep_running.load()){
+        ui.show();
+        std::this_thread::sleep_for(std::chrono::milliseconds(MS_SLEEP));
+    }  
+
+}
+
+void hardwareInterface::update(Response response){
+    ui.update_output_state(response);
 }
 
 void hardwareInterface::deafen(){
     keep_running.store(false);
     std::cout<<"interface::deafening"<<std::endl;
-}
-
-
-void hardwareInterface::_parse_msg(Control& trigger, bool& isHold){
-    trigger = Control(msg%100);
-    isHold = msg/100;
-    // std::cout<<"Interface::parse_msg::msg "<<msg<<" --> trigger="<<trigger<<", isHold="<<isHold<<std::endl;
+    ui.turnOff();
 }

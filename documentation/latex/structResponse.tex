@@ -1,0 +1,79 @@
+\hypertarget{structResponse}{}\doxysection{Response Struct Reference}
+\label{structResponse}\index{Response@{Response}}
+
+
+Defines a response message destinated to the displayer module of the program.  
+
+
+
+
+{\ttfamily \#include $<$response.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structResponse_aa9b6e391d77fce8daca8bac13730ec8e}\label{structResponse_aa9b6e391d77fce8daca8bac13730ec8e}} 
+\mbox{\hyperlink{structResponse_aa9b6e391d77fce8daca8bac13730ec8e}{Response}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structResponse_aef14ab354e57ed27321c6b407134d4db}\label{structResponse_aef14ab354e57ed27321c6b407134d4db}} 
+\mbox{\hyperlink{structResponse_aef14ab354e57ed27321c6b407134d4db}{Response}} (const \mbox{\hyperlink{structResponse}{Response}} \&obj)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structResponse_a21b311722745eef48466436db3e96d07}\label{structResponse_a21b311722745eef48466436db3e96d07}} 
+\mbox{\hyperlink{structResponse}{Response}} \& \mbox{\hyperlink{structResponse_a21b311722745eef48466436db3e96d07}{operator=}} (const \mbox{\hyperlink{structResponse}{Response}} \&obj)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structResponse_a2e5c60b6d73c90cca29b82bd7a99180e}{is\+Empty}} ()
+\begin{DoxyCompactList}\small\item\em Function that returns if a \mbox{\hyperlink{structResponse}{Response}} message is empty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structResponse_a00f6c5dec8b46bb3883d4db69d92655d}{reset}} ()
+\begin{DoxyCompactList}\small\item\em Reset function resets the object member variables to the default values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structResponse_a1cbc2ec59cab8bbe4d66327bbf3e85f2}\label{structResponse_a1cbc2ec59cab8bbe4d66327bbf3e85f2}} 
+std\+::atomic$<$ int $>$ {\bfseries holder} \{-\/1\}
+\item 
+\mbox{\Hypertarget{structResponse_a76837540ae8fcb5b401c4879e1d0473b}\label{structResponse_a76837540ae8fcb5b401c4879e1d0473b}} 
+std\+::atomic$<$ Message $>$ {\bfseries msg} \{E\+M\+P\+TY\}
+\item 
+\mbox{\Hypertarget{structResponse_a2056618618370f3a2cf6d5631bd25596}\label{structResponse_a2056618618370f3a2cf6d5631bd25596}} 
+std\+::atomic$<$ int $>$ {\bfseries value} \{-\/1\}
+\item 
+\mbox{\Hypertarget{structResponse_aef14374907599fc68703c29f77b27786}\label{structResponse_aef14374907599fc68703c29f77b27786}} 
+\mbox{\hyperlink{structLooperState}{Looper\+State}} {\bfseries looper\+\_\+state}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines a response message destinated to the displayer module of the program. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structResponse_a2e5c60b6d73c90cca29b82bd7a99180e}\label{structResponse_a2e5c60b6d73c90cca29b82bd7a99180e}} 
+\index{Response@{Response}!isEmpty@{isEmpty}}
+\index{isEmpty@{isEmpty}!Response@{Response}}
+\doxysubsubsection{\texorpdfstring{isEmpty()}{isEmpty()}}
+{\footnotesize\ttfamily bool Response\+::is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Function that returns if a \mbox{\hyperlink{structResponse}{Response}} message is empty. 
+
+\begin{DoxyReturn}{Returns}
+bool -\/ True if is empty (if msg == E\+M\+P\+TY or if looper\+\_\+state is not changed). Otherwise false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structResponse_a00f6c5dec8b46bb3883d4db69d92655d}\label{structResponse_a00f6c5dec8b46bb3883d4db69d92655d}} 
+\index{Response@{Response}!reset@{reset}}
+\index{reset@{reset}!Response@{Response}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void Response\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reset function resets the object member variables to the default values. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/response.\+h\end{DoxyCompactItemize}

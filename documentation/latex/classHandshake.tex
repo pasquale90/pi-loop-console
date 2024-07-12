@@ -1,0 +1,357 @@
+\hypertarget{classHandshake}{}\doxysection{Handshake Class Reference}
+\label{classHandshake}\index{Handshake@{Handshake}}
+
+
+The jack-\/audio client.  
+
+
+
+
+{\ttfamily \#include $<$handshake.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classHandshake_a33e6052aa355c6d9926ff026115f7efe}\label{classHandshake_a33e6052aa355c6d9926ff026115f7efe}} 
+\mbox{\hyperlink{classHandshake_a33e6052aa355c6d9926ff026115f7efe}{Handshake}} ()
+\begin{DoxyCompactList}\small\item\em Class contructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_abac8d0f94d91da7d87d97e77d6e6f921}{link\+\_\+client}} (char $\ast$)
+\begin{DoxyCompactList}\small\item\em Function to open the jack client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a2965a73db2d929af235a154cf4b4badb}{set\+\_\+process\+\_\+callback}} ()
+\begin{DoxyCompactList}\small\item\em Function to set the callback function used for streaming the audio signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a3486e67ef074ade9f7ff59c3f0b7a9fc}{prevent\+\_\+failure}} ()
+\begin{DoxyCompactList}\small\item\em Function to set another function to be called in case the system fails. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_ae78def97ab5ee68965133c822c08591f}{register\+\_\+input\+\_\+port}} (int)
+\begin{DoxyCompactList}\small\item\em Function to register a new input port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a54c443454d0734f966ddea2b8cf1017d}{register\+\_\+output\+\_\+port}} (int)
+\begin{DoxyCompactList}\small\item\em Function to register a new output port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_ad28f4d864d08939ed382651c41aef964}{activate}} ()
+\begin{DoxyCompactList}\small\item\em Function to activate the jack client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a20a38b38517956dcee79665c688a62a9}{register\+\_\+devices}} ()
+\begin{DoxyCompactList}\small\item\em Function to register the input and the output devices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a20a6b88029137b274a735aaf3c3f106b}{set\+\_\+buffer\+\_\+size}} ()
+\begin{DoxyCompactList}\small\item\em Function to change the buffer size using the preprocessor derivative used in \mbox{\hyperlink{audio__settings_8h_source}{audio\+\_\+settings.\+h}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_ac5b11538f449ca9be4e7256dc6bac322}{check\+\_\+status}} ()
+\begin{DoxyCompactList}\small\item\em Function to check the status of the client connection. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a6b5901fe9fafbd078bd4b5f48fd1860c}{disconnect\+\_\+client}} ()
+\begin{DoxyCompactList}\small\item\em Function to disconnect the client from the server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_aab15bf9c343725bad8d807934135ad01}{connect\+\_\+input\+\_\+device}} (int)
+\begin{DoxyCompactList}\small\item\em Function to connect input ports with input devices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_afc0eda1c605c5f4cdaaac66ec60768fd}{connect\+\_\+output\+\_\+device}} (int)
+\begin{DoxyCompactList}\small\item\em Function to connect output ports with output devices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a5227e74be1e179588f917c6570e922a0}{disconnect\+\_\+input\+\_\+device}} (int)
+\begin{DoxyCompactList}\small\item\em Function to disconnect input ports from the connected input devices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_ac683d0589a1d4fce6ebd566c570f502a}{disconnect\+\_\+output\+\_\+device}} (int)
+\begin{DoxyCompactList}\small\item\em Function to disconnect output ports from the connected output devices. \end{DoxyCompactList}\item 
+float $\ast$ \mbox{\hyperlink{classHandshake_a17a96a20d6b7add105802c519fc8240f}{get\+\_\+input\+\_\+buffer}} (int)
+\begin{DoxyCompactList}\small\item\em Function to get the input buffer from a specific port-\/device. \end{DoxyCompactList}\item 
+float $\ast$ \mbox{\hyperlink{classHandshake_ac9cc88087db8aae715f8e3090bba35dc}{get\+\_\+output\+\_\+buffer}} (int)
+\begin{DoxyCompactList}\small\item\em Function to get the output buffer to which the output port-\/device is connected. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_ad2e3d14cd613fdb7d187f33077b7c3f5}{get\+\_\+input\+\_\+buffer}} (int, float $\ast$)
+\begin{DoxyCompactList}\small\item\em Function to get the input buffer from a specific port-\/device. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHandshake_a9789673689a8e363bd60952a519f28e0}{get\+\_\+output\+\_\+buffer}} (int, float $\ast$)
+\begin{DoxyCompactList}\small\item\em Function to get the output buffer to which the output port-\/device is connected. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The jack-\/audio client. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classHandshake_ad28f4d864d08939ed382651c41aef964}\label{classHandshake_ad28f4d864d08939ed382651c41aef964}} 
+\index{Handshake@{Handshake}!activate@{activate}}
+\index{activate@{activate}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{activate()}{activate()}}
+{\footnotesize\ttfamily void Handshake\+::activate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to activate the jack client. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_ac5b11538f449ca9be4e7256dc6bac322}\label{classHandshake_ac5b11538f449ca9be4e7256dc6bac322}} 
+\index{Handshake@{Handshake}!check\_status@{check\_status}}
+\index{check\_status@{check\_status}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{check\_status()}{check\_status()}}
+{\footnotesize\ttfamily void Handshake\+::check\+\_\+status (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to check the status of the client connection. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_aab15bf9c343725bad8d807934135ad01}\label{classHandshake_aab15bf9c343725bad8d807934135ad01}} 
+\index{Handshake@{Handshake}!connect\_input\_device@{connect\_input\_device}}
+\index{connect\_input\_device@{connect\_input\_device}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{connect\_input\_device()}{connect\_input\_device()}}
+{\footnotesize\ttfamily void Handshake\+::connect\+\_\+input\+\_\+device (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to connect input ports with input devices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the input port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_afc0eda1c605c5f4cdaaac66ec60768fd}\label{classHandshake_afc0eda1c605c5f4cdaaac66ec60768fd}} 
+\index{Handshake@{Handshake}!connect\_output\_device@{connect\_output\_device}}
+\index{connect\_output\_device@{connect\_output\_device}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{connect\_output\_device()}{connect\_output\_device()}}
+{\footnotesize\ttfamily void Handshake\+::connect\+\_\+output\+\_\+device (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to connect output ports with output devices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the output port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a6b5901fe9fafbd078bd4b5f48fd1860c}\label{classHandshake_a6b5901fe9fafbd078bd4b5f48fd1860c}} 
+\index{Handshake@{Handshake}!disconnect\_client@{disconnect\_client}}
+\index{disconnect\_client@{disconnect\_client}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{disconnect\_client()}{disconnect\_client()}}
+{\footnotesize\ttfamily void Handshake\+::disconnect\+\_\+client (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to disconnect the client from the server. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a5227e74be1e179588f917c6570e922a0}\label{classHandshake_a5227e74be1e179588f917c6570e922a0}} 
+\index{Handshake@{Handshake}!disconnect\_input\_device@{disconnect\_input\_device}}
+\index{disconnect\_input\_device@{disconnect\_input\_device}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{disconnect\_input\_device()}{disconnect\_input\_device()}}
+{\footnotesize\ttfamily void Handshake\+::disconnect\+\_\+input\+\_\+device (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to disconnect input ports from the connected input devices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the input port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_ac683d0589a1d4fce6ebd566c570f502a}\label{classHandshake_ac683d0589a1d4fce6ebd566c570f502a}} 
+\index{Handshake@{Handshake}!disconnect\_output\_device@{disconnect\_output\_device}}
+\index{disconnect\_output\_device@{disconnect\_output\_device}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{disconnect\_output\_device()}{disconnect\_output\_device()}}
+{\footnotesize\ttfamily void Handshake\+::disconnect\+\_\+output\+\_\+device (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to disconnect output ports from the connected output devices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the output port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a17a96a20d6b7add105802c519fc8240f}\label{classHandshake_a17a96a20d6b7add105802c519fc8240f}} 
+\index{Handshake@{Handshake}!get\_input\_buffer@{get\_input\_buffer}}
+\index{get\_input\_buffer@{get\_input\_buffer}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{get\_input\_buffer()}{get\_input\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily float$\ast$ Handshake\+::get\+\_\+input\+\_\+buffer (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to get the input buffer from a specific port-\/device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the input port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float$\ast$ -\/ the input buffer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_ad2e3d14cd613fdb7d187f33077b7c3f5}\label{classHandshake_ad2e3d14cd613fdb7d187f33077b7c3f5}} 
+\index{Handshake@{Handshake}!get\_input\_buffer@{get\_input\_buffer}}
+\index{get\_input\_buffer@{get\_input\_buffer}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{get\_input\_buffer()}{get\_input\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Handshake\+::get\+\_\+input\+\_\+buffer (\begin{DoxyParamCaption}\item[{int}]{,  }\item[{float $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to get the input buffer from a specific port-\/device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the input port. \\
+\hline
+{\em float$\ast$} & -\/ the input buffer passed by value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_ac9cc88087db8aae715f8e3090bba35dc}\label{classHandshake_ac9cc88087db8aae715f8e3090bba35dc}} 
+\index{Handshake@{Handshake}!get\_output\_buffer@{get\_output\_buffer}}
+\index{get\_output\_buffer@{get\_output\_buffer}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{get\_output\_buffer()}{get\_output\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily float$\ast$ Handshake\+::get\+\_\+output\+\_\+buffer (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to get the output buffer to which the output port-\/device is connected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the output port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float$\ast$ -\/ the output buffer where the output signal is written to. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a9789673689a8e363bd60952a519f28e0}\label{classHandshake_a9789673689a8e363bd60952a519f28e0}} 
+\index{Handshake@{Handshake}!get\_output\_buffer@{get\_output\_buffer}}
+\index{get\_output\_buffer@{get\_output\_buffer}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{get\_output\_buffer()}{get\_output\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Handshake\+::get\+\_\+output\+\_\+buffer (\begin{DoxyParamCaption}\item[{int}]{,  }\item[{float $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to get the output buffer to which the output port-\/device is connected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the output port. \\
+\hline
+{\em float$\ast$} & -\/ the output buffer passed by value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_abac8d0f94d91da7d87d97e77d6e6f921}\label{classHandshake_abac8d0f94d91da7d87d97e77d6e6f921}} 
+\index{Handshake@{Handshake}!link\_client@{link\_client}}
+\index{link\_client@{link\_client}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{link\_client()}{link\_client()}}
+{\footnotesize\ttfamily void Handshake\+::link\+\_\+client (\begin{DoxyParamCaption}\item[{char $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to open the jack client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em char$\ast$} & -\/ the client name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a3486e67ef074ade9f7ff59c3f0b7a9fc}\label{classHandshake_a3486e67ef074ade9f7ff59c3f0b7a9fc}} 
+\index{Handshake@{Handshake}!prevent\_failure@{prevent\_failure}}
+\index{prevent\_failure@{prevent\_failure}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{prevent\_failure()}{prevent\_failure()}}
+{\footnotesize\ttfamily void Handshake\+::prevent\+\_\+failure (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to set another function to be called in case the system fails. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a20a38b38517956dcee79665c688a62a9}\label{classHandshake_a20a38b38517956dcee79665c688a62a9}} 
+\index{Handshake@{Handshake}!register\_devices@{register\_devices}}
+\index{register\_devices@{register\_devices}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{register\_devices()}{register\_devices()}}
+{\footnotesize\ttfamily void Handshake\+::register\+\_\+devices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to register the input and the output devices. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_ae78def97ab5ee68965133c822c08591f}\label{classHandshake_ae78def97ab5ee68965133c822c08591f}} 
+\index{Handshake@{Handshake}!register\_input\_port@{register\_input\_port}}
+\index{register\_input\_port@{register\_input\_port}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{register\_input\_port()}{register\_input\_port()}}
+{\footnotesize\ttfamily void Handshake\+::register\+\_\+input\+\_\+port (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to register a new input port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the input port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a54c443454d0734f966ddea2b8cf1017d}\label{classHandshake_a54c443454d0734f966ddea2b8cf1017d}} 
+\index{Handshake@{Handshake}!register\_output\_port@{register\_output\_port}}
+\index{register\_output\_port@{register\_output\_port}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{register\_output\_port()}{register\_output\_port()}}
+{\footnotesize\ttfamily void Handshake\+::register\+\_\+output\+\_\+port (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to register a new output port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & -\/ index of the output port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a20a6b88029137b274a735aaf3c3f106b}\label{classHandshake_a20a6b88029137b274a735aaf3c3f106b}} 
+\index{Handshake@{Handshake}!set\_buffer\_size@{set\_buffer\_size}}
+\index{set\_buffer\_size@{set\_buffer\_size}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{set\_buffer\_size()}{set\_buffer\_size()}}
+{\footnotesize\ttfamily void Handshake\+::set\+\_\+buffer\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to change the buffer size using the preprocessor derivative used in \mbox{\hyperlink{audio__settings_8h_source}{audio\+\_\+settings.\+h}}. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHandshake_a2965a73db2d929af235a154cf4b4badb}\label{classHandshake_a2965a73db2d929af235a154cf4b4badb}} 
+\index{Handshake@{Handshake}!set\_process\_callback@{set\_process\_callback}}
+\index{set\_process\_callback@{set\_process\_callback}!Handshake@{Handshake}}
+\doxysubsubsection{\texorpdfstring{set\_process\_callback()}{set\_process\_callback()}}
+{\footnotesize\ttfamily void Handshake\+::set\+\_\+process\+\_\+callback (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to set the callback function used for streaming the audio signal. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/handshake.\+h\end{DoxyCompactItemize}
