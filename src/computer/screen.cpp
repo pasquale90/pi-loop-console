@@ -54,6 +54,7 @@ void Screen::_change_looper_state_simple(){
 		// for (int button=0; button<3; ++button)
 		looper_states[ch][0].store( response.looper_state.record[ch].load() );
 		looper_states[ch][1].store( response.looper_state.playbacks[ch].load() );
+		mixer_states[ch].store( response.looper_state.num_tracks[ch].load() );
 	}
 }
 
@@ -145,7 +146,7 @@ void Screen::initialize_states(int comp_states[9]){
 
 void Screen::_display_text(){
 
-	std::cout<< u8"\033[2J\033[1;1H"; 
+	// std::cout<< u8"\033[2J\033[1;1H"; 
 
 	std::stringstream display_text;
 
