@@ -11,23 +11,27 @@ OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/
 ifeq ($(MODE), DEV)
 	OBJECTS += build/keyboard.o build/screen.o build/computer.o
 	INCLUDE += -I./include/computer
+	EVDEV :=-I/usr/include -levdev
+	CONDITIONAL_LIB = $(EVDEV)
 else ifeq ($(MODE), REL)
 	OBJECTS += build/buttons.o build/potentiometers.o build/leds.o build/gpio.o
 	INCLUDE += -I./include/gpio
 	WIRINGPI :=-L/usr/lib -lwiringPi
+	CONDITIONAL_LIB = $(WIRINGPI)
 else
 	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
 endif
 
+
+# make a var holding EVDEV | WIRINGPI
 AUDIOFILE :=-I./external
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
-EVDEV :=-I/usr/include -levdev
 JACK :=-I/usr/include -L/usr/lib -ljack -ljackserver -ljacknet
 
 all:piloop
 
 piloop:$(OBJECTS)
-	$(COMPILE) $(OBJECTS) $(JSONCPP) $(EVDEV)  $(JACK) $(WIRINGPI) -o piloop -ljsoncpp -lpthread
+	$(COMPILE) $(OBJECTS) $(JSONCPP) $(CONDITIONAL_LIB)  $(JACK) $(WIRINGPI) -o piloop -ljsoncpp -lpthread
 
 build/audioserver.o: include/audioserver.h src/audioserver.cpp
 	$(COMPILE) -c src/audioserver.cpp $(INCLUDE) $(JACK) $(JSONCPP) -o build/audioserver.o
@@ -59,7 +63,7 @@ build/session.o:src/session.cpp include/session.h
 ifeq ($(MODE), DEV)
 
 build/computer.o: src/computer.cpp include/computer.h
-	$(COMPILE) -c src/computer.cpp $(INCLUDE) -o build/computer.o
+	$(COMPILE) -c src/computer.cpp $(INCLUDE) $(EVDEV) -o build/computer.o
 
 build/keyboard.o: src/computer/keyboard.cpp include/computer/keyboard.h
 	$(COMPILE) -c src/computer/keyboard.cpp $(INCLUDE) $(EVDEV) -o build/keyboard.o
@@ -94,10 +98,10 @@ build/menu.o:src/menu.cpp include/menu.h src/config.cpp include/config.h
 	$(COMPILE) -c src/menu.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/menu.o
 
 build/piloop.o: include/piloop.h src/piloop.cpp
-	$(COMPILE) -c src/piloop.cpp $(INCLUDE) $(JSONCPP) $(EVDEV) $(AUDIOFILE) -o build/piloop.o -lpthread
+	$(COMPILE) -c src/piloop.cpp $(INCLUDE) $(JSONCPP) $(CONDITIONAL_LIB) $(AUDIOFILE) -o build/piloop.o -lpthread
 
 build/main.o:src/main.cpp
-	$(COMPILE) -c src/main.cpp $(INCLUDE) $(JSONCPP) $(EVDEV) $(AUDIOFILE) -o build/main.o -lpthread
+	$(COMPILE) -c src/main.cpp $(INCLUDE) $(JSONCPP) $(CONDITIONAL_LIB) $(AUDIOFILE) -o build/main.o -lpthread
 
 clean:
 	rm -rf build/* logs/* piloop
