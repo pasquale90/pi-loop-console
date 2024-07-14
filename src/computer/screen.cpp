@@ -146,7 +146,7 @@ void Screen::initialize_states(int comp_states[9]){
 
 void Screen::_display_text(){
 
-	// std::cout<< u8"\033[2J\033[1;1H"; 
+	std::cout<< u8"\033[2J\033[1;1H"; 
 
 	std::stringstream display_text;
 
