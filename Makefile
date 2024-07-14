@@ -1,29 +1,27 @@
 COMPILER :=g++ -std=c++11
 OPTIONS :=-g -pedantic -Wall -Wextra -Werror
 NOPTIONS :=-g -pedantic -Wall -Wno-extra # -Werror
-MODE := DEV
+MODE := PC
 AUDIO_INTERFACE := PCH
-CFLAGS=-D $(MODE) -D $(AUDIO_INTERFACE) #DEV/REL K6/PCH/CODEC
+CFLAGS=-D $(MODE) -D $(AUDIO_INTERFACE) #PC/RPI K6/PCH/CODEC
 COMPILE :=$(COMPILER) $(NOPTIONS) $(CFLAGS)
 INCLUDE :=-I./include
 OBJECTS := build/metronome.o build/channel.o build/looper.o build/mixer.o build/monitor.o build/effects.o build/audioserver.o build/handshake.o build/session.o  build/interface.o build/config.o build/menu.o build/piloop.o build/main.o 
 
-ifeq ($(MODE), DEV)
+ifeq ($(MODE), PC)
 	OBJECTS += build/keyboard.o build/screen.o build/computer.o
 	INCLUDE += -I./include/computer
 	EVDEV :=-I/usr/include -levdev
 	CONDITIONAL_LIB = $(EVDEV)
-else ifeq ($(MODE), REL)
+else ifeq ($(MODE), RPI)
 	OBJECTS += build/buttons.o build/potentiometers.o build/leds.o build/gpio.o
 	INCLUDE += -I./include/gpio
 	WIRINGPI :=-L/usr/lib -lwiringPi
 	CONDITIONAL_LIB = $(WIRINGPI)
 else
-	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
+	$(error MODE variable is set with wrong value. Set as RPI for using the raspberry pi and PC for using the computer instead)
 endif
 
-
-# make a var holding EVDEV | WIRINGPI
 AUDIOFILE :=-I./external
 JSONCPP :=-I/usr/include/jsoncpp -L/usr/lib/x86_64-linux-gnu -ljsoncpp
 JACK :=-I/usr/include -L/usr/lib -ljack -ljackserver -ljacknet
@@ -60,7 +58,7 @@ build/metronome.o:src/metronome.cpp include/metronome.h
 build/session.o:src/session.cpp include/session.h
 	$(COMPILE) -c src/session.cpp $(INCLUDE) $(JSONCPP) $(AUDIOFILE) -o build/session.o
 
-ifeq ($(MODE), DEV)
+ifeq ($(MODE), PC)
 
 build/computer.o: src/computer.cpp include/computer.h
 	$(COMPILE) -c src/computer.cpp $(INCLUDE) $(EVDEV) -o build/computer.o
@@ -71,7 +69,7 @@ build/keyboard.o: src/computer/keyboard.cpp include/computer/keyboard.h
 build/screen.o: src/computer/screen.cpp include/computer/screen.h
 	$(COMPILE) -c src/computer/screen.cpp $(INCLUDE) -o build/screen.o
 
-else ifeq ($(MODE), REL)
+else ifeq ($(MODE), RPI)
 
 build/gpio.o: src/gpio.cpp include/gpio.h	
 	$(COMPILE) -c src/gpio.cpp $(INCLUDE) $(WIRINGPI) -o build/gpio.o
@@ -85,7 +83,7 @@ build/leds.o: src/gpio/leds.cpp include/gpio/leds.h
 build/potentiometers.o: src/gpio/potentiometers.cpp include/gpio/potentiometers.h	
 	$(COMPILE) -c src/gpio/potentiometers.cpp $(INCLUDE) $(WIRINGPI) -o build/potentiometers.o
 else
-	$(error MODE variable is set with wrong value. Set as REL for release and DEV for dev)
+	$(error MODE variable is set with wrong value. Set as RPI for using the raspberry pi and PC for using the computer instead.)
 endif
 
 build/interface.o:src/interface.cpp include/interface.h

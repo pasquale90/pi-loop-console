@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-#ifdef REL
+#ifdef RPI
     #include "gpio.h"
-#elif DEV
+#elif PC
     #include "computer.h"
 #endif
 
