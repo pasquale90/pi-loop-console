@@ -23,7 +23,7 @@ class Mixer{
      * @param bool[F_NUM_INPUTS] - bool array to indicate if monitorIn is enabled.
      * @return void
      */
-    void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS>,bool[F_NUM_INPUTS]);
+    void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> & ,bool[F_NUM_INPUTS]);
 
     /*! @brief Function that saves the last minutes to a file
      * @param std::string - the path to save the file.

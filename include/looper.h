@@ -25,7 +25,7 @@ class Looper{
          * @param bool[F_NUM_INPUTS] -  the arm states
          * @return std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> -  the looper ouput buffer
          */
-        std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);
+        std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *update_buffer(float*[F_NUM_INPUTS],bool[F_NUM_INPUTS]);
 
         /*! @brief Function triggered by the REC button. Supports four (4) operations : record-dub/stop_recording/playback/erase_previous
          * Depending on the current state of the looper, it decides which one of them to apply.
@@ -110,6 +110,7 @@ class Looper{
         std::atomic<bool> playback[num_channels]; //,record[num_channels];
         std::atomic<int> record; // recording is mutually exclusive, playback is not.
         std::atomic<int> ticktock;
+        std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_output;
 
         /*! @brief Resets the looper only. Not the channels. Is is also used for initializing the looper.
          * @return void
@@ -134,7 +135,7 @@ class Looper{
         /*! @brief function to the looper's output buffer.
          * @return std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> - the looper's output buffer.
          */
-        std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> mix(); // mix all channels before updating mixer
+        std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *mix(); // mix all channels before updating mixer
 
         /*! @brief function used to update the Response message of the looper.
          * This is used to update the display of the looper's output state.

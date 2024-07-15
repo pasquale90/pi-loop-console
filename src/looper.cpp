@@ -1,7 +1,7 @@
 #include "looper.h"
 #include <iostream>
 
-std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
+std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
 // fuse input signals and pass them on channel update if arm is enabled (mic arm || inst arm)
     
     float armed_input[BUFFER_SIZE] = {0.};
@@ -60,6 +60,7 @@ Looper::Looper(){
     channels[1].set_name("LoopCh2");
     channels[2].set_name("LoopCh3");
     _set_inactive();
+    loop_length.store(0) ;
 }
 
 void Looper::_initialize_looper(){
@@ -71,13 +72,15 @@ void Looper::_initialize_looper(){
 
 void Looper::reset(){
     _set_inactive();
+    loop_length.store(0) ;
+    
     for (int ch=0; ch<num_channels; ++ch){
         channels[ch].clean();
         channels[ch].reset();
-    }        
-    
+    }
+
     metronome.clear();
-    metronome.unlock();
+    metronome.unlock();    
     // metronome.display();
 }
 
@@ -93,11 +96,8 @@ void Looper::_set_inactive(){
     for (int ch=0; ch<num_channels; ++ch){
         playback[ch].store(false);
     }
-
     record.store(-1);
-    loop_length.store(0) ;
     playback_idx.store(0) ;
-
     metronome.pause();
 }
 
@@ -219,8 +219,6 @@ void Looper::stoperase(int channel,bool isHold,Response &response){
             }
         }
         if (allEmpty){                                      // if all channels are empty, reset the looper
-            loop_length.store(0);
-            playback_idx.store(0);
             response.msg = LOOPER; // simply declare an empty message to be returned
             reset();
         }
@@ -242,8 +240,7 @@ void Looper::stoperase(int channel,bool isHold,Response &response){
             }
         }
         if (allPaused){
-            playback_idx.store(0);
-            metronome.pause();
+            _set_inactive();
         }
     }
 
@@ -275,12 +272,7 @@ void Looper::start_stop_all(bool isHold,Response &response){
             response.looper_state.is_changed.store(true);
         }
         if (atLeastOneIsPlaying){                   // pause all playbacks
-            for (int ch=0,j=0; ch<num_channels; ++ch){
-                playback[ch].store(false);
-            }
-
-            playback_idx.store(0);
-            metronome.pause();
+            _set_inactive();
             response.looper_state.is_changed.store(true);
         }else{
             for (int ch=0; ch<num_channels; ++ch){  // unpause them all
@@ -297,22 +289,25 @@ void Looper::start_stop_all(bool isHold,Response &response){
 }
 
 
-std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> Looper::mix(){
+std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *Looper::mix(){
+    // set loop_buffer to zero before adding channels.
+    // This is the fastest way to do it. You traverse twice the loop_buffer, and once each channel per circle
+    for (int speaker=0; speaker<F_NUM_OUTPUTS;++speaker)
+        looper_output[speaker].fill(0);
 
-    std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_output {0};
     for (int ch=0; ch<num_channels; ++ch){
         if ( playback[ch].load() == true ){
             if ( !channels[ch].isEmpty() ){ // || playback[ch]
                 std::vector<float> chout = channels[ch].get_out_signal(playback_idx.load());
                 for (int i=0; i< BUFFER_SIZE; ++i){
                     for (int speaker=0; speaker<F_NUM_OUTPUTS;++speaker){
-                        looper_output[speaker][i] = looper_output[speaker][i] + chout[i] * channels[ch].get_volume();
+                        looper_output[speaker][i] += chout[i] * channels[ch].get_volume();
                     }
                 }
             }
         }
     }
-    return looper_output;
+    return &looper_output;
 }
 
 void Looper::volume_change(int channel,int volume){

@@ -21,7 +21,7 @@ Mixer::Mixer(){
     curr_max_size.store(0);
 }
 
-void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_buffers,bool monitorIn[F_NUM_INPUTS]){
+void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> &looper_buffers,bool monitorIn[F_NUM_INPUTS]){
 
     for (int i=0;i<BUFFER_SIZE;++i){
         

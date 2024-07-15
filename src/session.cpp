@@ -3,6 +3,9 @@
 #include <ctime>
 #include <cstring>
 #include <string>
+#define MS_SLEEP_ 25
+#include <chrono>
+#include <thread>
 
 Session::Session(){
     is_running.store(true);
@@ -68,7 +71,8 @@ void Session::load(){
             }
             monitor.connect(const_cast<char*>(&cfg.currSession_name[0]));
         }
-        _update_metronome_display(); 
+        std::this_thread::sleep_for(std::chrono::milliseconds(MS_SLEEP_));
+
     }
 }
 
@@ -109,8 +113,11 @@ void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_b
     bool armEnabled[F_NUM_INPUTS];
     monitor.get_states(monitorIn,true);
     monitor.get_states(armEnabled,false); 
-    std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_buff = looper.update_buffer(input_buffers,armEnabled);
-    mixer.update_buffer(input_buffers,output_buffers,looper_buff,monitorIn);
+    std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *looper_buff = looper.update_buffer(input_buffers,armEnabled);
+    mixer.update_buffer(input_buffers,output_buffers,*looper_buff,monitorIn);
+
+    _update_metronome_display(); 
+
 }
 
 void Session::save(){
