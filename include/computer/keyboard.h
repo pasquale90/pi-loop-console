@@ -20,7 +20,7 @@ static const char *keycodes[64 * 1024] = { 0 }; // hack
 static const char *eventDevice = "/dev/input/event3";
 
 // // used only for development purposes.
-// // Release version will provide buttons as an interface for user interaction
+// // RPI version will provide buttons as an interface for user interaction
 
 /*! @brief The keyboard as the computer-based input interface*/
 class Keyboard{
