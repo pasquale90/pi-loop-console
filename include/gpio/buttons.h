@@ -1,6 +1,7 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
+//@TODO I2C BUS as configuration param
 // BUTTONS
 #define BASE 100
 #define I2CBUS 0x20

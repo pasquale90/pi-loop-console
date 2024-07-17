@@ -8,7 +8,7 @@ Keyboard::Keyboard(){
 
     const int fd = open(eventDevice, O_RDONLY | O_NONBLOCK);
 
-    if (fd < 0) errx(EXIT_FAILURE, "ERROR: cannot open device %s [%s]", eventDevice, strerror(errno));
+    if (fd < 0) errx(EXIT_FAILURE, "ERROR: cannot open device %s [%s]. To procced, set the keyboard device, re-configure and re-build the application again.", eventDevice, strerror(errno));
     
     err = libevdev_new_from_fd(fd, &dev);
 

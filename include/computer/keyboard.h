@@ -16,8 +16,14 @@
 #include <atomic>
 #include "trigger.h"
 
+#define QUOTE(name) #name
+#define STR(macro) QUOTE(macro)
+static const char *eventDevice{STR(KEYBOARD_DEVICE)};
+// static const char *eventDevice = "/dev/input/event3";
+
 static const char *keycodes[64 * 1024] = { 0 }; // hack
-static const char *eventDevice = "/dev/input/event3";
+
+//@TODO move eventDevice to configuring params.
 
 // // used only for development purposes.
 // // RPI version will provide buttons as an interface for user interaction
