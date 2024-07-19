@@ -19,11 +19,6 @@ foreach(flag ${flag_variables})
     set(${flag} $ENV{${flag}})
 endforeach()
 
-# message( message ${PILOOP_MODE} )
-# message( message ${AUDIO_DEVICE} )
-# message( message SAMPLE_RATE=${SAMPLE_RATE} )
-# message( message BUFFER_SIZE=${BUFFER_SIZE} )
-
 SET (USER_DEFINED_FLAGS 
 "-D ${PILOOP_MODE} \
 -D ${AUDIO_DEVICE} \
