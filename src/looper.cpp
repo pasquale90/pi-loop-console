@@ -29,8 +29,7 @@ std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *Looper::update_buffe
         playback_idx.store(playback_idx.load() + BUFFER_SIZE);
         if (playback_idx.load() > loop_length.load() - BUFFER_SIZE) {
             playback_idx.store(0);
-            metronome.pause();
-            metronome.unpause();
+            metronome.sync();
         }
     }
 
@@ -64,10 +63,8 @@ Looper::Looper(){
 }
 
 void Looper::_initialize_looper(){
-
-    metronome.stop_timing(); // logic for setting the metronome and setting the range for the playback pointer
-    
     loop_length.store(playback_idx.load()); // set the loop length 
+    metronome.stop_timing(loop_length.load()); // logic for setting the metronome and setting the range for the playback pointer
 }
 
 void Looper::reset(){
