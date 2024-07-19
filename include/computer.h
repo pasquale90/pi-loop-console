@@ -36,7 +36,7 @@ public:
      * @param int[9] - integer data to initialize the display object.
      * @return void
      */
-    void initialize_display(int[9]);
+    void initialize_display(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]);
 
     /*! @brief Method to call the displayer's tick_tock function.
      * @param int - the intonation signal obtained from the metronome obj.

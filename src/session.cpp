@@ -16,9 +16,9 @@ Session::Session(){
 
 void Session::setup(){
 #if F_NUM_INPUTS == 1
-    bool effects_curr_state[NUM_INPUTS][NUM_EFFECTS] = {cfg.get_button_state(IN1_EFF1),cfg.get_button_state(IN1_EFF2),cfg.get_button_state(IN1_EFF3)};
+    bool effects_curr_state[F_NUM_INPUTS][NUM_EFFECTS] = {cfg.get_button_state(IN1_EFF1),cfg.get_button_state(IN1_EFF2),cfg.get_button_state(IN1_EFF3)};
 #elif F_NUM_INPUTS == 2
-    bool effects_curr_state[NUM_INPUTS][NUM_EFFECTS] = {
+    bool effects_curr_state[F_NUM_INPUTS][NUM_EFFECTS] = {
         {cfg.get_button_state(IN1_EFF1),cfg.get_button_state(IN1_EFF2),cfg.get_button_state(IN1_EFF3)},
         {cfg.get_button_state(IN2_EFF1),cfg.get_button_state(IN2_EFF2),cfg.get_button_state(IN2_EFF3)}};
 #endif
@@ -36,17 +36,15 @@ void Session::setup(){
     monitor.get_states(arm_states,false);
     monitor.get_states(mntr_states,true);
 
-    std::cout<<"Session setup \n"
-    <<"effects_curr_state[0][0] "<<effects_curr_state[0][0]<<"\n"
-    <<"effects_curr_state[0][1] "<<effects_curr_state[0][1]<<"\n"
-    <<"effects_curr_state[1][0] "<<effects_curr_state[1][0]<<"\n"
-    <<"effects_curr_state[1][1] "<<effects_curr_state[1][1]<<"\n"
-    <<"arm input 1 "<<arm_states[0]<<"\n"
-    <<"monitor input 1 "<<mntr_states[0]<<"\n"
-    <<"arm input 2 "<<arm_states[1]<<"\n"
-    <<"monitor input 2 "<<mntr_states[1]<<"\n";
- 
-    std::cout<<"Session setup\""<<std::endl;
+    // check session setup
+    // std::cout<<"Session setup \n";
+    // for (int i=0; i<(int)F_NUM_INPUTS; ++i){
+    //     for (int j=0;j<(int)NUM_EFFECTS;++j)
+    //         std::cout<<"effects_curr_state["<<i<<"]["<<j<<"] "<<effects_curr_state[i][j]<<" "
+    //     <<"arm["<<i<<"] "<<arm_states[i]<<" "
+    //     <<"mntr["<<i<<"] "<<mntr_states[i]<<std::endl;
+    // }
+    // std::cout<<"Session setup\""<<std::endl;
 
     _setup_display();
 }
@@ -80,7 +78,7 @@ void Session::set_metronome_display(std::function<void(int)> metrodisp){
     _notify_metronome_display = metrodisp;
 }
 
-void Session::set_disp_initializer(std::function<void(int[8])> di){
+void Session::set_disp_initializer(std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])> di){
     _initialize_display = di;
 }
 
@@ -92,15 +90,19 @@ void Session::_update_metronome_display(){
 }
 
 void Session::_setup_display(){
-    int diplay_data[9] = {
+    int diplay_data[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1] = {
             (int)cfg.get_button_state(IN1_ARM),
             (int)cfg.get_button_state(IN1_MNTR),
-            (int)cfg.get_button_state(IN2_ARM),
-            (int)cfg.get_button_state(IN2_MNTR),
             (int)cfg.get_button_state(IN1_EFF1),
             (int)cfg.get_button_state(IN1_EFF2),
+            (int)cfg.get_button_state(IN1_EFF3),
+#if F_NUM_INPUTS == 2
+            (int)cfg.get_button_state(IN2_ARM),
+            (int)cfg.get_button_state(IN2_MNTR),
             (int)cfg.get_button_state(IN2_EFF1),
             (int)cfg.get_button_state(IN2_EFF2),
+            (int)cfg.get_button_state(IN2_EFF3),
+#endif
             cfg.get_curr_session()
             };
 
@@ -229,6 +231,7 @@ void Session::notify_session(Trigger trigger, Response &response){
             //     std::cout<<"Monitor for IN1 is ON"<<std::endl;
             // }else std::cout<<"Monitor for IN1 is OFF"<<std::endl;
             break;
+#if F_NUM_INPUTS == 2
         case IN2_ARM:
             response.holder.store(11);
             response.msg.store(ARM);
@@ -247,6 +250,7 @@ void Session::notify_session(Trigger trigger, Response &response){
             //     std::cout<<"Monitor for IN2 is ON"<<std::endl;
             // }else std::cout<<"Monitor for IN2 is OFF"<<std::endl;
             break;
+#endif
         case IN1_EFF1:
             response.holder.store(13);
             response.msg.store(EFF);
@@ -266,14 +270,15 @@ void Session::notify_session(Trigger trigger, Response &response){
             // }else std::cout<<"Effect 2 for IN1 is OFF"<<std::endl;
             break;
         case IN1_EFF3:
-            // response.holder.store(15);
-            // response.msg.store(EFF);
-            // response.value.store(monitor.toggle_effect(0,2));
-            // cfg.button_states[IN1_EFF3] = response.value.load();
+            response.holder.store(15);
+            response.msg.store(EFF);
+            response.value.store(monitor.toggle_effect(0,2));
+            cfg.button_states[IN1_EFF3] = response.value.load();
             // if (cfg.get_button_state(IN1_EFF3)){
             //     std::cout<<"Effect 3 for IN1 is ON"<<std::endl;
             // }else std::cout<<"Effect 3 for IN1 is OFF"<<std::endl;
             break;
+#if F_NUM_INPUTS == 2
         case IN2_EFF1:
             response.holder.store(16);
             response.msg.store(EFF);
@@ -293,14 +298,15 @@ void Session::notify_session(Trigger trigger, Response &response){
             // }else std::cout<<"Effect 2 for IN2 is OFF"<<std::endl;
             break;
         case IN2_EFF3:
-            // response.holder.store(18);
-            // response.msg.store(EFF);
-            // response.value.store(monitor.toggle_effect(1,2));
-            // cfg.button_states[IN2_EFF3] = response.value.load();
+            response.holder.store(18);
+            response.msg.store(EFF);
+            response.value.store(monitor.toggle_effect(1,2));
+            cfg.button_states[IN2_EFF3] = response.value.load();
             // if (cfg.get_button_state(IN2_EFF3)){
             //     std::cout<<"Effect 3 for IN2 is ON"<<std::endl;
             // }else std::cout<<"Effect 3 for IN2 is OFF"<<std::endl;
             break;
+#endif
         case TAP_TEMPO:
             looper.tap_alter_metronome((bool)subvalue);
             break;

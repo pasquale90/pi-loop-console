@@ -7,7 +7,7 @@ void Menu::set_metro_display(std::function<void(int)> f){
     session.set_metronome_display(f);
 }
 
-void Menu::set_display_initializer(std::function<void(int[9])> f){
+void Menu::set_display_initializer(std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])> f){
     session.set_disp_initializer(f);
 }
 

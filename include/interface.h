@@ -30,7 +30,7 @@ class hardwareInterface{
          * @param int[9] - integer data to initialize the display object.
          * @return void
          */
-        void get_display_initializer(int[9]);
+        void get_display_initializer(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]);
 
         /*! @brief Prime method that runs on the ui thread.
          * @param void (PiLoop::*_notify)(Trigger) - the function pointer fo the Piloop class that is responsible for receiving the trigger from the current function.

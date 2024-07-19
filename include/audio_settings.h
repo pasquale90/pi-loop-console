@@ -52,4 +52,6 @@
         #define F_NUM_OUTPUTS MAX_OUTPUTS
     #endif
 
+    #define NUM_EFFECTS 3
+
 #endif

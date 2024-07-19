@@ -11,7 +11,7 @@ void UI::metro_display(int state){
     screen.tick_tock(state);
 }
 
-void UI::initialize_display(int data[9]){
+void UI::initialize_display(int data[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]){
     screen.initialize_states(data);
 }
 

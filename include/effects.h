@@ -5,9 +5,6 @@
 #include <cmath>
 #include <atomic>
 #include "audio_settings.h"
-// #include "config.h"
-
-const int NUM_EFFECTS = 3;
 
 /*! @brief The effects module. Currently unsupported.*/
 class Effects{

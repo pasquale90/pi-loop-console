@@ -11,6 +11,8 @@
 #include <atomic>
 #include "trigger.h"
 #include "response.h"
+#include "audio_settings.h"
+
 
 /*! @brief The screen as the computer-based output interface.*/
 class Screen{
@@ -24,7 +26,7 @@ class Screen{
 		* @param int[9] - 9 values (2x2 effects, 2x2 monitor states + the current session)
 		* @return void
 		*/
-		void initialize_states(int[9]);
+		void initialize_states(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]);
 
 		/*! @brief Threaded function running on the display thread.
 		* @return void

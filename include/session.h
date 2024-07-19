@@ -75,7 +75,7 @@ class Session{
          * @param std::function<void(int[9])> - the pointer to the function that takes 9 integer values to initialize the output states before use.
          * @return void
          */
-        void set_disp_initializer(std::function<void(int[9])>);
+        void set_disp_initializer(std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])>);
 
     private:
         Monitor monitor;
@@ -84,7 +84,7 @@ class Session{
         Config& cfg = Config::getInstance();
         std::atomic<bool> is_running,is_firsTime,re_initialize;
         std::function<void(int)> _notify_metronome_display;
-        std::function<void(int[9])> _initialize_display;
+        std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])> _initialize_display;
 
         /*! @brief Function that receives the input signal and shares it with looper and monitor.
          * @param float *[F_NUM_INPUTS] - the input buffer

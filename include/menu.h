@@ -36,7 +36,7 @@ class Menu {
          * @param std::function<void(int[9])> - the function to initialize the display object with info obtained by the session object.
          * @return void
          */        
-        void set_display_initializer(std::function<void(int[9])>);
+        void set_display_initializer(std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])>);
 
         /*! @brief Function that carries a function pointer to the session obj
          * @param std::function<void(int)> - the function that is going to be called each time the metronomes ticks.
