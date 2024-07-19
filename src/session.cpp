@@ -311,28 +311,46 @@ void Session::notify_session(Trigger trigger, Response &response){
             looper.tap_alter_metronome((bool)subvalue);
             break;
         case CH1_VOL_LOW:
+#ifdef RPI
             looper.volume_change(0,subvalue);
-            // looper.volume_down(0);
+#elif PC
+            looper.volume_down(0);
+#endif
             break;
         case CH1_VOL_HIGH:
+#ifdef RPI
             looper.volume_change(0,subvalue);
-            // looper.volume_up(0);
+#elif PC
+            looper.volume_up(0);
+#endif
             break;
         case CH2_VOL_LOW:
+#ifdef RPI
             looper.volume_change(1,subvalue);
-            // looper.volume_down(1);
+#elif PC
+            looper.volume_down(1);
+#endif
             break;
         case CH2_VOL_HIGH:
+#ifdef RPI
             looper.volume_change(1,subvalue);
-            // looper.volume_up(1);
+#elif PC
+            looper.volume_up(1);
+#endif
             break;
         case CH3_VOL_LOW:
+#ifdef RPI
             looper.volume_change(2,subvalue);
-            // looper.volume_down(2);
+#elif PC
+            looper.volume_down(2);
+#endif
             break;
         case CH3_VOL_HIGH:
+#ifdef RPI
             looper.volume_change(2,subvalue);
-            // looper.volume_up(2);
+#elif PC
+            looper.volume_up(2);
+#endif
             break;   
     }
 }
