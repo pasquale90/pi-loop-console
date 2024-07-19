@@ -3,7 +3,7 @@
 #include <ctime>
 #include <cstring>
 #include <string>
-#define MS_SLEEP_ 25
+#define MS_SLEEP_ 15
 #include <chrono>
 #include <thread>
 

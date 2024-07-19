@@ -1,5 +1,5 @@
 #include "interface.h"
-#define MS_SLEEP 30
+#define MS_SLEEP 15
 #include <chrono>
 #include <thread>
 
