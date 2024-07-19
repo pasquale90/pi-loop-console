@@ -72,7 +72,7 @@ void Screen::_toggle_state(){
 // }
 	
 void Screen::turnOff(){
-    piloop_state = "OFF";
+    piloop_state = " \x1B[31mOFF\033[0m";
 }
 
 void Screen::tick_tock(int intonation){
@@ -153,7 +153,7 @@ void Screen::initialize_states(int comp_states[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]
 	}
 
 	jam_save_state = "     -";
-	piloop_state = " ON";
+	piloop_state = " \x1B[32mON\033[0m ";
 	_display_text();
 }
 
@@ -169,7 +169,7 @@ void Screen::_display_text(){
     <<"|    "<<toggle_text_mapping[IN1_ARM][toggle_text_states[IN1_ARM].load()]<<"   "<<toggle_text_mapping[IN1_MNTR][toggle_text_states[IN1_MNTR].load()]<<"       "<<toggle_text_mapping[IN2_ARM][toggle_text_states[IN2_ARM].load()]<<"   "<<toggle_text_mapping[IN2_MNTR][toggle_text_states[IN2_MNTR].load()]<<"   |  |  "<<mixer_states[0].load()<<"     "<<mixer_states[1].load()<<"     "<<mixer_states[2].load()<<"  |\n"
     <<"------------------------------------  -------------------\n\n"
     <<" Current               PILOOP-CONSOLE          SAVE_JAM\n"
-    <<" "<<"Session:"<<num_session.load()<<"                 "<<piloop_state<<"               "<<jam_save_state<<" \n\n"
+    <<" "<<"Session:"<<num_session.load()<<"                 "<<piloop_state<<"              "<<jam_save_state<<" \n\n"
     <<"------------------------- LOOPER -------------------------\n"
     <<"|  Start       Channel 1       Channel 2       Channel 3 |\n"
     <<"| "<<"Stop ALL"<<"     "<<looper_text_mapping[0][looper_states[0][0].load()]<<"  "<<looper_text_mapping[1][looper_states[0][1].load()]<<"       "<<looper_text_mapping[0][looper_states[1][0].load()]<<"  "<<looper_text_mapping[1][looper_states[1][1].load()]<<"       "<<looper_text_mapping[0][looper_states[2][0].load()]<<"  "<<looper_text_mapping[1][looper_states[2][1].load()]<<" |\n"
