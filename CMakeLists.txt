@@ -13,15 +13,16 @@ set(flag_variables
     I2C_BUS_ADDR 
 )
 
+message("PILOOP Configuration FLAGS:")
 foreach(flag ${flag_variables})
-    message(Setting ${flag} with $ENV{${flag}})
+    message(${flag} : $ENV{${flag}})
     set(${flag} $ENV{${flag}})
 endforeach()
 
-message( message ${PILOOP_MODE} )
-message( message ${AUDIO_DEVICE} )
-message( message SAMPLE_RATE=${SAMPLE_RATE} )
-message( message BUFFER_SIZE=${BUFFER_SIZE} )
+# message( message ${PILOOP_MODE} )
+# message( message ${AUDIO_DEVICE} )
+# message( message SAMPLE_RATE=${SAMPLE_RATE} )
+# message( message BUFFER_SIZE=${BUFFER_SIZE} )
 
 SET (USER_DEFINED_FLAGS 
 "-D ${PILOOP_MODE} \
