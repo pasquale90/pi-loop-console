@@ -1,6 +1,4 @@
 #include "mixer.h"
-#include "audio_settings.h"
-
 #include <iostream>
 
 #define JAM_LENGTH SAMPLE_RATE*60*5 // the last 5 minutes     //  PREPROCESSOR VALUE max_size_samples = SR* (5min*60seconds/minute)
@@ -9,9 +7,6 @@ static const std::string dataPath = "data/jams";
 // @TODO move dataPath to config
 
 Mixer::Mixer(){
-    // jam_buffer.reserve(F_NUM_OUTPUTS);
-    // for (int i=0; i<F_NUM_OUTPUTS;++i)
-    //     jam_buffer[i].resize(JAM_LENGTH);
 
     jam_buffer.resize(2);
     jam_buffer[0].resize(JAM_LENGTH);
@@ -24,9 +19,7 @@ Mixer::Mixer(){
     curr_max_size.store(0);
 }
 
-
-// void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], float* looper_buffers[F_NUM_OUTPUTS],bool monitorIn[F_NUM_INPUTS]){
-void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> looper_buffers,bool monitorIn[F_NUM_INPUTS]){
+void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], LooperOutput &looper_buffers,bool monitorIn[F_NUM_INPUTS]){
 
     for (int i=0;i<BUFFER_SIZE;++i){
         
@@ -55,7 +48,7 @@ void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffe
     cnt.store( cnt.load() + BUFFER_SIZE );
     if (cnt.load() + BUFFER_SIZE > JAM_LENGTH - 1 )
          cnt.store( 0 );
-    if ( cnt.load() > curr_max_size.load() );
+    if ( cnt.load() > curr_max_size.load() )
         curr_max_size.store( cnt.load() );
     // std::cout<<cnt.load()<<" "<<jam_buffer[0].size()<<" "<<jam_buffer[0].capacity()<<std::endl;
 
@@ -78,10 +71,7 @@ void Mixer::save_jam(std::string savepath){
 
     audioFile.save ( savepath , AudioFileFormat::Wave);
 
-    std::cout<<"\nJam "<<savepath<<".wav is saved"<<std::endl;
+    std::cout<<"\nJam "<<savepath<<" is saved"<<std::endl;
     cnt.store(0);
     curr_max_size.store(0);
 }
-
-// void Mixer::turnOff(){
-// }

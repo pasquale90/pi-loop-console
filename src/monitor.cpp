@@ -11,19 +11,22 @@ int Monitor::process()
      * special realtime thread once for each audio cycle.
      */
 
-    for (int i=0; i<F_NUM_INPUTS;++i){
-        input_buffers[i] = hs.get_input_buffer(i);
-    }
 
-    
-    effects.apply(input_buffers);
+        for (int i=0; i<F_NUM_INPUTS;++i){
+// @TODO Do not run if all monitor states disabled. Pass only the channel that has at least arm || mntr enabled.
+            input_buffers[i] = hs.get_input_buffer(i);
+        }
+
+        
+        effects.apply(input_buffers);
 
 
-    for (int i=0; i<F_NUM_OUTPUTS;++i){
-        output_buffers[i] = hs.get_output_buffer(i);
-    }
+        for (int i=0; i<F_NUM_OUTPUTS;++i){
+            output_buffers[i] = hs.get_output_buffer(i);
+        }
 
-    stream_buffer(input_buffers,output_buffers);
+        stream_buffer(input_buffers,output_buffers);
+        
     
 	return 0;      
 }
@@ -43,8 +46,8 @@ void Monitor::initialize_effects(const bool effects_curr_state[F_NUM_INPUTS][NUM
     effects.initialize_effects(effects_curr_state);
 }
 
-void Monitor::toggle_effect(int ch,int eff,bool val){
-    effects.toggle_effect(ch, eff, val);
+bool Monitor::toggle_effect(int ch,int eff){
+    return effects.toggle_effect(ch, eff);
     // effects_enabled[ch][eff].store(val) ; //!effects_enabled[ch][eff];
 }
 
@@ -103,6 +106,23 @@ void Monitor::mute_output(int device){
     hs.disconnect_output_device(device);
 }
 
+void Monitor::update_states(bool is_mntr, int input_channel, bool val){
+    input_enabled[int(is_mntr)][input_channel].store(val);
+}
+
+bool Monitor::toggle_states(bool is_mntr, int channel){
+    // return input_enabled[int(is_mntr)][channel].exchange(!input_enabled[int(is_mntr)][channel].load()) ;
+    input_enabled[int(is_mntr)][channel].store(!input_enabled[int(is_mntr)][channel].load()) ;
+    return input_enabled[int(is_mntr)][channel].load();
+}
+
+void Monitor::get_states(bool states[F_NUM_INPUTS], bool is_mntr){
+    
+    for (int chin=0; chin < F_NUM_INPUTS; ++chin)
+        states[chin] = input_enabled[int(is_mntr)][chin].load();
+
+}
+
 /*
 void Monitor::mute_microphone()
 {   
@@ -130,50 +150,5 @@ void Monitor::unmute_instrument()
 #else
     std::cout<<"Monitor::unmute_instrument --> No INST input supported for "<<DEV_INFO<<std::endl;
 #endif
-}
-*/
-
-/*
-//@TODO optimize this function with preproccessor if statements blocks
-void Monitor::_set_input_buffers(){
-
-    // // if (cfg.device_settings.micIn && !cfg.button_states[IN1_ARM] && cfg.button_states[IN1_MNTR]){
-    
-    // bool mic_condition = cfg.device_settings.micIn && (cfg.button_states[IN1_ARM] || cfg.button_states[IN1_MNTR]);
-    // if (mic_condition){
-    //     mic_buffer = hs.get_mic_buffer();
-    //     if (cfg.get_button_state(IN1_EFF1)){
-    //         effects.whiteNoise(mic_buffer);
-    //     }
-    //     if (cfg.get_button_state(IN1_EFF2)){
-    //         effects.effect2(mic_buffer);
-    //     }        
-    //     if (cfg.get_button_state(IN1_EFF3)){
-    //         effects.effect3(mic_buffer);
-    //     }
-    // }else mic_buffer = nullptr;
-
-    // bool inst_condition = cfg.device_settings.instIn && (cfg.button_states[IN2_ARM] || cfg.button_states[IN2_MNTR]);
-    // // if (cfg.device_settings.instIn && !cfg.button_states[IN2_ARM] && cfg.button_states[IN2_MNTR]){
-    // if (inst_condition){
-    //     inst_buffer = hs.get_inst_buffer();
-
-    //     // if (!cfg.button_states[IN2_ARM] && cfg.button_states[IN2_MNTR]){}
-    //     if (cfg.get_button_state(IN2_EFF1)){
-    //         effects.whiteNoise(inst_buffer);
-    //     }
-
-    //     if (cfg.get_button_state(IN2_EFF2)){
-    //         effects.effect2(inst_buffer);
-    //     }
-        
-    //     if (cfg.get_button_state(IN2_EFF3)){
-    //         effects.effect3(inst_buffer);
-    //     }
-    // }else inst_buffer = nullptr;
-
-    for (int i =0; i< F_NUM_INPUTS; ++i)
-        input_buffers[i] = hs.get_input_buffer(i);
-    // inst_buffer = hs.get_inst_buffer();
 }
 */

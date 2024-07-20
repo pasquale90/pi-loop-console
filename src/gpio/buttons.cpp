@@ -1,35 +1,24 @@
 #include "gpio/buttons.h"
 #define VERBOSE_BUTTONS
 
-UI* UI::ui_instance_ptr = nullptr;
-
-UI::UI(){
+Buttons::Buttons(){
 } 
 
-UI& UI::getInstance() {
-	
-	if (ui_instance_ptr == nullptr) {
-		ui_instance_ptr = new UI(); // Create the instance if it doesn't exist
-		ui_instance_ptr->_initialize();
-	}
-	return *ui_instance_ptr;  // Dereference the pointer to return the instance
-}
-
-void UI::_initialize(){
- 
+void Buttons::setup(int base){
+	this->base = base;
 	// initialize buttons. 16 on the mcp23017, and 4 direct connections
-	wiringPiSetupGpio();
-	mcp23017Setup(BASE, I2CBUS);
+	// wiringPiSetupGpio();
+	mcp23017Setup(base, I2CBUS);
 	
 	_setupControlMapping();
 	_initialize_timings();
 }
 
-void UI::_initialize_timings(){
+void Buttons::_initialize_timings(){
 	
 	// for the 16 buttons connected to the mcp23017
 	for (int i = 0; i < MCP23017_NUM_BUTTONS; ++i)
-		time_pressed[control_mapping[BASE+i]] = .0;
+		time_pressed[control_mapping[base+i]] = .0;
 	
 	// for the rest of the buttons which are directly connected to the GPIO pins of the raspberry pi.
 	for (int i = 0; i < direct_buttons_helper.size(); ++i){
@@ -47,12 +36,12 @@ void UI::_initialize_timings(){
 }
 
 
-void UI::_setupControlMapping()
+void Buttons::_setupControlMapping()
 {
 	//set up the buttons which are connected to the mcp I/O expander
 	for (int i = 0; i < MCP23017_NUM_BUTTONS; ++i){
-		pinMode(BASE + i, INPUT);
-		pullUpDnControl (BASE + i, PUD_UP) ;
+		pinMode(base + i, INPUT);
+		pullUpDnControl (base + i, PUD_UP) ;
 	}
 	//set up the rest of the buttons which are directly connected to the GPIO pins.
 	for (int i = 0; i < direct_buttons_helper.size(); ++i){
@@ -60,36 +49,36 @@ void UI::_setupControlMapping()
 		pullUpDnControl (direct_buttons_helper.at(i), PUD_UP) ;
 	}
 
-	control_mapping[BASE + 10] = CH1_RECDUB;
-	control_mapping[BASE + 11] = CH1_STOP;
-	control_mapping[BASE + 12] = CH2_RECDUB;
-	control_mapping[BASE + 13] = CH2_STOP;
-	control_mapping[BASE + 14] = CH3_RECDUB;
-	control_mapping[BASE + 15] = CH3_STOP;
+	control_mapping[base + 10] = CH1_RECDUB;
+	control_mapping[base + 11] = CH1_STOP;
+	control_mapping[base + 12] = CH2_RECDUB;
+	control_mapping[base + 13] = CH2_STOP;
+	control_mapping[base + 14] = CH3_RECDUB;
+	control_mapping[base + 15] = CH3_STOP;
 	control_mapping[GPIO_SAVE_JAM] = SAVE_JAM;
-	control_mapping[BASE + 6] = IN2_ARM;
-	control_mapping[BASE + 7] = IN2_MNTR;
-	control_mapping[BASE + 8] = TAP_TEMPO;
-	control_mapping[BASE + 9] = START_ALL;
-	control_mapping[BASE + 0] = IN1_EFF1;
-	control_mapping[BASE + 1] = IN1_EFF2;
-	control_mapping[BASE + 2] = IN2_EFF1;
-	control_mapping[BASE + 3] = IN2_EFF2;
-	control_mapping[BASE + 4] = IN1_ARM;
-	control_mapping[BASE + 5] = IN1_MNTR;
+	control_mapping[base + 6] = IN2_ARM;
+	control_mapping[base + 7] = IN2_MNTR;
+	control_mapping[base + 8] = TAP_TEMPO;
+	control_mapping[base + 9] = START_ALL;
+	control_mapping[base + 0] = IN1_EFF1;
+	control_mapping[base + 1] = IN1_EFF2;
+	control_mapping[base + 2] = IN2_EFF1;
+	control_mapping[base + 3] = IN2_EFF2;
+	control_mapping[base + 4] = IN1_ARM;
+	control_mapping[base + 5] = IN1_MNTR;
 	control_mapping[GPIO_PREV_SESSION] = PREV_SESSION;
 	control_mapping[GPIO_NEXT_SESSION] = NEXT_SESSION;
-	// control_mapping[BASE + 0] = SAVE_SESSION; // SAVE_SESSION
-	// control_mapping[BASE + 0] = CH1_VOL_LOW; //CH1_VOL_LOW
-	// control_mapping[BASE + 0] = CH1_VOL_HIGH; //CH1_VOL_HIGH
-	// control_mapping[BASE + 0] = CH2_VOL_LOW; //CH2_VOL_LOW
-	// control_mapping[BASE + 0] = CH2_VOL_HIGH; //CH2_VOL_HIGH
-	// control_mapping[BASE + 0] = CH3_VOL_LOW; //CH3_VOL_LOW
-	// control_mapping[BASE + 0] = CH3_VOL_HIGH; //CH2_VOL_HIGH
+	// control_mapping[base + 0] = SAVE_SESSION; // SAVE_SESSION
+	// control_mapping[base + 0] = CH1_VOL_LOW; //CH1_VOL_LOW
+	// control_mapping[base + 0] = CH1_VOL_HIGH; //CH1_VOL_HIGH
+	// control_mapping[base + 0] = CH2_VOL_LOW; //CH2_VOL_LOW
+	// control_mapping[base + 0] = CH2_VOL_HIGH; //CH2_VOL_HIGH
+	// control_mapping[base + 0] = CH3_VOL_LOW; //CH3_VOL_LOW
+	// control_mapping[base + 0] = CH3_VOL_HIGH; //CH2_VOL_HIGH
 	control_mapping[GPIO_ONOFF] = SHUTDOWN_PILOOP;
 }
 
-void UI::_helper(int pin, int &released_sig, bool &isHold){
+void Buttons::_helper(int pin, int &released_sig, bool &isHold){
 		Control control = control_mapping[pin];
 
 		if (!digitalRead(pin)){										// if pressed
@@ -105,8 +94,8 @@ void UI::_helper(int pin, int &released_sig, bool &isHold){
 				time_pressed[control] = 0.0; 									// if released, zero-down the time		
 		}
 }
-
-void UI::listen_user(std::atomic<bool> &event_occured, std::atomic<int> &msg){
+void Buttons::is_pressed(Trigger &trigger){
+	// std::atomic<int> &msg, std::atomic<int> &tval
 
 	present = std::chrono::steady_clock::now();
 	time_elapsed = std::chrono::duration_cast< std::chrono::milliseconds >(present - past).count(); // in ms
@@ -117,7 +106,7 @@ void UI::listen_user(std::atomic<bool> &event_occured, std::atomic<int> &msg){
 	int pin;
 	// for the mcp buttons
 	for (int i = 0; i < MCP23017_NUM_BUTTONS; ++i){
-		pin = BASE + i;
+		pin = base + i;
 		_helper(pin, released_sig, isHold);
 	}
 	// for the rest of the buttons
@@ -127,14 +116,14 @@ void UI::listen_user(std::atomic<bool> &event_occured, std::atomic<int> &msg){
 	}
 
 	if (released_sig !=-1){
-		event_occured.store(true);
+		// msg.store(control_mapping[released_sig]);
+		trigger.control.store(control_mapping[released_sig]);
 		if (isHold) 
-			msg.store( control_mapping[released_sig] + 100 );
-		else 
-			msg.store(control_mapping[released_sig]);
-	}else{
-		event_occured.store(false);
-		msg.store(-1); 
+			trigger.subval.store(1);
+		// else tval.store(0);
 	}
-	delay(15); //15 ms delay
+	// }else{
+	// 	msg.store(-1); 
+	// }
+	// delay(15); //15 ms delay
 }

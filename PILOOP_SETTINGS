@@ -1,0 +1,24 @@
+########################################################### PILOOP_SETTINGS ############################################################
+#-------------------------------------------------------- USER_CONFIGURATION -----------------------------------------------------------#
+
+# set Piloop mode
+PILOOP_MODE=PC                            # PC || RPI
+
+# set the audio device name || number_id. (i.e. PCH || K6 || CODEC || 0 || 1 ..)
+AUDIO_DEVICE=PCH                           # help : ($ cat /proc/asound/cards)
+
+# Set sample rate. Make sure supported by the selected audio device. 
+SAMPLE_RATE=44100                           # help : ($ cat /proc/asound/card<card-id>/codec#0)
+
+# Set buffer size. note : Value always power of 2 (i.e. 128 || 256 || 512 || 4096).
+BUFFER_SIZE=512                             # hint : Set low to reduce latency. Set high to relief cpu.
+
+#---------------------------------------------------------------- optional ---------------------------------------------------------------#
+
+# Uncomment this line to set the keyboard device manually. 
+# KEYBOARD_DEVICE=/dev/input/event0          # help : ($ ls -l /dev/input/by-path) --> event-kbd
+
+# Uncomment this line to set the i2c address manually.
+# I2C_BUS_ADDR=0x20                              # help : ($ i2c detect -y 1)
+
+###########################################################################################################################################

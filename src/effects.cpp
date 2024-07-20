@@ -18,8 +18,9 @@ void Effects::initialize_effects(const bool effects_curr_state[F_NUM_INPUTS][NUM
     }
 }
 
-void Effects::toggle_effect(int ch,int eff,bool val){
-    effects_enabled[ch][eff].store(val) ; //!effects_enabled[ch][eff];
+bool Effects::toggle_effect(int ch,int eff){
+    effects_enabled[ch][eff].store(!effects_enabled[ch][eff].load());
+    return effects_enabled[ch][eff].load();
 }
 
 void Effects::apply(float *input_buffers[F_NUM_INPUTS]){
