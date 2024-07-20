@@ -69,13 +69,34 @@ class Channel{
         */
         void set_volume(int);
 
-
+        /*! @brief Used in PC mode to increase the volume of channel by <volumeStep> percent.
+        * @return void
+        */
         void volume_up();
+
+        /*! @brief Used in PC mode to decrease the volume of channel by <volumeStep> percent.
+        * @return void
+        */
         void volume_down();        
 
+        /*! @brief function used to clean recorded data
+        * @return void
+        */
         void clean();
+
+        /*! @brief function to record data. It is used when channel has no tracks on it yet.
+        * @return void
+        */
         void rec(float[BUFFER_SIZE],int);
+
+        /*! @brief function to store new data on top of previously recorded data.
+        * @return void
+        */
         void dub(float[BUFFER_SIZE],int);
+
+        /*! @brief function used to erase last channel's record.
+        * @return void
+        */
         void undub();
         
         /*! @brief function to return the channels output signal
@@ -88,6 +109,7 @@ class Channel{
         * @return bool - true if has tracks, otherwise false.
         */
         bool isEmpty();
+
     private:
         const char* channel_name;
         int volume;

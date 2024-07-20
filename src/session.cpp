@@ -78,7 +78,7 @@ void Session::set_metronome_display(std::function<void(int)> metrodisp){
     _notify_metronome_display = metrodisp;
 }
 
-void Session::set_disp_initializer(std::function<void(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1])> di){
+void Session::set_disp_initializer(std::function<void(DisplayInit)> di){
     _initialize_display = di;
 }
 
@@ -115,7 +115,7 @@ void Session::_update_buffers(float *input_buffers[F_NUM_INPUTS],float *output_b
     bool armEnabled[F_NUM_INPUTS];
     monitor.get_states(monitorIn,true);
     monitor.get_states(armEnabled,false); 
-    std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *looper_buff = looper.update_buffer(input_buffers,armEnabled);
+    LooperOutput* looper_buff = looper.update_buffer(input_buffers,armEnabled);
     mixer.update_buffer(input_buffers,output_buffers,*looper_buff,monitorIn);
 
     _update_metronome_display(); 

@@ -5,8 +5,12 @@
 
 #include "computer/keyboard.h"
 #include "computer/screen.h"
-
 #include "response.h"
+
+/*! @brief Type alias of a compile time sized array
+  */
+using DisplayInit = int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1];
+
 
 /*! @brief Defines a computer based interface constisted of a keyboard and the screen*/
 class UI{
@@ -33,10 +37,10 @@ public:
     void show();
 
     /*!Method to pass some initialization values to the displayer before the program starts
-     * @param int[9] - integer data to initialize the display object.
+     * @param DisplayInit - integer data to initialize the display object.
      * @return void
      */
-    void initialize_display(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]);
+    void initialize_display(DisplayInit);
 
     /*! @brief Method to call the displayer's tick_tock function.
      * @param int - the intonation signal obtained from the metronome obj.

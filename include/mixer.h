@@ -1,11 +1,14 @@
 #ifndef MIXER_H_INCLUDED
 #define MIXER_H_INCLUDED
 
+#include <array>
+#include <atomic>
 #include "audio_settings.h"
 #include "AudioFile_cxx11.h"
 
-#include <array>
-#include <atomic>
+/*! @brief Looper output buffers type alias.
+  */
+using LooperOutput = std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS>;
 
 // @TODO conform to both mono and stereo out
 
@@ -19,11 +22,11 @@ class Mixer{
     /*! @brief Function that streams the output audio signal
      * @param float*[F_NUM_INPUTS] - the monitor audio input signal
      * @param float*[F_NUM_OUTPUTS] - the output buffers connected to the speakers
-     * @param std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> - the looper output buffers
+     * @param LooperOutput - the looper output buffers
      * @param bool[F_NUM_INPUTS] - bool array to indicate if monitorIn is enabled.
      * @return void
      */
-    void update_buffer(float*[F_NUM_INPUTS],float*[F_NUM_OUTPUTS],std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> & ,bool[F_NUM_INPUTS]);
+    void update_buffer(float*[F_NUM_INPUTS], float*[F_NUM_OUTPUTS], LooperOutput& ,bool[F_NUM_INPUTS]);
 
     /*! @brief Function that saves the last minutes to a file
      * @param std::string - the path to save the file.

@@ -44,8 +44,6 @@ public:
     */
     void unlock();
     
-    void pause_toggle();
-
     /*! @brief function to pause the counting of the metronome.
      * @return void
     */

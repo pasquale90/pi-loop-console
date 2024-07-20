@@ -13,6 +13,8 @@
 #include "response.h"
 #include "audio_settings.h"
 
+using DisplayInit = int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1];
+
 
 /*! @brief The screen as the computer-based output interface.*/
 class Screen{
@@ -23,10 +25,10 @@ class Screen{
 		Screen();
 
 		/*! @brief Method to impicitly initialize some output display components.
-		* @param int[9] - 9 values (2x2 effects, 2x2 monitor states + the current session)
+		* @param DisplayInit - effects, monitor states + the current session)
 		* @return void
 		*/
-		void initialize_states(int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]);
+		void initialize_states(DisplayInit);
 
 		/*! @brief Threaded function running on the display thread.
 		* @return void

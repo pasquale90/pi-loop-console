@@ -123,7 +123,7 @@ void Screen::_setupTextMapping(){
 	
 }
 
-void Screen::initialize_states(int comp_states[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]){
+void Screen::initialize_states(DisplayInit comp_states){
 
 	toggle_text_states[IN1_ARM].store(comp_states[0]);
     toggle_text_states[IN1_MNTR].store(comp_states[1]);

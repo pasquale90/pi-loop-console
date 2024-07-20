@@ -11,7 +11,7 @@ void hardwareInterface::get_metro_display(int state){
     ui.metro_display(state);
 }
 
-void hardwareInterface::get_display_initializer(int data[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1]){
+void hardwareInterface::get_display_initializer(DisplayInit data){
     ui.initialize_display(data);
 }
 

@@ -29,10 +29,6 @@ void Metronome::unlock(){
     is_locked.store(false);
 }
 
-void Metronome::pause_toggle(){
-    is_paused.store(!is_paused.load());
-}
-
 void Metronome::pause(){
     is_paused.store(true);
     sync();

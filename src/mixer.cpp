@@ -1,6 +1,4 @@
 #include "mixer.h"
-#include "audio_settings.h"
-
 #include <iostream>
 
 #define JAM_LENGTH SAMPLE_RATE*60*5 // the last 5 minutes     //  PREPROCESSOR VALUE max_size_samples = SR* (5min*60seconds/minute)
@@ -21,7 +19,7 @@ Mixer::Mixer(){
     curr_max_size.store(0);
 }
 
-void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> &looper_buffers,bool monitorIn[F_NUM_INPUTS]){
+void Mixer::update_buffer(float* input_buffers[F_NUM_INPUTS],float* output_buffers[F_NUM_OUTPUTS], LooperOutput &looper_buffers,bool monitorIn[F_NUM_INPUTS]){
 
     for (int i=0;i<BUFFER_SIZE;++i){
         

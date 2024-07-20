@@ -1,7 +1,7 @@
 #include "looper.h"
 #include <iostream>
 
-std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
+LooperOutput* Looper::update_buffer(float* input[F_NUM_INPUTS],bool armEnabled[F_NUM_INPUTS]){
 // fuse input signals and pass them on channel update if arm is enabled (mic arm || inst arm)
     
     float armed_input[BUFFER_SIZE] = {0.};
@@ -286,7 +286,7 @@ void Looper::start_stop_all(bool isHold,Response &response){
 }
 
 
-std::array< std::array<float, BUFFER_SIZE>, F_NUM_OUTPUTS> *Looper::mix(){
+LooperOutput* Looper::mix(){
     // set loop_buffer to zero before adding channels.
     // This is the fastest way to do it. You traverse twice the loop_buffer, and once each channel per circle
     for (int speaker=0; speaker<F_NUM_OUTPUTS;++speaker)
