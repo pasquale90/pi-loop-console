@@ -51,13 +51,13 @@ Potentiometers are connected to analog to digital circuit of MCP3008. For a deta
 
 ## LEDs
 
-LEDs are all connected directly to the GPIO pins of the Raspberry Pi. For more details, see the
+LEDs are all connected directly to the [GPIO pins](#raspberry-pi-3-gPIO-pins) of the Raspberry Pi.
 
 ## Pinouts
 
 <img src="../imgs/gpio_FINAL.png" width="1000">
 
-#### Raspberry Pi 3 GPIO Pins (reference : [pinout.xyz/](https://pinout.xyz/))
+#### Raspberry Pi 3 GPIO Pins
 
 <table>
 <tr><th>Left side </th><th>Right side</th></tr>
@@ -112,6 +112,8 @@ LEDs are all connected directly to the GPIO pins of the Raspberry Pi. For more d
 | 40 | 21 | **LED 4 - IN1_ARM** |
 
 </td></tr> </table>
+
+##### (reference : [pinout.xyz/](https://pinout.xyz/))
 
 #### MCP23017 IO expander 
 

@@ -148,7 +148,7 @@ Install `libevdev` to use Piloop in the `PC mode`, and to use the pc-keyboard. U
 #### Installing `wiringPi` 
 Install `wiringPi` library along with the development files only if you want to run Piloop using the **GPIO-based interface** (in **RPI** mode). To install, visit the [wiringpi repository](https://github.com/WiringPi/WiringPi) and follow the installation instructions.
 
-**IMPORTANT** : To use Piloop in `RPI mode`, you must complete the Raspberry Pi setup to connect the buttons, the potentiometers and the LEDs to the GPIO headers of the rpi device. TO do this, follow the instructions provided in the [Raspberry Pi setup guide](rpi-setup.md)
+**IMPORTANT** : To use Piloop in `RPI mode`, you must complete the Raspberry Pi setup to connect the buttons, the potentiometers and the LEDs to the GPIO headers of the rpi device. TO do this, follow the instructions provided in the [Raspberry Pi setup guide](rpi-setup.md).
 
 #### Detecting the audio card
 
