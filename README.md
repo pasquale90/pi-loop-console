@@ -75,7 +75,7 @@ doxygen Doxyfile
 ```
 The documentation files will be stored within the `files/docs/html` directory. Open the `files/docs/html/index.html` in a browser window to overview it.
 
-**If you are also interested in the code design, check the [UML file](files/uml/).*
+*If you are also interested in the code design, you may want to check the [UML file](https://www.draw.io?lightbox=1&edit=_blank#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1DedZkjm9H7DKVlNA9ki6kYtK83shjp5N%26export%3Ddownload).*
 
 ## Installation
 Follow this [link](files/info/install.md) to access information on *configuring*, *building*, *running*, and *using* PiLoop in **PC mode**.
