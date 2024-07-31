@@ -69,9 +69,13 @@ void Mixer::save_jam(std::string savepath){
 
     bool ok = audioFile.setAudioBuffer (jam_buffer);
 
-    audioFile.save ( savepath , AudioFileFormat::Wave);
+    if (ok){
+        audioFile.save ( savepath , AudioFileFormat::Wave);
 
-    std::cout<<"\nJam "<<savepath<<" is saved"<<std::endl;
-    cnt.store(0);
-    curr_max_size.store(0);
+        std::cout<<"\nJam "<<savepath<<" is saved"<<std::endl;
+        cnt.store(0);
+        curr_max_size.store(0);
+    }else{
+        // @TODO handle this case
+    }
 }

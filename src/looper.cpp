@@ -248,6 +248,7 @@ void Looper::stoperase(int channel,bool isHold,Response &response){
 bool Looper::save(){
 // @TODO integrate AudioFile
 // @TODO save metronome
+    return false;
 }
 
 void Looper::start_stop_all(bool isHold,Response &response){

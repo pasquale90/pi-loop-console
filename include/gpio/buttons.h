@@ -15,8 +15,6 @@
 #define GPIO_NEXT_SESSION 14
 //#define GPIO_SAVE_SESSION 23
 
-#warning "GPIO-buttons included" // include warning
-
 #include <array>
 #include <unordered_map>
 #include <atomic>

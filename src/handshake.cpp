@@ -202,7 +202,7 @@ float* Handshake::get_output_buffer(int idx){
 // }
 
 void Handshake::_jack_shutdown(void *arg){
-    std::cout<<"on shutdown"<<std::endl;
+    (void)arg; //!supress_warning unsused parameter
 	exit (1);
     // this.disconnect();
 }

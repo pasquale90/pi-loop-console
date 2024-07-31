@@ -1,7 +1,7 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
-#warning "Computer included"
+// #warning "Computer included"
 
 #include "computer/keyboard.h"
 #include "computer/screen.h"

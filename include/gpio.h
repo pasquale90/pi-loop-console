@@ -1,6 +1,8 @@
 #ifndef GPIO_H
 #define GPIO_H
 
+// #warning "GPIO included" // include warning
+
 // #include <atomic>
 #include "gpio/buttons.h"
 #include "gpio/potentiometers.h"

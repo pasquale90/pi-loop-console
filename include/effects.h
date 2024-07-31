@@ -39,9 +39,9 @@ class Effects{
         
         std::atomic<bool> effects_enabled[F_NUM_INPUTS][NUM_EFFECTS];
 
-        float* _apply_whiteNoise(float*);
-        float* _apply_effect2(float*);
-        float* _apply_effect3(float*);
+        void _apply_whiteNoise(float*);
+        void _apply_effect2(float*);
+        void _apply_effect3(float*);
 
 };  
 #endif

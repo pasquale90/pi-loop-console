@@ -62,7 +62,7 @@ void Effects::apply(float *input_buffers[F_NUM_INPUTS]){
 }
 
 
-float* Effects::_apply_whiteNoise(float *in)
+void Effects::_apply_whiteNoise(float *in)
 {
 /*
 
@@ -72,15 +72,19 @@ float* Effects::_apply_whiteNoise(float *in)
       in[i] = (x / abs(x)) * ( 1. - std::pow ( std::exp(1) , -1. * std::pow(x,2)/ abs(x)) ) * 0.000000005;                  // nicer but NO!
     }
 */
+    (void)in; //!supress_warning unsused parameter
 
 }
 
-float* Effects::_apply_effect2(float *in){
+void Effects::_apply_effect2(float *in){
+
     // delay ?    
+    (void)in; //!supress_warning unsused parameter
 }
 
 
 
-float* Effects::_apply_effect3(float *in){
+void Effects::_apply_effect3(float *in){
     // metro-synched wah ?
+    (void)in; //!supress_warning unsused parameter
 }

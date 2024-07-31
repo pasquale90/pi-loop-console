@@ -1,5 +1,11 @@
 #include "computer/keyboard.h"
 
+#define QUOTE(name) #name
+#define STR(macro) QUOTE(macro)
+static const char *eventDevice{STR(KEYBOARD_DEVICE)};
+static const char *keycodes[64 * 1024] = { 0 }; // hack
+//@TODO move eventDevice to configuring params.
+
 // #define VERBOSE_KEYBOARD
 
 Keyboard::Keyboard(){

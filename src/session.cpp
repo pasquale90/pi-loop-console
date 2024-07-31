@@ -231,8 +231,8 @@ void Session::notify_session(Trigger trigger, Response &response){
             //     std::cout<<"Monitor for IN1 is ON"<<std::endl;
             // }else std::cout<<"Monitor for IN1 is OFF"<<std::endl;
             break;
-#if F_NUM_INPUTS == 2
         case IN2_ARM:
+#if F_NUM_INPUTS == 2
             response.holder.store(11);
             response.msg.store(ARM);
             response.value.store(monitor.toggle_states(false, 1));
@@ -240,8 +240,10 @@ void Session::notify_session(Trigger trigger, Response &response){
             // if (cfg.get_button_state(IN2_ARM)){
             //     std::cout<<"Arm for IN2 is ON"<<std::endl;
             // }else std::cout<<"Arm for IN2 is OFF"<<std::endl;
+#endif
             break;
         case IN2_MNTR:
+#if F_NUM_INPUTS == 2
             response.holder.store(12);
             response.msg.store(MNTR);
             response.value.store(monitor.toggle_states(true, 1));
@@ -249,8 +251,8 @@ void Session::notify_session(Trigger trigger, Response &response){
             // if (cfg.get_button_state(IN2_MNTR)){
             //     std::cout<<"Monitor for IN2 is ON"<<std::endl;
             // }else std::cout<<"Monitor for IN2 is OFF"<<std::endl;
-            break;
 #endif
+            break;
         case IN1_EFF1:
             response.holder.store(13);
             response.msg.store(EFF);
@@ -278,8 +280,8 @@ void Session::notify_session(Trigger trigger, Response &response){
             //     std::cout<<"Effect 3 for IN1 is ON"<<std::endl;
             // }else std::cout<<"Effect 3 for IN1 is OFF"<<std::endl;
             break;
-#if F_NUM_INPUTS == 2
         case IN2_EFF1:
+#if F_NUM_INPUTS == 2
             response.holder.store(16);
             response.msg.store(EFF);
             response.value.store(monitor.toggle_effect(1,0));
@@ -287,8 +289,10 @@ void Session::notify_session(Trigger trigger, Response &response){
             // if (cfg.get_button_state(IN2_EFF1)){
             //     std::cout<<"Effect 1 for IN2 is ON"<<std::endl;
             // }else std::cout<<"Effect 1 for IN2 is OFF"<<std::endl;
+#endif
             break;
         case IN2_EFF2:
+#if F_NUM_INPUTS == 2
             response.holder.store(17);
             response.msg.store(EFF);
             response.value.store(monitor.toggle_effect(1,1));
@@ -296,8 +300,10 @@ void Session::notify_session(Trigger trigger, Response &response){
             // if (cfg.get_button_state(IN2_EFF2)){
             //     std::cout<<"Effect 2 for IN2 is ON"<<std::endl;
             // }else std::cout<<"Effect 2 for IN2 is OFF"<<std::endl;
+#endif
             break;
         case IN2_EFF3:
+ #if F_NUM_INPUTS == 2
             response.holder.store(18);
             response.msg.store(EFF);
             response.value.store(monitor.toggle_effect(1,2));
@@ -305,8 +311,8 @@ void Session::notify_session(Trigger trigger, Response &response){
             // if (cfg.get_button_state(IN2_EFF3)){
             //     std::cout<<"Effect 3 for IN2 is ON"<<std::endl;
             // }else std::cout<<"Effect 3 for IN2 is OFF"<<std::endl;
-            break;
 #endif
+            break;
         case TAP_TEMPO:
             looper.tap_alter_metronome((bool)subvalue);
             break;
@@ -352,6 +358,12 @@ void Session::notify_session(Trigger trigger, Response &response){
             looper.volume_up(2);
 #endif
             break;   
+        case PREV_SESSION: break;
+        case NEXT_SESSION: break;
+        case SAVE_SESSION: break;
+        case SHUTDOWN_PILOOP: break;
+        case NUM_CONTROLS: break;
+        case ISEMPTY: break;
     }
 }
 
@@ -366,7 +378,7 @@ std::string Session::_parse_time_val(int value){
         return "0"+std::to_string(value);
     }else if (num_digits == 2){
         return std::to_string(value);
-    }else if (num_digits > 2){
+    }else{ //if (num_digits > 2){
         return std::to_string(value).substr (num_digits-2,2);
     }
 }

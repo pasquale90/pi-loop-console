@@ -77,7 +77,7 @@ void Metronome::stop_timing(int loop_length){
 
 void Metronome::alter_tempo(){
 
-    int prev_num_measures = num_measures;
+    // int prev_num_measures = num_measures;
     
     ++current_tempo;
     current_tempo %= alternative_tempos.size();

@@ -1,6 +1,7 @@
 #include "monitor.h"
 
 int callback_f (jack_nframes_t nframes,void *arg){
+    (void)nframes; //!supress_warning unused parameter
     return static_cast<Monitor*>(arg)->process();
 }
 

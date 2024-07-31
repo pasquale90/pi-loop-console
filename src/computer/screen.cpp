@@ -11,8 +11,8 @@ Screen::Screen(){
 
 void Screen::display(){
 
-	Message msg = Message(response.msg.load());
-	bool looper_is_changed = response.looper_state.is_changed.load();
+	// Message msg = Message(response.msg.load());
+	// bool looper_is_changed = response.looper_state.is_changed.load();
 
 	if ( !response.isEmpty() ){
 
@@ -33,12 +33,15 @@ void Screen::display(){
 			case EFF:
 				_toggle_state();
 				break;
-			// case SESSION_CHANGE:
+			case SESSION_CHANGE:
 			// 	_session_change();
 				break;
 			case SHUTDOWN:
 				turnOff();
 				break;
+			case EMPTY:	// !supress_warning
+				std::cerr<<"Screen::display() --> Empty message"<<std::endl;
+			case NUM_MESSAGES: break; // !supress_warning
 		}
         _display_text();
 		response.reset();
