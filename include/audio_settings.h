@@ -1,6 +1,8 @@
 #ifndef AUDIO_SETTINGS_H
 #define AUDIO_SETTINGS_H
 
+// @TODO define a namespace of constexp variables
+
     // #define BUFFER_SIZE 512
     // #define SAMPLE_RATE 44100
     #define BIT_QUANTIZATION 24

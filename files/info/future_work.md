@@ -38,6 +38,7 @@ Here is the listing of existing features that require curation.
 - [x] metronome: Instead of timing, use loop length to calculate the #buffers per quarter unit
 - [ ] handshake: add latency status in _info_control()
 - [ ] monitor: set idle when all monitor states (ARM/MNTR) are disabled.
+- [ ] audio_settings: replace macros with a namespace of constexpr variables
 
 ## Additions
 Here is the list of missing features needed to make the Piloop 1.0 update:
