@@ -21,36 +21,24 @@ fi
 # same with i2c bus
 if [ "${PILOOP_MODE}" = "RPI" ];then
     if [[ -z "${I2C_BUS_ADDR}" ]];then 
-        : '     # find the i2c bus address. Parse i2c detect -y 1 output
+        # find the i2c bus address. Parse i2c detect -y 1 output
         i2c_out=`i2cdetect -y 1`
-        n1=0
-        n2=0
-        b=0
-        
         for (( i=0; i<${#i2c_out}; i++ )); do
-
             curr=${i2c_out:$i:1}
             next=${i2c_out:$i+1:1}
-
-            if [  "$curr" = ' ' ] && [  "$next" = ' ' ];then 
-                    b=0
+            nextnext=${i2c_out:$i+2:1}
+            if [[ $curr =~ ^[0-9]+$ ]] && [[ $next =~ ^[0-9]+$ ]] && [[ $nextnext != ':' ]]; then
+                echo "$curr-$next"
+                break
             fi
-
-            if [ "$b" = 0 ] && [ "$curr" = ':' ];then
-                b=1
-            fi
-
-            if [ "$b" = 0 ] && [ cur!=" " ] || [ curr!="-" ];then
-                if [ b==0 ] && [ $next != " " ] || [ $next != "-" ];then
-                    n1=$(($curr + 1))
-                    n2=$(($next + 1))
-                fi
-            fi
-            # echo "${i2c_out:$i:1} ${i2c_out:$i+1:1}"
         done
-        echo "$n1 $n2"
-        '
-        I2C_BUS_ADDR="0x20" # dumb value -> FIX LATTER
+        I2C_BUS_ADDR="${curr}${next}"
+        echo "$I2C_BUS_ADDR"
+
+        if ! [[ $I2C_BUS_ADDR =~ ^[0-9]+$ ]];then
+            printf "\nError:i2c address not found! Run (with sudo):\n $ i2cdetect -y 1\n... to inspect, and set in PILOOP_SETTINGS manually\n\n"
+            exit -1
+        fi
     fi
 fi
 
