@@ -1,7 +1,7 @@
 #!bin/bash
 
 if ! [[ -z "${PILOOP_MODE}" ]];then 
-  echo "configure first"
+  echo "PILOOP_MODE is unset. Set the PILOOP_MODE"
   exit -1
 fi
 

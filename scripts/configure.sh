@@ -37,6 +37,8 @@ if [ "${PILOOP_MODE}" = "RPI" ];then
         if ! [[ $I2C_BUS_ADDR =~ ^[0-9]+$ ]];then
             printf "\nError:i2c address not found! Run (with sudo):\n $ i2cdetect -y 1\n... to inspect, and set in PILOOP_SETTINGS manually\n\n"
             exit -1
+        else
+            I2C_BUS_ADDR="0x${I2C_BUS_ADDR}"
         fi
     fi
 fi
