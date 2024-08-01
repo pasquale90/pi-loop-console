@@ -28,12 +28,11 @@ if [ "${PILOOP_MODE}" = "RPI" ];then
             next=${i2c_out:$i+1:1}
             nextnext=${i2c_out:$i+2:1}
             if [[ $curr =~ ^[0-9]+$ ]] && [[ $next =~ ^[0-9]+$ ]] && [[ $nextnext != ':' ]]; then
-                echo "$curr-$next"
                 break
             fi
         done
+        
         I2C_BUS_ADDR="${curr}${next}"
-        echo "$I2C_BUS_ADDR"
 
         if ! [[ $I2C_BUS_ADDR =~ ^[0-9]+$ ]];then
             printf "\nError:i2c address not found! Run (with sudo):\n $ i2cdetect -y 1\n... to inspect, and set in PILOOP_SETTINGS manually\n\n"
@@ -41,7 +40,6 @@ if [ "${PILOOP_MODE}" = "RPI" ];then
         fi
     fi
 fi
-
 
 export PILOOP_MODE
 export AUDIO_DEVICE
