@@ -16,7 +16,9 @@ Here is the listing of bugs found and require fixing:
 - [ ] channel: fix volume initialization
 - [ ] audio_server/monitor_client: return info on the sample rate value configured after initialization.
     - rebuild the application or configure it properly on initialization with the acceptable settings.
-- [x] metronome: fix alter_tempo()
+- [ ] metronome: 
+    - [x] fix alter_tempo()
+    - [ ] move tick_tock to the interface thread (make use of a conditional variable)
 - [ ] looper: handle exceptional case:
     - erasing the first channel, while another channel is recording ..
     - loop length becomes 0, while the other channel is still recording
