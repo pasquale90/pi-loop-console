@@ -41,6 +41,7 @@ void Screen::display(){
 				break;
 			case EMPTY:	// !supress_warning
 				std::cerr<<"Screen::display() --> Empty message"<<std::endl;
+				break;
 			case NUM_MESSAGES: break; // !supress_warning
 		}
         _display_text();
