@@ -210,6 +210,7 @@ void Session::notify_session(Trigger trigger, Response &response){
         case SAVE_JAM:
             if ((bool)subvalue){
                 response.msg.store(JAM_SAVED);
+                response.value.store(1);
                 save_jam();
             }
             break;

@@ -209,14 +209,21 @@ void Leds::_erase(int channel){
 }
 
 void Leds::_jam_save(){
-	int blink_times = 8;
-
-	while(blink_times > 0){
+	if(response.value.load() == 0)
+	{
 		digitalWrite(GPIO_LED_SAVE_JAM,HIGH);
-		delay(MS_BLINK);
-		digitalWrite(GPIO_LED_SAVE_JAM,LOW);
-		delay(MS_BLINK);
-		--blink_times;
+	}
+	else
+	{
+		int blink_times = 8;
+
+		while(blink_times > 0){
+			digitalWrite(GPIO_LED_SAVE_JAM,HIGH);
+			delay(MS_BLINK);
+			digitalWrite(GPIO_LED_SAVE_JAM,LOW);
+			delay(MS_BLINK);
+			--blink_times;
+		}
 	}
 }
 

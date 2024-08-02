@@ -45,6 +45,13 @@ void PiLoop::_notify(Trigger trigger){
         shutdown();
     }
     else{
+
+        if (trigger.control.load() == SAVE_JAM ){
+            response.msg.store(JAM_SAVED);
+            response.value.store(0);
+            interface.update(response);
+        }
+
         menu.notify_menu(trigger,response);
     }
     
