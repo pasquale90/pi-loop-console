@@ -30,39 +30,43 @@
 #include <utility>
 #include <atomic>
 #include <wiringPi.h> 
-#include "controls.h"
-#include "triggers.h"
+#include "trigger.h"
+#include "response.h"
+#include "audio_settings.h"
+
+using DisplayInit = int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1];
 
 /*! @brief LEDs as the GPIO-based output interface*/
 class Leds{
 
     public:
 		Leds();       
-		void initialize_leds(int[8]);
-
+		void initialize_leds(DisplayInit);
 		void display();
-		void perform_operation(Trigger);
-		void tick_tock(int);
-		// void looper_leds(int,int,bool)
-		
+		void perform_operation(Response);
+		void set_metro_state(int);
+		void tick_tock();		
 		void turnOff();
 
     private: 
         void _setupLedMapping();
 		std::unordered_map<Control,int> toggle_led_mapping;
 		std::unordered_map<int, std::pair<int, int>> looper_led_mapping;
-
+		std::array<std::atomic<int>,3> mixer_states;
+		std::array<std::atomic<int>,3> playback_states;
+		Response response;
+		std::atomic<int> intonation;
 		std::array<int,17> led_store_helper = {
 											GPIO_LED_IN1_EFF1, \
 											GPIO_LED_IN1_EFF2, \
 											GPIO_LED_IN2_EFF1, \
 											GPIO_LED_IN2_EFF2, \
+											GPIO_LED_METRO_R, \
+											GPIO_LED_METRO_G, \
 											GPIO_LED_IN1_ARM, \
 											GPIO_LED_IN1_MNTR, \
 											GPIO_LED_IN2_ARM, \
 											GPIO_LED_IN2_MNTR, \
-											GPIO_LED_METRO_R, \
-											GPIO_LED_METRO_G, \
 											GPIO_LED_CH1_R, \
 											GPIO_LED_CH1_G, \
 											GPIO_LED_CH2_R, \
@@ -72,25 +76,15 @@ class Leds{
 											GPIO_LED_SAVE_JAM \
 										};
 
-	std::atomic<int> msg_handler,value_handler,holders_handler[3];
-	// std::atomic<bool> playbacks[3];
 	// helping functions
 	void _blink_playback_channels(bool);
-
-	void _reset_handlers();
-	void _play(int[3], bool);
-	void _pause(int[3]); 
-	void _erase(int[3]);
-	void _rec(int[3], bool);
-	void _undub(int[3]);
-	void _reset();
+	void _reset_looper_channels();
+	void _undub(int);
+	void _erase(int);
+	void _change_looper_state();
 	void _jam_save();
-	void _toggle_state(int, bool);
-	void _session_change(bool);
-		
-		// void blink_all(); // for when changing session
-		// void set_on(Control);
-		// void set_off(Control);
+	void _toggle_state();
+	void _session_change();
 };
 
 #endif

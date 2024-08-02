@@ -3,8 +3,6 @@
 
 //@TODO I2C BUS as configuration param
 // BUTTONS
-#define BASE 100
-#define I2CBUS 0x20
 #define MCP23017_NUM_BUTTONS 16
 #define GPIO_MCP23017_SDA 2
 #define GPIO_MCP23017_SCL 3
@@ -38,6 +36,7 @@ class Buttons{
     private: 
         
         int base;
+        int i2c_bus_addr;
 
         void _setupControlMapping();
         void _initialize_timings();

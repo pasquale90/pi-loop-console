@@ -2,13 +2,14 @@
 #define VERBOSE_BUTTONS
 
 Buttons::Buttons(){
-} 
+}
 
 void Buttons::setup(int base){
 	this->base = base;
+	this->i2c_bus_addr = I2C_BUS_ADDR;
 	// initialize buttons. 16 on the mcp23017, and 4 direct connections
 	// wiringPiSetupGpio();
-	mcp23017Setup(base, I2CBUS);
+	mcp23017Setup(base, I2C_BUS_ADDR);
 	
 	_setupControlMapping();
 	_initialize_timings();
@@ -17,11 +18,11 @@ void Buttons::setup(int base){
 void Buttons::_initialize_timings(){
 	
 	// for the 16 buttons connected to the mcp23017
-	for (int i = 0; i < MCP23017_NUM_BUTTONS; ++i)
+	for (size_t i = 0; i < MCP23017_NUM_BUTTONS; ++i)
 		time_pressed[control_mapping[base+i]] = .0;
 	
 	// for the rest of the buttons which are directly connected to the GPIO pins of the raspberry pi.
-	for (int i = 0; i < direct_buttons_helper.size(); ++i){
+	for (size_t i = 0; i < direct_buttons_helper.size(); ++i){
 		time_pressed[control_mapping[direct_buttons_helper.at(i)]] = 0.0;
 	}
 	/*
@@ -39,12 +40,12 @@ void Buttons::_initialize_timings(){
 void Buttons::_setupControlMapping()
 {
 	//set up the buttons which are connected to the mcp I/O expander
-	for (int i = 0; i < MCP23017_NUM_BUTTONS; ++i){
+	for (size_t i = 0; i < MCP23017_NUM_BUTTONS; ++i){
 		pinMode(base + i, INPUT);
 		pullUpDnControl (base + i, PUD_UP) ;
 	}
 	//set up the rest of the buttons which are directly connected to the GPIO pins.
-	for (int i = 0; i < direct_buttons_helper.size(); ++i){
+	for (size_t i = 0; i < direct_buttons_helper.size(); ++i){
 		pinMode(direct_buttons_helper.at(i), INPUT);
 		pullUpDnControl (direct_buttons_helper.at(i), PUD_UP) ;
 	}
@@ -89,6 +90,7 @@ void Buttons::_helper(int pin, int &released_sig, bool &isHold){
 		}
 		else if (time_pressed[control] != 0.){								// if not pressed, but it was pressed previously, then it was released	
 				released_sig = pin;
+		// @TODO supress magic number 2000. Move it to settings
 				if (time_pressed[control] > 2000 )
 					isHold = true;
 				time_pressed[control] = 0.0; 									// if released, zero-down the time		
@@ -110,7 +112,7 @@ void Buttons::is_pressed(Trigger &trigger){
 		_helper(pin, released_sig, isHold);
 	}
 	// for the rest of the buttons
-	for (int i = 0; i < direct_buttons_helper.size(); ++i){
+	for (size_t i = 0; i < direct_buttons_helper.size(); ++i){
 		pin = direct_buttons_helper.at(i);
 		_helper(pin, released_sig, isHold);
 	}
@@ -120,7 +122,7 @@ void Buttons::is_pressed(Trigger &trigger){
 		trigger.control.store(control_mapping[released_sig]);
 		if (isHold) 
 			trigger.subval.store(1);
-		// else tval.store(0);
+		else trigger.subval.store(0);
 	}
 	// }else{
 	// 	msg.store(-1); 

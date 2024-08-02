@@ -7,8 +7,9 @@
 #include "gpio/buttons.h"
 #include "gpio/potentiometers.h"
 #include "gpio/leds.h"
-
 #include "response.h"
+
+using DisplayInit = int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1];
 
 // BUTTONS
 #define BASE_BUTTONS 100
@@ -23,7 +24,7 @@ public:
     void update_output_state(Response);
     void show();
 
-    void initialize_display(int[8]);
+    void initialize_display(DisplayInit);
     void metro_display(int);
 
     void turnOff();

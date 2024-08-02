@@ -1,8 +1,6 @@
 #ifndef POTENTIOMETERS_H
 #define POTENTIOMETERS_H
-#define BASE 200
 #define SPI_CHAN 0
-
 #define NUM_ROTARIES 3
 #define ANALOG_INPUT_ADDRESS_1 0
 #define ANALOG_INPUT_ADDRESS_2 1
@@ -17,7 +15,7 @@
 #include <iostream>
 #include <wiringPi.h>
 #include <mcp3004.h>
-
+#include "trigger.h"
 
 /*
 
