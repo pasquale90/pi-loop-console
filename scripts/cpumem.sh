@@ -26,12 +26,13 @@ do
     sleep 2
 done
 
-printf '\nPILOOP resources usage:\n%%cpu |  %%mem  | process\n'
+printf '\nPILOOP resources usage:\n%%cpu |  %%mem  | process | RPI temperature\n'
 
 while kill -0 $pid 2> /dev/null;
 do
     resources=$(top -b -n 2 -d 0.2 -p $pid | tail -1 | awk '{print $9 " |  " $10 "  | " $12 }')
-    echo -ne "$resources\033[0K\r"
+    temperature=`sensors | awk '/temp1/{print $2}'`
+    echo -ne "$resources  |    $temperature\033[0K\r"
     sleep 1
 done
 clear
