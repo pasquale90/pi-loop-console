@@ -46,7 +46,7 @@ void PiLoop::_notify(Trigger trigger){
     }
     else{
 
-        if (trigger.control.load() == SAVE_JAM ){
+        if (trigger.control.load() == SAVE_JAM && trigger.subval.load()==1 ){
             response.msg.store(JAM_SAVED);
             response.value.store(0);
             interface.update(response);
