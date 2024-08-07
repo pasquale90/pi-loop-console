@@ -63,7 +63,14 @@ void Screen::_change_looper_state_simple(){
 }
 
 void Screen::_jam_save(){
-    jam_save_state = "jam is saved..";
+	if(response.value.load() == 0)
+	{
+		jam_save_state = "saving jam ...";
+	}
+	else
+	{
+		jam_save_state = "jam is saved..";
+	}
 }
 
 void Screen::_toggle_state(){
