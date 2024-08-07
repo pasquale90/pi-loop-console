@@ -40,12 +40,40 @@ using DisplayInit = int[(F_NUM_INPUTS*(2+NUM_EFFECTS))+1];
 class Leds{
 
     public:
-		Leds();       
+		/*! @brief Class contructor.
+         */
+		Leds();  
+
+		 /*! @brief Method to impicitly initialize some of the output display components.
+		* @param DisplayInit - effects, monitor states + the current session)
+		* @return void
+		*/    
 		void initialize_leds(DisplayInit);
+
+		/*! @brief Threaded function running on the display thread.
+		* @return void
+		*/
 		void display();
+
+		/*! @brief Function running on the session thread, and carries the system's response to the displayer.
+		 * @return void
+         */
 		void perform_operation(Response);
+
+		/*! @brief Method to set the metronome's state.
+		 * @param int - the metronome's intonation signal
+         * @return void
+		 */
 		void set_metro_state(int);
-		void tick_tock();		
+
+		/*! @brief Method to display the metronome's state.
+         * @return void
+		 */
+		void tick_tock();	
+
+		/*! @brief Method to shutdown the displayer.
+		 * @return void
+         */	
 		void turnOff();
 
     private: 

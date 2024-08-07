@@ -50,6 +50,7 @@ class Screen{
 		 * @return void
          */
 		void turnOff();
+		
     private: 
 		
 		/*! @brief Function to display the text gui.

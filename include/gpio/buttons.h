@@ -27,10 +27,19 @@
 class Buttons{
 
     public:
+        /*! @brief Class contructor.
+         */
         Buttons();
 
+        /*! @brief Method used as an implicit constructor to setup a buttons instance.
+         * @param int - the base number for the mcp23017 IO expander
+         */
         void setup(int);
 
+        /*! @brief Function to return if a button is pressed by the user.
+         * @param Trigger& - the trigger to be returned.
+         * @return void
+         */
         void is_pressed(Trigger&);
 
     private: 

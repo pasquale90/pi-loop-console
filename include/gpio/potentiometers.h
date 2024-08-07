@@ -28,11 +28,19 @@
 /*! @brief Potentiometers to adjust the looper-channel's volume.*/
 class Potentiometers{
 	public:
-		
+		/*! @brief Class contructor.
+         */
 		Potentiometers();
 
+		/*! @brief Method used as an implicit constructor to setup the instance of the class.
+         * @param int - the base number for the mcp3008 ADC
+         */
 		void setup(int);
 		
+		/*! @brief Function to notify a knob is been rotated or not.
+         * @param Trigger& - the trigger to be returned.
+         * @return void
+         */
 		void is_changed(Trigger&);
 
 	private:
