@@ -16,9 +16,9 @@ Here is the listing of bugs found and require fixing:
 - [ ] channel: fix volume initialization
 - [ ] audio_server/monitor_client: return info on the sample rate value configured after initialization.
     - rebuild the application or configure it properly on initialization with the acceptable settings.
-- [ ] metronome: 
+- [x] metronome: 
     - [x] fix alter_tempo()
-    - [ ] move tick_tock to the interface thread (make use of a conditional variable)
+    - [x] move tick_tock to the interface thread (make use of a conditional variable)
 - [ ] looper: handle exceptional case:
     - erasing the first channel, while another channel is recording ..
     - loop length becomes 0, while the other channel is still recording
@@ -33,7 +33,7 @@ Here is the listing of existing features that require curation.
     - [x] keyboards: move eventDevice 
     - [x] audio_settings: SAMPLE_RATE and BUFFER_SIZE
     - [x] gpio/buttons : I2C_BUS
-        - [ ] automatic detection of the i2c-bus used.
+        - [x] automatic detection of the i2c-bus used.
 - [ ] channel: stereo output not supported --> fix in looper._fuse_input()
 - [ ] mixer: conform to both mono and stereo out
 - [ ] mixer: move dataPath to config
