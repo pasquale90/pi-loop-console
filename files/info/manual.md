@@ -1,17 +1,31 @@
 # Manual
 
-#### Here you may find instructions on how to use Piloop in **PC mode**.
-For the **RPI mode**, the instructions will be updated soon. Up till then, visit the [setup page](rpi-setup.md) to get an overview of the current installation setup.
+#### Here you may find instructions on how to use PiLoop.
 
 ## Contents 
 
 - [Interaction controls](#interaction-controls)
+  - [RPI mode](#rpi-mode)
+  - [PC mode](#pc-mode)
 - [Display interface](#display-interface)
 - [Action list](#action-list)
 
 ## Interaction controls
 
-The list of keyboard controls to operate Piloop. A detailed explanation of the available actions can be found in the [action list](#action-list) section.
+### RPI mode
+
+The following picture depicts the available controls to operate PiLoop in **RPI mode** (consider it as a resource that demonstrates the naming of the buttons aligned with their spatial layout, rather than an actual circuit). A detailed explanation of the available actions can be found in the [action list](#action-list) section.
+
+<p align="left">
+  <img src="../imgs/controlsRPI.png"  width="700" alt="RPI mode"/>
+  <figcaption>Control interface in RPI mode</figcaption>
+</p>
+
+
+### PC mode
+
+The list of keyboard controls to operate PiLoop in **PC mode**. A detailed explanation of the available actions can be found in the [action list](#action-list) section.
+
 
 Control | Action on prolonged pressing | Action on instant pressing
 :--- | :---: | ---:
@@ -43,7 +57,7 @@ Fn^F5 | - |  Decrease volume of loop-channel 2
 Fn^F6 | - |  Increase volume of loop-channel 2
 Fn^F9 | - |  Decrease volume of loop-channel 3
 Fn^F10 | - | Increase volume of loop-channel 3
-Esc | - | Exit Piloop 
+Esc | - | Exit PiLoop 
 
 **NOTE**: The following features are not supported yet:
 - Enabling/disabling of effect states is supported, but no effects are applied to the input signal.
@@ -52,15 +66,21 @@ For more information, visit the [future work list](future_work.md).
 
 ## Display interface
 
-In `PC mode`, users are able to inspect various states of the program related to the monitor state, the looper state, the metronome state etc.
+Users are able to inspect various states of the program related to the monitor state, the looper state, the metronome state etc.
 
-<h1 align="left">
-  <img src="../imgs/piloop-demo.gif" width="1000"></a>
-</h1>  
+<p align="left">
+  <img src="../imgs/piloop-demoRPI.gif"  width="700" alt="RPI mode"/>
+  <figcaption>LED display interface in RPI mode</figcaption>
+</p>
+
+<p align="left">
+  <img src="../imgs/piloop-demo.gif" width="700" alt="PC mode">
+  <figcaption > Screen-based display interface in PC mode</figcaption>
+</p>  
 
 ## Action list
 
-The included features of Piloop involve the following actions:
+The included features of PiLoop involve the following actions:
 
 Action | Description
 :--- | ---:
@@ -78,6 +98,6 @@ alter tempo | alter the current tempo
 save session |	save the current session (presets and loop-tracks only)
 change session | change the current session (presets and loop-tracks only)
 change volume |	change the volume state of a looper-channel
-shutdown | turn off Piloop
+shutdown | turn off PiLoop
 
 ---

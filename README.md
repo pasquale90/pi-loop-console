@@ -7,7 +7,7 @@
 
 [![Licence](https://img.shields.io/badge/licence%20-%20GPLv2-blue)](https://github.com/pasquale90/pi-loop-console/tree/licence)
 [![current-version](https://img.shields.io/badge/current_version-0.9(prototype)-green)](https://github.com/pasquale90/pi-loop-console)
-[![Demo](https://img.shields.io/badge/demo-youtube-red)](https://www.youtube.com/watch?v=y8mJdEyd31Y&ab_channel=PasxalisMelissas)
+[![Demo](https://img.shields.io/badge/demo-youtube-red)](https://www.youtube.com/watch?v=vY4omyUM97A&t=20s)
 [![Gitter](https://img.shields.io/badge/chat-Gitter-yellow)](https://matrix.to/#/#pi-loop:gitter.im)
 </div>
 
@@ -23,22 +23,23 @@
 </div>
 
 <h1 align="center">
-  <a href="https://github.com/pasquale90/pi-loop-console/"><img src="files/imgs/piloop-demo.gif" width="600"></a></h4>
-</h1>  
+  <a href="https://github.com/pasquale90/pi-loop-console/"><img src="files/imgs/piloop-demo.gif" width="600"></a>
+  <a href="https://www.youtube.com/watch?v=vY4omyUM97A&t=20s"><img src="files/imgs/piloop-demoRPI.gif" width="600"></a>
+</h1>
 
 ## Description
-Pi-loop is a real-time audio looper application that enables users to create interactive musical sessions. One may use an external audio interface to connect a microphone and an instrument or to use the integrated sound card to test it. <br><br>
+Pi-Loop is a real-time audio looper application that enables users to create interactive musical sessions. One may use an external audio interface to connect a microphone and an instrument or to use the integrated sound card to test it. <br><br>
 This repo consists of 2 different **modes** that make use of alternative user interfaces to interact with the software:
-- **PC mode** (version 0.9) <br>
+- **PC mode** <br>
   This version runs directly on a Linux machine and allows the usage of **computer components** such as the **keyboard *to trigger events*** and the **screen *to access the output state of the program***.
-- **RPI mode** (will be included in the next update) <br>
-  This version runs on a <a href="https://www.raspberrypi.com/" target="_blank">**Raspberry Pi**</a> and uses **GPIO**-based connected buttons and rotaries to enable user interaction with the program, and LEDs to access the output state of the program. This mode is currently under development.
+- **RPI mode** <br>
+  This version runs on a <a href="https://www.raspberrypi.com/" target="_blank">**Raspberry Pi**</a> and uses **GPIO**-based connected **buttons and rotaries *to enable user interaction with the program***, and **LEDs *to access the output state of the program***.
 
 *Both modes lie on the same codebase and can be configured on build. More information can be found in the [installation section](#installation) below.*
   
 ## Features
 
-**Key features** that make Piloop unique:
+**Key features** that make PiLoop unique:
 
 * **Input signal handling flexibility**
   
@@ -78,19 +79,19 @@ The documentation files will be stored within the `files/docs/html` directory. O
 *If you are also interested in the code design, you may want to check the [UML file](https://www.draw.io?lightbox=1&edit=_blank#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1DedZkjm9H7DKVlNA9ki6kYtK83shjp5N%26export%3Ddownload).*
 
 ## Installation
-Follow this [link](files/info/install.md) to access information on *configuring*, *building*, *running*, and *using* PiLoop in **PC mode**.
+Follow this [link](files/info/install.md) to access information on *installing*, *configuring*, and *building* PiLoop.
 
-For the **RPI mode**, behold for the upcoming updates. You may follow this [link](files/info/rpi-setup.md) to obtain an overview on the connections made to the GPIO pins.
+Additionally, to setup Pi-Loop in **RPI mode** on a Raspberry Pi, follow this [link](files/info/rpi-setup.md) to obtain an overview on the connections made to the GPIO pins.
 
 ## Usage
 
-To run Piloop, you have to run with sudo priviledge:
+To run PiLoop, you have to run with sudo priviledge:
 
 ```
 $ sudo ./piloop
 ```
 
-To see how to use it visit the [manual page](files/info/manual.md)
+To see how to use it, visit the [manual page](files/info/manual.md)
 
 ## Future_Work
 
@@ -98,8 +99,7 @@ The future work listing is summarized as follows:
 * Fix found bugs.
 * Improve existing features
 * Add new features
-* conclude Raspeberry Pi setup
-- The name of this application is Piloop and not without reason. The upcoming Piloop-1.0 is to run on a headless Raspberry Pi. Details about the current setup can be found [here](files/info/rpi-setup.md).
+* Upgrade
 
 Visit the [future-work list](files/info/future_work.md) to get informed about what's next.
 
@@ -109,9 +109,9 @@ If you have used this application and would like to contribute or share your fee
 
 ## Related
 If you liked this project, you may also like:
-- [Raspberry-Pi-Looper-synth-drum-thing](https://github.com/otem/Raspberry-Pi-Looper-synth-drum-thing)
-- [making-a-looper-with-pure-data/](https://guitarextended.wordpress.com/2013/08/05/making-a-looper-with-pure-data/)
-- [iav](https://github.com/pasquale90/interactive-audio-visualizer) : An interactive audio visualizer 
+- [Raspberry Pi Looper synth drum thing](https://github.com/otem/Raspberry-Pi-Looper-synth-drum-thing)
+- [making a looper with pure data](https://guitarextended.wordpress.com/2013/08/05/making-a-looper-with-pure-data/)
+- [an interactive audio visualizer](https://github.com/pasquale90/interactive-audio-visualizer)
 
 ---
 
@@ -130,7 +130,7 @@ If you liked this project, you may also like:
 :musical_note: 
 :notes: 
 :smiley: 
-Enjoy Piloop
+Enjoy PiLoop
 :smiley: 
 :notes:
 :musical_note:

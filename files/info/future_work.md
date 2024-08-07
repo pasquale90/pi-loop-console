@@ -28,7 +28,7 @@ Here is the listing of bugs found and require fixing:
 ## Improvements
 Here is the listing of existing features that require curation.
 
-- [x] configuring Piloop. Define as configuration parameter the following variables:
+- [x] configuring PiLoop. Define as configuration parameter the following variables:
     - [x] cmake/make: MODE and DEVICE
     - [x] keyboards: move eventDevice 
     - [x] audio_settings: SAMPLE_RATE and BUFFER_SIZE
@@ -43,7 +43,7 @@ Here is the listing of existing features that require curation.
 - [ ] audio_settings: replace macros with a namespace of constexpr variables
 
 ## Additions
-Here is the list of missing features needed to make the Piloop 1.0 update:
+Here is the list of missing features needed to make the PiLoop 1.0 update:
 
 - [ ] audio_settings.h: add support for phones and sub_out 
 - [ ] effects: add effects
@@ -57,11 +57,11 @@ Here is the list of missing features needed to make the Piloop 1.0 update:
 ## Upgrades
 
 - [ ] add a drum transcription tool
-- [ ] integrate Piloop in a box case.
+- [ ] integrate PiLoop in a box case.
 - [ ] transfer application into a new microcontroller (i.e. stm32 or nvidia-jetson module)
 
 ## Ambition
-Make Piloop a fully-equipped loop station console.
+Make PiLoop a fully-equipped loop station console.
 
 ## Milestones achieved
 - [x] multi-threading

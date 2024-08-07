@@ -23,6 +23,7 @@
   - [detect audio card](#detecting-the-audio-card)
   - [audio settings](#audio-settings)
   - [setting the keyboard device manually](#setting-the-keyboard-device-manually-pc-mode-only)
+  - [setting the i2c bus address manually](#setting-the-i2c-bus-address-manually-rpi-mode-only)
 
 
 ## Prerequisites
@@ -32,7 +33,7 @@ The things you need before building the software:
 - [jack audio](https://github.com/jackaudio/jack2)
   - To install jack audio you must build it from source with `pkg-config`, `alsa` and `libsamplerate`. For further guidance, visit the [help section](#help).
 - [jsoncpp](https://github.com/adamstark/AudioFile)
-- [Audiofile](https://github.com/adamstark/AudioFile)
+- [AudioFile](https://github.com/adamstark/AudioFile)
 - [libevdev](https://www.freedesktop.org/wiki/Software/libevdev/) (**PC mode only**)
 - [wiringPi](https://github.com/WiringPi/WiringPi) (**RPI mode only**)
 
@@ -40,23 +41,25 @@ The things you need before building the software:
 
 Before configuring the application, you **must** edit the [PILOOP_SETTINGS](../../PILOOP_SETTINGS) file to set various parameters depending on your OS system or hardware setup. To do that, follow the configuration steps listed below:
 
-### 1.set the mode to run Piloop
+### 1.set the mode to run PiLoop
 
 Set the variable `MODE` to `PC` if you want to use your computer components (such as the computer keyboard and the computer's screen) or `RPI` if you are on a Raspberry Pi (with buttons and LEDs connected to the GPIO pins).
 
 ### 2.configure the audio card
 
-Similarly, set the variable `AUDIO_INTERFACE` with the corresponding name of your sound card (i.e. in this example with the name `PCH` which corresponds to the system's audio card).
-
-For more information, see the [help section](#detecting-the-audio-card)
+Similarly, set the variable `AUDIO_INTERFACE` with the corresponding name of your sound card. For more information, see the help section([detecting the audio card](#detecting-the-audio-card)).
 
 ### 3.set sample rate and buffer size
 
 Replace the value of `SAMPLE_RATE` with a value supported by your audio device, and set the `BUFFER_SIZE`.
 
-Finally, to configure Piloop, type in terminal `bash scripts/configure.sh`. 
+Finally, to configure PiLoop, type in terminal:
 
-For more information, visit the help section ([audio settings](audio-settings) / [Setting the keyboard device manually](#setting-the-keyboard-device-manually-pc-mode-only)).
+```
+bash scripts/configure.sh
+``` 
+
+For more information, visit the help section ([audio settings](#audio-settings) / [Setting the keyboard device manually](#setting-the-keyboard-device-manually-pc-mode-only)).
 
 ## Build
 
@@ -64,7 +67,7 @@ To build the application, use the bash scripts provided within the [scripts](../
 To do so, type `bash scripts/build.sh`. The resulting binary will be found in the root directory of the local repository.
 
 ## Run
-After having built the application, you ll' find `piloop` binary file within `pi-loop-console` directory (*the root of the local repository*). Run `Piloop` with **sudo** privileges:
+After having built the application, you will find `piloop` binary file within `pi-loop-console` directory (*the root of the local repository*). Run `piloop` with **sudo** privileges:
 
 ```
 cd pi-loop-console
@@ -143,12 +146,12 @@ No need to install. AudioFile header is already included within the [external](.
 
 #### Installing `libevdev` 
 
-Install `libevdev` to use Piloop in the `PC mode`, and to use the pc-keyboard. Use the package manager to install **libevdev** library along with the development packages.
+Install `libevdev` to use PiLoop in the `PC mode`, and to use the pc-keyboard. Use the package manager to install **libevdev** library along with the development packages.
 
 #### Installing `wiringPi` 
-Install `wiringPi` library along with the development files only if you want to run Piloop using the **GPIO-based interface** (in **RPI** mode). To install, visit the [wiringpi repository](https://github.com/WiringPi/WiringPi) and follow the installation instructions.
+Install `wiringPi` library along with the development files only if you want to run PiLoop using the **GPIO-based interface** (in **RPI** mode). To install, visit the [wiringpi repository](https://github.com/WiringPi/WiringPi) and follow the installation instructions.
 
-**IMPORTANT** : To use Piloop in `RPI mode`, you must complete the Raspberry Pi setup to connect the buttons, the potentiometers and the LEDs to the GPIO headers of the rpi device. TO do this, follow the instructions provided in the [Raspberry Pi setup guide](rpi-setup.md).
+**IMPORTANT** : To use PiLoop in `RPI mode`, you must complete the Raspberry Pi setup to connect the buttons, the potentiometers and the LEDs to the GPIO headers of the rpi device. TO do this, follow the instructions provided in the [Raspberry Pi setup guide](rpi-setup.md).
 
 #### Detecting the audio card
 
@@ -163,12 +166,15 @@ Alternatively, type `aplay -l` on your terminal, to use the alsa-tools.<br>
 Sample output:
 <h3 align="left"><img src="../imgs/aplay_output.png" width="500"></h3>
 
+Use a value from the listing devices to set the `AUDIO_INTERFACE` variable in `PILOOP_SETTINGS` (i.e. set `PCH` to configure the system's internal audio device).
+
+
 #### Audio settings
 
 To make sure that the value of the sampling rate is supported by the audio card, you can run `cat /proc/asound/card<card_id>/codec#0`. Otherwise, the value of `44100` is the most common, and it is broadly supported, so you can leave it as it is.
 
 To set buffer size, use values in the **power of 2**, such as 64, 128, 256, 512, 1024, and so on.
-Note that setting the value too low will reduce latency but will increase CPU overload and may result in audio-related artifacts. To find the optimal value for your hardware, prefer setting `BUFFER_SIZE` with a higher value, such as `1024` or `512`, and reduce it by a factor of 2 in case you encounter audio latency issues, until you find an optimal value for your system. 
+Note that setting the value too low, will reduce latency but will increase CPU overload and may result in audio-related artifacts. To find the optimal value for your hardware, prefer setting `BUFFER_SIZE` with a higher value, such as `1024` or `512`, and reduce it by a factor of 2 in case you encounter audio latency issues, until you find an optimal value for your system. 
 
 #### Setting the keyboard device manually (**PC mode only**)
 
@@ -180,6 +186,10 @@ Sample output:
 In this example, the output states that the keyboard corresponds to `event3`.
 Uncomment the line `KEYBOARD_DEVICE=/dev/input/event0` and replace the value of `event0` with the value of `event3`.
 
+#### Setting the i2c bus address manually (**RPI mode only**)
+
+To set the I2C bus address manually, after having install `i2c-tools` on your system,type in terminal `i2cdetect -y 1` to find the bus address.
+
 ##
 
-**Check the [manual page](manual.md) to learn how to use Piloop**
+**Check the [manual page](manual.md) to learn how to use PiLoop**

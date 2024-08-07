@@ -1,4 +1,4 @@
-<h1 align="center">Setup Piloop in RPI Mode</h1>
+<h1 align="center">Setup PiLoop in RPI Mode</h1>
 <p align="center">
   <a href="#raspberry-pi">Raspberry Pi</a> |
   <a href="#components-list">Components list</a> |
@@ -14,11 +14,11 @@
 
 ## Raspberry Pi
 
-For the current Piloop setup, a [Raspberry Pi 3 Model B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b/) has been used.
+For the current PiLoop setup, a [Raspberry Pi 3 Model B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b/) has been used.
 
 ### OS
 
-Piloop runs on Linux server. No desktop environment is required. It is tested on various debian distros (i.e. [diet-pi](https://dietpi.com/#download), [Debian server](https://raspi.debian.net/) etc)
+PiLoop runs on Linux server. No desktop environment is required. It is tested on various debian distros (i.e. [diet-pi](https://dietpi.com/#download), [Debian server](https://raspi.debian.net/) etc).
 
 ## Components list
 
@@ -43,11 +43,11 @@ Apart from the buttons listed below, all other buttons are connected through the
 
 For more details, see the [MCP23017 connections](#MCP23017-IO-expander) below.
 
-**IMPORTANT** : The IO expander uses the I2C protocol. You **must** have enabled the `i2c interface` on your machine and install `i2c-tools`.
+**IMPORTANT** : The IO expander uses the I2C protocol. You **must** enable the `i2c interface` on your machine and install `i2c-tools`.
 
 ## Potentiometers
 
-Potentiometers are connected to analog to digital circuit of MCP3008. For a detailed overview of the connections, see the [MCP3008 connections](#MCP3008-AD-converter) below.
+Potentiometers are connected to the analog-to-digital circuit of MCP3008. For a detailed overview of the connections, see the [MCP3008 connections](#MCP3008-AD-converter) below.
 
 ## LEDs
 
