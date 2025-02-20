@@ -53,6 +53,7 @@ Here is the list of missing features needed to make the PiLoop 1.0 update:
         - save/load channels
         - save/load metronome
 - [ ] session/config: save metadata for when saving jams. This will serve as a method to import files in DAWs that can be used as a songwriting guide afterward.
+- [ ] MIDI support
 
 ## Upgrades
 
